@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#160c18">
+  <script>
+    (() => {
+      const images = [
+        {src:'assets/codex-clipboard-4867f544-5382-49d8-b7aa-2c66a13402e2.png',palette:'cherry'},
+        {src:'assets/codex-clipboard-8e059a81-afec-442c-a6ec-efaf803a1f29.png',palette:'ruby'},
+        {src:'assets/codex-clipboard-91cefc0e-5e20-4a43-9c0b-bd6c7dc7937b.png',palette:'gold'},
+        {src:'assets/codex-clipboard-7fd6c7ad-e4f7-45a2-abb3-2d9da92cec83.png',palette:'lime'},
+        {src:'assets/codex-clipboard-c7483282-739a-4528-b9ad-52abd57ad8ca.png',palette:'emerald'},
+        {src:'assets/codex-clipboard-beea72a6-d93d-424c-9744-a075a17f98bc.png',palette:'teal'},
+        {src:'assets/codex-clipboard-3be50533-f4e2-415d-ad22-401b86a74a27.png',palette:'blue'}
+      ];
+      const key = 'vocal-studio-splash-next-index';
+      let index = 0;
+      try {
+        const saved = Number(localStorage.getItem(key));
+        if (Number.isInteger(saved) && saved >= 0) index = saved % images.length;
+      } catch (_) {}
+      const selected = images[index];
+      const image = selected.src;
+      document.documentElement.dataset.appPalette = selected.palette;
+      const chromeColors = {cherry:'#170810',ruby:'#180b07',gold:'#181104',lime:'#121402',emerald:'#06140d',teal:'#061419',blue:'#07111d'};
+      document.querySelector('meta[name="theme-color"]').content = chromeColors[selected.palette] || chromeColors.cherry;
+      window.vocalStudioSplashImage = image;
+      document.documentElement.style.setProperty('--splash-art-backdrop', `url("${image}")`);
+      const preload = document.createElement('link');
+      preload.rel = 'preload';
+      preload.as = 'image';
+      preload.href = image;
+      preload.fetchPriority = 'high';
+      document.head.appendChild(preload);
+      try { localStorage.setItem(key, String((index + 1) % images.length)); } catch (_) {}
+    })();
+  </script>
+  <title>Vocal Studio — a happy place to practice</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="library.css">
+  <link rel="stylesheet" href="coach.css">
+  <link rel="stylesheet" href="pup-theme.css">
+  <link rel="stylesheet" href="large-type.css">
+  <link rel="stylesheet" href="western-pitch.css">
+  <link rel="stylesheet" href="monitor-trail.css">
+  <link rel="stylesheet" href="monitor-big.css">
+  <link rel="stylesheet" href="monitor-dark.css">
+  <link rel="stylesheet" href="rewards.css">
+  <link rel="stylesheet" href="splash.css">
+  <link rel="stylesheet" href="theme-cherry.css">
+  <link rel="stylesheet" href="theme-dynamic.css">
+  <link rel="stylesheet" href="companion.css">
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      const splash = document.getElementById('launch-splash');
+      let timerStarted = false;
+      const startSplashTimer = () => {
+        if (timerStarted) return;
+        timerStarted = true;
+        window.setTimeout(() => {
+          splash.classList.add('splash-exit');
+          window.setTimeout(() => {
+            splash.hidden = true;
+            const appChrome = {cherry:'#170810',ruby:'#180b07',gold:'#181104',lime:'#121402',emerald:'#06140d',teal:'#061419',blue:'#07111d'};
+            document.querySelector('meta[name="theme-color"]').content = appChrome[document.documentElement.dataset.appPalette] || appChrome.cherry;
+          }, 900);
+        }, 2000);
+      };
+      if (splash.classList.contains('splash-image-ready')) startSplashTimer();
+      else splash.addEventListener('splash-image-ready', startSplashTimer, {once:true});
+    });
+  </script>
+</head>
+<body>
+  <div id="launch-splash" class="launch-splash" role="status" aria-label="Welcome to Vocal Studio">
+    <img id="splash-art" alt="Fire with Roots: a glowing crown, microphone, musical notes, fire, lotus, peacock feather, and artist goals under a starry sky" fetchpriority="high" decoding="async">
+    <span class="splash-sparkle sparkle-one" aria-hidden="true">✦</span><span class="splash-sparkle sparkle-two" aria-hidden="true">✧</span><span class="splash-sparkle sparkle-three" aria-hidden="true">✦</span><span class="splash-sparkle sparkle-four" aria-hidden="true">✧</span><span class="splash-sparkle sparkle-five" aria-hidden="true">✦</span><span class="splash-sparkle sparkle-six" aria-hidden="true">✧</span><span class="splash-sparkle sparkle-seven" aria-hidden="true">✦</span><span class="splash-sparkle sparkle-eight" aria-hidden="true">✧</span><span class="splash-sparkle sparkle-nine" aria-hidden="true">✦</span><span class="splash-sparkle sparkle-ten" aria-hidden="true">✧</span><span class="splash-sparkle sparkle-eleven" aria-hidden="true">✦</span><span class="splash-sparkle sparkle-twelve" aria-hidden="true">✧</span><span class="splash-sparkle sparkle-thirteen" aria-hidden="true">✦</span>
+    <span class="splash-sparkle sparkle-extra" aria-hidden="true">⋆</span><span class="splash-sparkle sparkle-extra" aria-hidden="true">✧</span><span class="splash-sparkle sparkle-extra" aria-hidden="true">✶</span><span class="splash-sparkle sparkle-extra" aria-hidden="true">⋆</span><span class="splash-sparkle sparkle-extra" aria-hidden="true">✧</span><span class="splash-sparkle sparkle-extra" aria-hidden="true">✦</span><span class="splash-sparkle sparkle-extra" aria-hidden="true">⋆</span><span class="splash-sparkle sparkle-extra" aria-hidden="true">✶</span><span class="splash-sparkle sparkle-extra" aria-hidden="true">✧</span><span class="splash-sparkle sparkle-extra" aria-hidden="true">⋆</span><span class="splash-sparkle sparkle-extra" aria-hidden="true">✦</span><span class="splash-sparkle sparkle-extra" aria-hidden="true">✧</span><span class="splash-sparkle sparkle-extra" aria-hidden="true">⋆</span><span class="splash-sparkle sparkle-extra" aria-hidden="true">✶</span><span class="splash-sparkle sparkle-extra" aria-hidden="true">✧</span><span class="splash-sparkle sparkle-extra" aria-hidden="true">✦</span><span class="splash-sparkle sparkle-extra" aria-hidden="true">⋆</span><span class="splash-sparkle sparkle-extra" aria-hidden="true">✧</span><span class="splash-sparkle sparkle-extra" aria-hidden="true">✶</span><span class="splash-sparkle sparkle-extra" aria-hidden="true">⋆</span>
+  </div>
+  <script>
+    (() => {
+      const splash = document.getElementById('launch-splash');
+      const art = document.getElementById('splash-art');
+      const reveal = () => {
+        splash.classList.add('splash-image-ready');
+        splash.dispatchEvent(new Event('splash-image-ready'));
+      };
+      const image = window.vocalStudioSplashImage || 'assets/codex-clipboard-4867f544-5382-49d8-b7aa-2c66a13402e2.png';
+      art.addEventListener('load', reveal, {once:true});
+      art.src = image;
+      if (art.complete && art.naturalWidth) reveal();
+    })();
+  </script>
+  <aside class="sidebar">
+    <a class="brand" href="#studio"><span class="brand-mark">♫</span><span>vocal<span class="brand-light"> studio</span><small>A HAPPY PLACE TO PRACTICE</small></span></a>
+    <div class="nav-label">YOUR PRACTICE SPACE</div>
+    <nav aria-label="Main navigation">
+      <button class="nav-item active" data-view="studio"><span>◉</span> Practice studio</button>
+      <button class="nav-item" data-view="singing"><span>♫</span> Western note visualiser</button>
+      <button class="nav-item" data-view="monitor"><span>⌁</span> Live pitch monitor</button>
+      <button class="nav-item" data-view="warmups"><span>◷</span> Warm-up sessions</button>
+      <button class="nav-item" data-view="exercises"><span>✳</span> Exercise library</button>
+      <button class="nav-item" data-view="ear"><span>♫</span> Ear training</button>
+      <button class="nav-item" data-view="progress"><span>↗</span> Progress & schedule</button>
+      <button class="nav-item" data-view="rewards"><span>✦</span> Streaks & rewards</button>
+    </nav>
+    <div class="sidebar-bottom"><div class="avatar">A</div><div><b>Your practice</b><small>Saved on this device</small></div><span class="local-dot"></span></div>
+  </aside>
+  <main>
+    <header class="topbar"><div class="breadcrumb">YOUR SPACE <span>/</span> <b id="crumb">PRACTICE STUDIO</b></div><div class="today" id="today"></div></header>
+    <section class="view active" id="view-studio">
+      <div class="hero-row"><div><div class="eyebrow">♡ LISTEN · LEARN · REPEAT</div><h1>Make every take<br><em>a little more you.</em></h1><p class="lead">Sing, explore, and celebrate the little wins. There’s no rush—just you and your voice.</p></div><div class="hero-note"><span>✿</span><div><b>A little note for today</b><p>Small steps make lovely songs.</p></div></div></div>
+      <div class="studio-grid">
+        <article class="card setup-card"><div class="card-head"><div><div class="eyebrow">01 / SET UP A TAKE</div><h2>Choose your reference</h2></div><span class="step-pill">STUDIO</span></div>
+          <label class="upload-zone" for="reference-file"><span class="upload-icon">↑</span><b id="file-label">Drop an audio file here or browse</b><small>WAV, MP3, M4A, OGG · up to your browser's limits</small><input id="reference-file" type="file" accept="audio/*"></label>
+          <div class="ref-status" id="ref-status"><span class="status-dot"></span> No reference loaded</div>
+          <div class="section-control"><label for="start-time">Practice a section <span>optional</span></label><div class="time-fields"><div><small>FROM</small><input type="number" id="start-time" min="0" step="0.5" value="0"><span>sec</span></div><div><small>TO</small><input type="number" id="end-time" min="0" step="0.5" placeholder="end"><span>sec</span></div></div></div>
+          <div class="record-row"><button class="button primary" id="record-btn"><span class="rec-dot"></span><span id="record-label">Record your take</span></button><button class="button secondary" id="upload-take-btn">Upload a take</button><input type="file" id="take-file" accept="audio/*" hidden></div>
+          <div class="record-hint" id="record-hint">Allow microphone access when prompted. Aim for a quiet room.</div>
+          <div class="take-status" id="take-status" hidden></div>
+          <button class="button analyze-btn" id="analyze-btn" disabled>Analyze both performances <span>→</span></button>
+          <div class="error" id="studio-error" role="alert"></div>
+        </article>
+        <article class="card results-card"><div class="card-head"><div><div class="eyebrow">02 / YOUR LISTENING NOTES</div><h2 id="result-title">Your next take starts here</h2></div><span class="live-badge"><i></i> PRIVATE</span></div>
+          <div id="empty-results" class="empty-results"><div class="sound-art"><span>♪</span><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><h3>A useful practice loop</h3><p>Load a reference and your take to see where pitch and phrasing line up. Then listen again with one thing to try.</p><div class="loop"><span>01 Load</span><b>→</b><span>02 Compare</span><b>→</b><span>03 Repeat</span></div></div>
+          <div id="analysis-results" hidden>
+            <div class="score-line"><div><small>PITCH MATCH</small><strong id="score-number">—</strong><span>/ 100</span></div><div class="score-note" id="score-note"></div></div>
+            <div class="chart-wrap"><div class="chart-labels"><span>HIGHER</span><span>REFERENCE <i class="legend-ref"></i> YOUR TAKE <i class="legend-user"></i></span></div><canvas id="contour-chart" aria-label="Aligned pitch contours"></canvas><div class="axis-labels"><span>Start</span><span id="chart-end">End</span></div></div>
+            <div class="metrics"><div><small>MEDIAN PITCH GAP</small><b id="pitch-gap">—</b></div><div><small>RHYTHM / DURATION</small><b id="duration-gap">—</b></div><div><small>VOICED COVERAGE</small><b id="coverage">—</b></div></div>
+            <div class="feedback"><div class="eyebrow">A MOMENT TO TRY AGAIN</div><div id="feedback-list"></div></div>
+            <div class="result-actions"><button class="button secondary" id="play-ref">▶ Reference</button><button class="button secondary" id="play-take">▶ Your take</button><button class="button primary" id="try-again">Record another take ↗</button></div>
+            <p class="disclaimer">Pitch estimates are experimental and can be less reliable with accompaniment, breathy tone, or overlapping voices. Treat the score as a practice guide, not a judgment.</p>
+          </div>
+        </article>
+      </div>
+      <div class="bottom-tip"><span>✧</span><div><b>Small, specific goals add up.</b><span>Try listening for one phrase at a time before you chase a whole-song score.</span></div><button data-view="warmups" class="text-link">Explore warm-ups →</button></div>
+    </section>
+    <section class="view" id="view-singing"><div class="page-heading"><div class="eyebrow">WESTERN MUSICAL NOTE VISUALISER</div><h1>See every <em>note.</em></h1><p class="lead">Follow your voice or a song on a live Western pitch grid, then compare takes in the same view.</p></div><article class="card sargam-player western-visualiser">
+      <div class="visualiser-modes" role="tablist" aria-label="Visualiser mode"><button type="button" class="active" data-sargam-mode="live" role="tab" aria-selected="true">Live singing</button><button type="button" data-sargam-mode="song" role="tab" aria-selected="false">Song playback</button><button type="button" data-sargam-mode="compare" role="tab" aria-selected="false">Compare takes</button></div>
+      <div class="sargam-toolbar"><div class="sargam-select"><label for="western-key">KEY HIGHLIGHT</label><select id="western-key"></select></div><div class="sargam-select"><label for="western-spelling">NOTE SPELLING</label><select id="western-spelling"><option value="sharp">Sharps · C#</option><option value="flat">Flats · Db</option></select></div><div class="sargam-select"><label for="sargam-speed">PLAYBACK SPEED</label><select id="sargam-speed"><option value="0.25">¼× Slow</option><option value="0.5">½×</option><option value="0.75" selected>¾×</option><option value="1">Normal</option></select></div><button class="button primary" id="sargam-play">▶ Play song</button><button class="button secondary" id="sargam-stop">Ⅱ Pause</button><button class="button secondary" id="sargam-mic">Start live mic</button><label class="button secondary visualiser-upload" for="visualiser-file">↑ Upload song<input id="visualiser-file" type="file" accept="audio/*"></label></div>
+      <div class="recording-controls western-recording-controls"><button class="button record-button" id="western-record" disabled>● REC</button><button class="button secondary" id="western-record-stop" disabled>■ STOP</button><button class="button secondary" id="western-record-pause" disabled>Ⅱ Pause</button><span class="recording-clock" id="western-record-clock">00:00</span><span class="recording-live-indicator" id="western-record-indicator" hidden>● REC</span><label class="saved-recording-label">SAVED TAKES <select id="western-saved-takes"><option value="">Choose a saved take</option></select></label><button class="button secondary" id="western-save-local" disabled>Save locally</button><span id="western-record-status" aria-live="polite">Start live mic to record a take.</span></div><div class="recording-review" id="western-take-review" hidden><strong>Recorded pitch take</strong><canvas class="recording-chart" id="western-recording-chart" aria-label="Recorded Western pitch contour; click to seek"></canvas><audio id="western-record-audio" controls></audio><div class="recording-review-status" id="western-review-status" aria-live="polite"></div></div>      <div class="visualiser-section"><label>SECTION <input id="visualiser-start" type="number" min="0" step="0.5" value="0" aria-label="Section start in seconds"> to <input id="visualiser-end" type="number" min="0" step="0.5" placeholder="end" aria-label="Section end in seconds"> sec</label><button class="button secondary" id="visualiser-loop">↻ Replay section</button><span id="visualiser-status">Choose Live singing, load a song, or analyze a take in Practice Studio.</span></div>
+      <div class="visualiser-zoom" role="group" aria-label="Pitch visualiser zoom controls"><div class="visualiser-zoom-axis"><span>TIME</span><button class="button secondary" id="sargam-time-zoom-out" aria-label="Zoom time out" title="Show more time">−</button><button class="button secondary" id="sargam-time-zoom-in" aria-label="Zoom time in" title="Show less time">+</button></div><div class="visualiser-zoom-axis"><span>PITCH</span><button class="button secondary" id="sargam-pitch-zoom-out" aria-label="Zoom pitch out" title="Show more notes">−</button><button class="button secondary" id="sargam-pitch-zoom-in" aria-label="Zoom pitch in" title="Show fewer notes">+</button></div><button class="button secondary visualiser-zoom-reset" id="sargam-zoom-reset">Reset zoom</button><small>Scroll over graph to zoom time · Shift + scroll to zoom pitch</small></div>
+      <div class="sargam-source" id="sargam-source">Western equal-tempered notes · MIDI conversion from detected F0 · audio stays on this device.</div><div class="sargam-chart-shell"><div class="sargam-current-label" id="sargam-current-label">CURRENT NOTE</div><div class="sargam-current-note" id="sargam-current-note">—</div><div class="sargam-live-note" id="sargam-live-note">Waiting for a voice</div><canvas id="sargam-chart" aria-label="Western pitch grid and contour"></canvas></div><div class="sargam-legend"><span><i class="ref-swatch"></i> SONG / REFERENCE</span><span><i class="voice-swatch"></i> YOUR VOICE / TAKE</span><span class="trace-keys"><i></i> Stable <i></i> Transition <i></i> Uncertain / silence</span></div><div class="sargam-footer"><span id="visualiser-detail">F0 is estimated from audio; note labels use equal temperament.</span><span id="sargam-time">0:00 / 0:00</span></div><div class="visualiser-feedback" id="visualiser-feedback" aria-live="polite"></div><div class="error" id="sargam-error" role="alert"></div></article></section>
+    <section class="view" id="view-monitor"><div class="page-heading monitor-heading"><div class="eyebrow">REAL-TIME VOICE ANALYSIS</div><h1>Live pitch <em>monitor.</em></h1><p class="lead">Sing a note and watch its pitch trace scroll across the Western note grid.</p></div><article class="card monitor-main"><div class="monitor-top"><div class="monitor-current"><span class="monitor-current-label">CURRENT PITCH</span><strong class="note" id="monitor-note">—</strong><span class="hz" id="monitor-hz">Waiting for microphone</span></div><div class="monitor-stats"><div><small>CENTS</small><b id="monitor-cents">—</b></div><div><small>OCTAVE</small><b id="monitor-octave">—</b></div><div><small>STABILITY</small><b id="monitor-stability">—</b></div></div><span class="monitor-status" id="monitor-trail-status">MIC OFF</span></div><div class="monitor-toolbar"><button class="button primary" id="monitor-btn">Start monitoring</button><button class="button secondary" id="monitor-pause" disabled>Ⅱ Pause</button><button class="button secondary" id="monitor-hold" disabled>Freeze graph</button><button class="button secondary" id="monitor-clear">Clear graph</button><button class="button record-button" id="monitor-record" disabled>● REC</button><button class="button secondary" id="monitor-record-stop" disabled>■ STOP</button><button class="button secondary" id="monitor-playback" disabled>▶ Playback</button><button class="button secondary" id="monitor-save" disabled>↓ Save</button></div><div class="recording-controls monitor-recording-controls"><div class="recording-actions"><button class="button record-button" id="monitor-record-pause" disabled>Ⅱ Pause take</button><span class="recording-clock" id="monitor-record-clock">00:00</span><span class="recording-live-indicator" id="monitor-record-indicator" hidden>● REC</span></div></div><div class="recording-review" id="monitor-take-review" hidden><div class="recording-review-head"><strong>Recorded pitch take</strong><label>Saved takes <select id="monitor-saved-takes"><option value="">Choose a saved take</option></select></label><button class="button secondary" id="monitor-save-local" disabled>Save locally</button></div><canvas class="recording-chart" id="monitor-recording-chart" aria-label="Recorded Western pitch contour; click to seek"></canvas><audio id="monitor-playback-audio" controls></audio><div class="recording-review-status" id="monitor-recording-status" aria-live="polite"></div></div><div class="monitor-tools"><label>PITCH RANGE<select id="monitor-range"><option value="2">2 octaves · auto</option><option value="3" selected>3 octaves · auto</option><option value="4">4 octaves · auto</option><option value="full">Full range · C1–B7</option></select></label><label>SCROLL SPEED<select id="monitor-window"><option value="5">Fast · 5 sec</option><option value="8" selected>Normal · 8 sec</option><option value="15">Slow · 15 sec</option><option value="30">Very slow · 30 sec</option></select></label><label>LINE COLOUR<select id="monitor-color"><option value="#ff91b7">Electric blue</option><option value="#ff749f">Turquoise</option><option value="#ff91b7">Lavender</option><option value="#e33762">Violet</option><option value="#e4d8de">Teal</option></select></label><label class="gradient-toggle"><input type="checkbox" id="monitor-gradient"> Gradient glow</label><div class="zoom-tools"><button class="button secondary" id="monitor-zoom-out" aria-label="Zoom out">−</button><span>ZOOM</span><button class="button secondary" id="monitor-zoom-in" aria-label="Zoom in">+</button></div></div><canvas id="monitor-trail" aria-label="Scrolling live vocal pitch graph"></canvas><div class="monitor-debug" id="monitor-debug" aria-live="polite">Mic idle · no pitch samples yet</div><div class="monitor-trail-foot"><span id="monitor-range-label">Notes C1–B7 · waiting to auto-range</span><span id="monitor-record-status">Record audio and pitch together; saved takes stay on this device.</span></div><div class="monitor-drone-row"><label>REFERENCE DRONE<select id="drone-note"></select></label><button class="button secondary" id="drone-btn">Play drone</button><span>Audio remains on this device.</span></div><div class="error" id="monitor-error" role="alert"></div></article><p class="disclaimer">Pitch detection is experimental. Background music and harmonics can affect F0 estimates. Mic audio is analyzed locally.</p></section>
+    <section class="view" id="view-warmups"><div class="page-heading"><div class="eyebrow">THIRTY MINUTES EACH</div><h1>Warm up with <em>purpose.</em></h1><p class="lead">Three complete, equally weighted sessions. Use the suggested time for each exercise, mark it complete, and save your session.</p></div><div class="warmup-grid" id="warmup-grid"></div><div class="session-panel card" id="session-panel" hidden></div></section>
+    <section class="view" id="view-exercises"><div class="page-heading"><div class="eyebrow">YOUR PRACTICE TOOLKIT</div><h1>Explore your <em>voice.</em></h1><p class="lead">Short guided practices for range, control, and expressive choices. Pause whenever your voice feels strained.</p></div><div class="library-toolbar"><label class="library-search"><span>⌕</span><input id="exercise-search" type="search" placeholder="Find a practice…" aria-label="Search exercises"></label><button class="button secondary surprise-btn" id="surprise-exercise">✦ Surprise me</button></div><div class="exercise-filters" id="exercise-filters"></div><div class="library-count" id="library-count"></div><div class="exercise-grid" id="exercise-grid"></div><div class="exercise-detail card" id="exercise-detail" hidden></div></section>
+    <section class="view" id="view-ear"><div class="page-heading"><div class="eyebrow">LISTEN · NOTICE · GROW</div><h1>Train your <em>ear.</em></h1><p class="lead">Hear two notes, feel the distance between them, and name the interval. Every sound is generated here, just for practice.</p></div><div class="ear-layout"><article class="card ear-game"><div class="ear-topline"><span class="step-pill">INTERVAL QUEST</span><span class="ear-round" id="ear-round">READY WHEN YOU ARE</span></div><div class="ear-orbit"><div class="orbit-note">♪</div><div class="orbit-line"></div><div class="orbit-note second">♫</div></div><h2 id="ear-title">What was the interval?</h2><p class="ear-prompt" id="ear-prompt">Listen for the distance between the two notes.</p><button class="button primary ear-play" id="ear-play">▶ Play the notes</button><div class="interval-choices" id="interval-choices"></div><div class="ear-feedback" id="ear-feedback" aria-live="polite"></div><button class="button secondary ear-next" id="ear-next" hidden>Next pair →</button></article><aside class="ear-side"><article class="card ear-score-card"><div class="eyebrow">YOUR SESSION</div><div class="ear-score-grid"><div><strong id="ear-correct">0</strong><small>CORRECT</small></div><div><strong id="ear-streak">0</strong><small>BEST STREAK</small></div></div><div class="ear-progress"><div id="ear-progress-bar"></div></div><div class="ear-progress-label" id="ear-progress-label">10 rounds · no rush</div></article><article class="ear-tip"><span>✧</span><div><b>Try humming the notes.</b><p>Sing them back softly before choosing. Connecting listening to your own voice can make the interval easier to remember.</p></div></article></aside></div><div class="ear-recap card" id="ear-recap" hidden></div></section>
+    <section class="view" id="view-progress"><div class="page-heading"><div class="eyebrow">A LITTLE MORE EACH WEEK</div><h1>Your practice, <em>in motion.</em></h1><p class="lead">Your history is stored in this browser. Set a goal and make a schedule that works for you.</p></div><div class="progress-grid"><article class="card progress-stat"><div class="eyebrow">PRACTICE DAYS</div><strong id="practice-days">0</strong><span>days recorded</span></article><article class="card progress-stat"><div class="eyebrow">COMPLETED WARM-UPS</div><strong id="warmup-count">0</strong><span>sessions completed</span></article><article class="card progress-stat"><div class="eyebrow">RECENT PITCH MATCH</div><strong id="recent-score">—</strong><span>latest studio take</span></article></div><div class="progress-bottom"><article class="card schedule-card"><div class="card-head"><div><div class="eyebrow">MAKE IT YOURS</div><h2>Weekly practice plan</h2></div><button class="button secondary" id="save-schedule">Save plan</button></div><label class="goal-label">MY ARTIST GOAL<input id="artist-goal" placeholder="e.g. Build confidence performing live"></label><div class="schedule-days" id="schedule-days"></div><div id="schedule-saved" class="saved-message"></div></article><article class="card achievements"><div class="eyebrow">MILESTONES</div><h2>Things to celebrate</h2><div id="achievement-list"></div></article></div><div class="history card"><div class="eyebrow">RECENT PRACTICE</div><h2>Your history</h2><div id="history-list"></div></div></section>
+    <section class="view" id="view-rewards"><div class="page-heading"><div class="eyebrow">PRACTICE, CELEBRATED</div><h1>Your streak, <em>your sparkle.</em></h1><p class="lead">Complete a warm-up, exercise, ear-training round, or studio comparison to keep your local-calendar streak alive. Practice days count once each day.</p></div><div class="streak-stat-grid"><article class="card streak-stat"><span class="eyebrow">CURRENT STREAK</span><strong id="current-streak">0</strong><small>days in a row</small></article><article class="card streak-stat"><span class="eyebrow">LONGEST STREAK</span><strong id="longest-streak">0</strong><small>days celebrated</small></article><article class="card streak-stat next-milestone-stat"><span class="eyebrow">NEXT MILESTONE</span><strong id="next-streak-milestone">3 days</strong><small id="next-streak-reward">1 scratch card</small></article><article class="card streak-stat coin-stat"><span class="eyebrow">STAR COINS</span><strong id="star-coin-count">0</strong><small>earned from practice rewards</small></article></div><div class="rewards-grid"><article class="card streak-calendar-card"><div class="rewards-card-head"><div><span class="eyebrow">YOUR PRACTICE DAYS</span><h2>Consistency calendar</h2></div><div class="calendar-nav"><button class="button secondary" id="streak-month-prev" aria-label="Previous month">‹</button><b id="streak-month-label"></b><button class="button secondary" id="streak-month-next" aria-label="Next month">›</button></div></div><div class="streak-weekdays"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span></div><div class="streak-calendar-grid" id="streak-calendar-grid"></div><div class="calendar-legend"><i></i> Qualifying practice completed</div></article><article class="card streak-milestones-card"><div class="rewards-card-head"><div><span class="eyebrow">YOUR NEXT CELEBRATIONS</span><h2>Streak milestones</h2></div></div><div class="streak-milestone-list" id="streak-milestone-list"></div></article></div><article class="card scratch-reward-card"><div class="rewards-card-head"><div><span class="eyebrow">EARNED THROUGH PRACTICE</span><h2>Scratch cards</h2><p id="scratch-card-count">0 cards ready</p></div><button class="button primary" id="scratch-start" disabled>Scratch a card</button></div><p class="scratch-odds">Reward odds: Common 60% · Rare 25% · Epic 12% · Legendary 3%</p><div class="scratch-play-area" id="scratch-play-area" hidden><div class="scratch-reveal-content" id="scratch-reveal-content" hidden></div><canvas id="scratch-surface" class="scratch-surface" aria-label="Scratch this surface to reveal your reward"></canvas><div class="scratch-controls"><span id="scratch-prompt" aria-live="polite">Drag across the card to reveal your reward.</span><button class="button secondary" id="scratch-reveal-button">Reveal card</button></div></div><div class="rewards-disclaimer">Scratch cards are earned from practice streaks. There are no purchases.</div></article><article class="card reward-collection-card"><div class="rewards-card-head"><div><span class="eyebrow">KEEPSAKES</span><h2>Reward collection</h2></div><span id="reward-collection-count" class="collection-count">0 rewards</span></div><div class="reward-collection-list" id="reward-collection-list"></div></article></section>
+    <div id="reward-toast" class="reward-toast" role="status" aria-live="polite" hidden></div>
+    <footer>Vocal Studio <span>·</span> Practice data stays in this browser</footer>
+  </main>
+  <aside class="companion-dock" aria-label="Vocal Studio companion">
+    <section class="companion-chat" id="companion-chat" aria-label="Chat with your studio companion" hidden>
+      <header class="companion-chat-head">
+        <img src="assets/ai-companion-avatar.png" alt="" class="companion-chat-avatar">
+        <div><strong>Seok Woo (석우)</strong><span>YOUR HOLOGRAPHIC STUDIO BUDDY</span></div>
+        <button class="companion-close" id="companion-close" type="button" aria-label="Close chat">×</button>
+      </header>
+      <div class="companion-messages" id="companion-messages" role="log" aria-live="polite" aria-relevant="additions text"></div>
+      <div class="companion-prompts" id="companion-prompts" aria-label="Suggested questions">
+        <button type="button" data-prompt="How do I use the pitch monitor?">Pitch monitor</button>
+        <button type="button" data-prompt="Help me choose an exercise">Pick an exercise</button>
+        <button type="button" data-prompt="How do streaks and rewards work?">My rewards</button>
+      </div>
+      <form class="companion-form" id="companion-form">
+        <label class="sr-only" for="companion-input">Ask Seok Woo about your vocal studio</label>
+        <input id="companion-input" name="message" type="text" maxlength="280" autocomplete="off" placeholder="Ask about your studio…" required>
+        <button type="submit" aria-label="Send message">↑</button>
+      </form>
+      <p class="companion-note">Local app guide · no AI model is connected</p>
+    </section>
+    <div class="companion-greeting" id="companion-greeting" role="status" aria-live="polite" hidden></div>
+    <button class="companion-toggle" id="companion-toggle" type="button" aria-label="Open chat with Seok Woo" aria-expanded="false" aria-controls="companion-chat">
+      <span class="companion-halo" aria-hidden="true"></span>
+      <img src="assets/ai-companion-avatar.png" alt="" class="companion-avatar">
+      <span class="companion-spark companion-spark-one" aria-hidden="true">✦</span><span class="companion-spark companion-spark-two" aria-hidden="true">✧</span>
+    </button>
+  </aside>
+  <audio id="reference-audio"></audio><audio id="take-audio"></audio><audio id="visualiser-audio"></audio>
+  <script src="rewards.js?v=streak-rewards-20261110"></script>
+  <script src="pitch-detector.js?v=monitor-pipeline-20261110"></script>
+  <script src="app.js?v=monitor-pipeline-20261110"></script>
+  <script src="companion.js?v=theme-companion-20261110"></script>
+</body>
+</html>
