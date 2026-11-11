@@ -293,3 +293,7 @@ body.dance-mode > .companion-dock .companion-chat{pointer-events:auto!important}
 .dance-stretch-gif-stage{padding:12px;min-height:0;display:flex;align-items:center;justify-content:center}
 .dance-stretch-followalong-gif{display:block;width:min(100%,560px);height:auto;max-height:520px;object-fit:contain;border-radius:12px}
 @media(prefers-reduced-motion:reduce){.dance-stretch-followalong-gif{animation:none}}
+
+/* Keep the cute stretch cue visibly sized and show the full animation. */
+.dance-stretch-art-gallery figure{width:100%;max-width:560px;min-height:180px;display:grid;place-items:center;background:linear-gradient(145deg,#f8dce8,#fbe9df)}
+.dance-stretch-art-gallery img{width:100%;height:auto;max-height:520px;aspect-ratio:auto;object-fit:contain}
