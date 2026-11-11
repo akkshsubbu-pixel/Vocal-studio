@@ -133,3 +133,52 @@ body.dance-mode .dance-main{display:block}
 @media(max-width:1050px){.dance-studio-grid{grid-template-columns:minmax(270px,.9fr) minmax(300px,1.1fr)}.dance-setup-card,.dance-review-card{padding:17px}}
 @media(max-width:760px){.dance-studio-grid{grid-template-columns:1fr}.dance-hero-row{display:block}.dance-hero-note{display:none}.dance-main .dance-studio{padding-bottom:18px}.dance-video-grid{grid-template-columns:1fr}}
 @media(max-width:420px){.dance-setup-card,.dance-review-card{padding:14px}.dance-hero-row h1{font-size:32px}}
+
+
+/* Dance Practice Studio — three-part reference, performance and coaching workspace. */
+.dance-studio-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;align-items:stretch}
+.dance-video-workspace{min-width:0}
+.dance-upload-zone{position:relative;display:flex;min-height:142px;align-items:center;justify-content:center;flex-direction:column;gap:8px;padding:18px;border:1px dashed var(--h-edge-bright);border-radius:15px;background:var(--h-bg);text-align:center;cursor:pointer}
+.dance-upload-zone:hover{border-color:var(--h-primary-bright);background:var(--h-panel-tint)}
+.dance-upload-zone input{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+.dance-upload-zone b{color:var(--h-text);font:700 14px var(--sans)}
+.dance-upload-zone small,.dance-small-hint,.dance-file-status{color:var(--h-muted);font:11px/1.6 var(--sans)}
+.dance-upload-icon{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--h-primary);color:white;font:700 22px var(--sans)}
+.dance-preview{display:block;width:100%;max-height:260px;margin-top:13px;border:1px solid var(--h-edge);border-radius:12px;background:#100912;object-fit:contain}
+.dance-preview[hidden]{display:none}
+.dance-file-status{min-height:18px;margin:8px 0 13px}
+.dance-section-fields{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}
+.dance-section-fields label,.dance-coach-inputs>label{display:flex;flex-direction:column;gap:7px;color:var(--h-secondary);font:800 9px var(--sans);letter-spacing:1px}
+.dance-section-fields input,.dance-coach-inputs textarea{width:100%;min-width:0;padding:11px 12px;border:1px solid var(--h-edge);border-radius:9px;background:var(--h-bg);color:var(--h-text);font:600 13px var(--sans)}
+.dance-full-button{width:100%;margin-top:14px}
+.dance-small-hint{margin:9px 0 0}
+.dance-reality-card{margin-top:17px;padding:clamp(20px,3vw,27px);border:1px solid var(--h-edge-bright);border-radius:20px;background:radial-gradient(ellipse at 100% 0%,var(--h-reflection),transparent 42%),linear-gradient(145deg,var(--h-panel-raised),var(--h-panel));box-shadow:0 14px 38px #0002}
+.dance-reality-heading{display:flex;justify-content:space-between;gap:18px;align-items:flex-start;margin-bottom:22px}
+.dance-reality-heading h2{margin:7px 0;font:600 clamp(22px,3vw,29px) var(--serif);color:var(--h-text)}
+.dance-reality-heading p{max-width:760px;margin:0;color:var(--h-muted);font:12px/1.7 var(--sans)}
+.dance-reality-mark{display:grid;place-items:center;flex:0 0 48px;height:48px;border:1px solid var(--h-edge);border-radius:15px;color:var(--h-primary-bright);font-size:25px}
+.dance-reality-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.dance-check-option{display:flex;gap:11px;align-items:flex-start;padding:14px;border:1px solid var(--h-edge);border-radius:12px;background:var(--h-bg);cursor:pointer}
+.dance-check-option input{flex:0 0 auto;width:16px;height:16px;margin:2px 0 0;accent-color:var(--h-primary)}
+.dance-check-option b{display:block;color:var(--h-text);font:700 12px var(--sans)}
+.dance-check-option small{display:block;margin-top:5px;color:var(--h-muted);font:10px/1.5 var(--sans)}
+.dance-coach-inputs{display:grid;grid-template-columns:minmax(180px,.7fr) minmax(0,1.3fr);gap:14px;margin-top:20px}
+.dance-coach-inputs>label span{color:var(--h-muted);font-weight:500;letter-spacing:0}
+.dance-coach-inputs textarea{resize:vertical;font-weight:500;letter-spacing:0}
+.dance-generate-feedback{margin-top:18px;padding:14px 21px}
+.dance-feedback-output{margin-top:18px;padding:19px;border:1px solid var(--h-edge-bright);border-radius:14px;background:var(--h-bg)}
+.dance-feedback-kicker{color:var(--h-secondary);font:800 9px var(--sans);letter-spacing:1.5px}
+.dance-feedback-output>h3{margin:8px 0 14px;color:var(--h-text);font:600 21px var(--serif)}
+.dance-feedback-item{display:flex;gap:13px;padding:13px 0;border-top:1px solid var(--h-edge)}
+.dance-feedback-item>span{color:var(--h-primary-bright);font:800 11px var(--sans)}
+.dance-feedback-item h4{margin:0 0 5px;color:var(--h-text);font:700 13px var(--sans)}
+.dance-feedback-item p,.dance-user-observation p{margin:0;color:var(--h-muted);font:11px/1.65 var(--sans)}
+.dance-feedback-item small{display:block;margin-top:7px;color:var(--h-secondary);font:700 10px/1.6 var(--sans)}
+.dance-user-observation{margin-top:12px;padding:12px;border-radius:10px;background:var(--h-panel-raised)}
+.dance-user-observation b{display:block;margin-bottom:5px;color:var(--h-text);font:700 11px var(--sans)}
+.dance-feedback-foot{margin:14px 0 0;color:var(--h-secondary);font:700 11px/1.6 var(--sans)}
+.dance-studio-footer{display:flex;justify-content:space-between;gap:12px;margin-top:17px;padding:15px 2px;border-top:1px solid var(--h-edge);color:var(--h-muted);font:9px var(--sans)}
+.dance-studio-footer span:first-child{font-weight:800;letter-spacing:1.4px;color:var(--h-secondary)}
+@media(max-width:900px){.dance-reality-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:760px){.dance-studio-grid,.dance-coach-inputs{grid-template-columns:1fr}.dance-reality-grid{grid-template-columns:1fr}.dance-studio-footer{flex-direction:column}.dance-reality-heading{gap:10px}}
+@media(max-width:420px){.dance-section-fields{grid-template-columns:1fr}.dance-upload-zone{min-height:120px}}
