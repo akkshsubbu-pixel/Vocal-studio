@@ -27,3 +27,51 @@
 @keyframes companion-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}@keyframes companion-twinkle{from{opacity:.45;transform:scale(.82) rotate(-8deg)}to{opacity:1;transform:scale(1.12) rotate(8deg)}}@keyframes companion-message-in{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
 @media(max-width:520px){.companion-dock{right:max(12px,env(safe-area-inset-right));bottom:max(12px,env(safe-area-inset-bottom))}.companion-toggle{width:68px;height:68px}.companion-avatar{width:58px;height:58px}.companion-chat{bottom:82px;max-height:min(490px,calc(100dvh - 110px))}}
 @media(prefers-reduced-motion:reduce){.companion-toggle,.companion-spark,.companion-message,.companion-greeting{animation:none}.companion-toggle,.companion-toggle:hover{transform:none}.companion-chat{transition:none}}
+
+/* Seok Woo flying-bot hover animation */
+.companion-toggle {
+  transform-origin: 50% 55%;
+  animation: seokwoo-flight 6.8s ease-in-out infinite;
+  will-change: transform;
+}
+.companion-toggle .companion-halo {
+  animation: seokwoo-aura 3.4s ease-in-out infinite;
+}
+.companion-toggle .companion-spark-one {
+  animation: seokwoo-orbit-one 4.8s ease-in-out infinite;
+}
+.companion-toggle .companion-spark-two {
+  animation: seokwoo-orbit-two 5.6s ease-in-out infinite;
+}
+.companion-toggle:hover {
+  animation-play-state: paused;
+  transform: translateY(-5px) scale(1.04);
+}
+@keyframes seokwoo-flight {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg); }
+  16% { transform: translate3d(-9px, -13px, 0) rotate(-4deg); }
+  34% { transform: translate3d(-16px, -5px, 0) rotate(-2deg); }
+  52% { transform: translate3d(-7px, -19px, 0) rotate(3deg); }
+  70% { transform: translate3d(5px, -10px, 0) rotate(4deg); }
+  86% { transform: translate3d(3px, -3px, 0) rotate(1deg); }
+}
+@keyframes seokwoo-aura {
+  0%, 100% { opacity: .52; transform: scale(.94); filter: blur(8px); }
+  50% { opacity: .95; transform: scale(1.12); filter: blur(12px); }
+}
+@keyframes seokwoo-orbit-one {
+  0%, 100% { transform: translate(0, 0) scale(.85) rotate(-8deg); }
+  50% { transform: translate(5px, -8px) scale(1.2) rotate(18deg); }
+}
+@keyframes seokwoo-orbit-two {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-6px, 5px) scale(.8); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .companion-toggle, .companion-toggle .companion-halo,
+  .companion-toggle .companion-spark-one, .companion-toggle .companion-spark-two {
+    animation: none !important;
+    transform: none !important;
+  }
+}
+
