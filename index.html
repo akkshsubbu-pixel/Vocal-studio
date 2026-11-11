@@ -55,6 +55,7 @@
   <link rel="stylesheet" href="theme-cherry.css">
   <link rel="stylesheet" href="theme-dynamic.css">
   <link rel="stylesheet" href="dance-home.css">
+  <link rel="stylesheet" href="vocal-home.css">
   <link rel="stylesheet" href="companion.css">
   <script>
     window.addEventListener('DOMContentLoaded', () => {
@@ -181,7 +182,8 @@
     <a class="brand" href="#studio"><span class="brand-mark">♫</span><span>vocal<span class="brand-light"> studio</span><small>A HAPPY PLACE TO PRACTICE</small></span></a>
     <div class="nav-label">YOUR PRACTICE SPACE</div>
     <nav aria-label="Main navigation">
-      <button class="nav-item active" data-view="studio"><span>◉</span> Practice studio</button>
+      <button class="nav-item active" data-view="home"><span>⌂</span> Home</button>
+      <button class="nav-item" data-view="studio"><span>◉</span> Practice studio</button>
       <button class="nav-item" data-view="singing"><span>♫</span> Western note visualiser</button>
       <button class="nav-item" data-view="monitor"><span>⌁</span> Live pitch monitor</button>
       <button class="nav-item" data-view="warmups"><span>◷</span> Warm-up sessions</button>
@@ -194,6 +196,27 @@
   </aside>
   <main>
     <header class="topbar"><div class="breadcrumb">YOUR SPACE <span>/</span> <b id="crumb">PRACTICE STUDIO</b></div><div class="today" id="today"></div></header>
+    <section class="view vocal-home-view" id="view-home">
+      <div class="vocal-home-hero">
+        <div><div class="eyebrow">♡ YOUR VOICE · YOUR JOURNEY</div><h1>Welcome to your<br><em>Vocal Studio.</em></h1><p class="lead">A space to explore your voice, build technique and grow into your sound — one practice at a time.</p></div>
+        <div class="vocal-home-emblem" aria-hidden="true">♫</div>
+      </div>
+      <section class="vocal-home-feature">
+        <div class="eyebrow">YOUR CREATIVE SPACE</div><h2>Listen. Learn. Let your voice grow.</h2>
+        <p>Warm up, experiment with notes, practise songs and keep track of what you discover.</p>
+        <button class="button primary" data-view="studio">Open Practice Studio <span>→</span></button>
+      </section>
+      <div class="vocal-home-section-head"><div><div class="eyebrow">01 / TRAIN YOUR VOICE</div><h2>Your vocal tools</h2></div><span>EXPLORE & PRACTISE</span></div>
+      <div class="vocal-home-tools">
+        <button class="vocal-home-tool" data-view="singing"><span>♫</span><b>Western Note Visualiser</b><small>See notes, follow songs and trace the original melody.</small><i>Open visualiser →</i></button>
+        <button class="vocal-home-tool" data-view="monitor"><span>⌁</span><b>Live Pitch Monitor</b><small>Watch your pitch as you sing in real time.</small><i>Open monitor →</i></button>
+        <button class="vocal-home-tool" data-view="warmups"><span>◷</span><b>Warm-up Sessions</b><small>Prepare your voice with guided practice.</small><i>Explore warm-ups →</i></button>
+        <button class="vocal-home-tool" data-view="exercises"><span>✳</span><b>Exercise Library</b><small>Build skills through focused vocal exercises.</small><i>Browse exercises →</i></button>
+        <button class="vocal-home-tool" data-view="ear"><span>♪</span><b>Ear Training</b><small>Strengthen your listening and pitch recognition.</small><i>Train your ear →</i></button>
+        <button class="vocal-home-tool" data-view="progress"><span>↗</span><b>Progress & Schedule</b><small>Review your practice and set your next goals.</small><i>View progress →</i></button>
+      </div>
+      <div class="vocal-home-bottom"><div><div class="eyebrow">A GENTLE REMINDER</div><b>Progress is built one phrase at a time.</b><p>Stay curious, practise comfortably and give yourself room to learn.</p></div><button class="button secondary" data-view="rewards">View streaks & rewards →</button></div>
+    </section>
     <section class="view active" id="view-studio">
       <div class="hero-row"><div><div class="eyebrow">♡ LISTEN · LEARN · REPEAT</div><h1>Make every take<br><em>a little more you.</em></h1><p class="lead">Sing, explore, and celebrate the little wins. There’s no rush—just you and your voice.</p></div><div class="hero-note"><span>✿</span><div><b>A little note for today</b><p>Small steps make lovely songs.</p></div></div></div>
       <div class="studio-grid">
@@ -270,7 +293,7 @@
       const gate = document.getElementById('entry-gate');
       const danceHome = document.getElementById('dance-home');
       document.getElementById('enter-vocal').addEventListener('click', () => {
-        try { sessionStorage.setItem('vocal-studio-entered','1'); sessionStorage.setItem('vocal-studio-last-view','studio'); } catch (_) {}
+        try { sessionStorage.setItem('vocal-studio-entered','1'); sessionStorage.setItem('vocal-studio-last-view','home'); } catch (_) {}
         document.body.classList.remove('entry-selecting');
       });
       document.getElementById('enter-dance').addEventListener('click', () => {
