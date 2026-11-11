@@ -79,12 +79,12 @@ export default {
 
     try {
       // Use the Llama model shown in Cloudflare's own Workers AI binding example.
-      const result = await env.AI.run("@cf/meta/llama-3.1-8b-instruct", {
+      const result = await env.AI.run("@cf/google/gemma-4-26b-a4b-it", {
         messages: [
           { role: "system", content: INSTRUCTIONS },
           ...safeMessages
         ],
-        max_tokens: 500,
+        max_completion_tokens: 500,
         temperature: 0.7
       });
 
