@@ -6,46 +6,20 @@
   <meta name="theme-color" content="#160c18">
   <script>
     (() => {
-      const gate=document.getElementById('entry-gate');
-      const danceHome=document.getElementById('dance-home');
-      const danceStudio=document.getElementById('dance-studio');
-      const openStudio=()=>{danceHome.hidden=true;danceStudio.hidden=false;gate.classList.add('show-dance-studio')};
-      const closeStudio=()=>{danceStudio.hidden=true;danceHome.hidden=false;gate.classList.remove('show-dance-studio')};
-      document.getElementById('enter-vocal').addEventListener('click',()=>{
-        try{sessionStorage.setItem('vocal-studio-entered','1');sessionStorage.setItem('vocal-studio-last-view','home')}catch(_){}
-        document.body.classList.remove('entry-selecting');
-      });
-      document.getElementById('enter-dance').addEventListener('click',()=>{
-        gate.classList.add('show-dance-home');danceHome.hidden=false;danceStudio.hidden=true;
-      });
-      document.getElementById('back-to-choices').addEventListener('click',()=>{
-        gate.classList.remove('show-dance-home','show-dance-studio');danceHome.hidden=true;danceStudio.hidden=true;
-      });
-      document.getElementById('open-dance-studio').addEventListener('click',openStudio);
-      document.getElementById('dance-studio-back').addEventListener('click',closeStudio);
-      const plans={
-        'House':[['Groove pulse','Find a relaxed bounce and keep it comfortable.'],['Footwork pattern','Practise a simple step pattern slowly, then with music.'],['Weight shifts','Move your weight smoothly from side to side.'],['Freestyle round','Repeat a short phrase and explore your own timing.']],
-        'Tutting':[['Wrist and arm pathways','Explore clear, comfortable angles without forcing joints.'],['Shape practice','Make simple geometric shapes with your arms.'],['Transitions','Move between shapes slowly and smoothly.'],['Musical phrase','Link a few shapes to a short musical phrase.']],
-        'Waacking':[['Arm pathways','Practise relaxed arm circles within a comfortable range.'],['Timing accents','Match simple arm patterns to clear musical beats.'],['Poses and pauses','Explore shapes and stillness between movements.'],['Freestyle phrase','Combine patterns with your own expression.']],
-        'Hip-hop':[['Bounce and groove','Find a steady bounce with relaxed shoulders.'],['Rocking','Practise side-to-side weight changes.'],['Basic step','Repeat a simple step at a comfortable tempo.'],['Musicality round','Try the same step with different accents.']],
-        'Popping':[['Isolation','Practise small, controlled movements one area at a time.'],['Hit timing','Explore gentle muscle contractions without forcing.'],['Robot pathway','Move between positions with clear pauses.'],['Texture round','Try smooth and sharp qualities at an easy pace.']],
-        'Flexibility & mobility':[['Joint circles','Use small, comfortable ranges to warm up.'],['Dynamic mobility','Move gently through a range you can control.'],['Active range','Practise controlled movement without pushing end range.'],['Cool-down check','Finish with relaxed breathing and easy movement.']],
-        'Core & control':[['Balance check','Find a stable stance and steady breathing.'],['Slow weight shifts','Move slowly while keeping control.'],['Core awareness','Practise gentle bracing while breathing normally.'],['Coordination round','Combine a simple arm and leg pattern.']],
-        'Dime stops & isolations':[['Stillness practice','Pause cleanly between comfortable movements.'],['Head and shoulder isolation','Move one area at a time, gently.'],['Direction changes','Practise changing direction with control.'],['Short phrase','Combine pauses and isolations into a short phrase.']],
-        'Musicality':[['Listen for the beat','Notice the steady pulse in a short section.'],['Find accents','Listen for sounds that stand out.'],['Change texture','Try one movement smoothly, then sharply.'],['Movement response','Choose movements that reflect what you hear.']]
+      const splash = document.getElementById('launch-splash');
+      const art = document.getElementById('splash-art');
+      const reveal = () => {
+        splash.classList.add('splash-image-ready');
+        splash.dispatchEvent(new Event('splash-image-ready'));
       };
-      const focus=document.getElementById('dance-focus'),list=document.getElementById('dance-drill-list');
-      const doneKey='dance-studio-completed-v1';let completed=JSON.parse(localStorage.getItem(doneKey)||'{}'),timer=null,remaining=60;
-      const display=document.getElementById('dance-timer-display'),timerLabel=document.getElementById('dance-timer-label');
-      const fmt=n=>String(Math.floor(n/60)).padStart(2,'0')+':'+String(n%60).padStart(2,'0');
-      function updateProgress(){const checks=[...list.querySelectorAll('input[type=checkbox]')],count=checks.filter(x=>x.checked).length,pct=Math.round(count/checks.length*100);document.getElementById('dance-complete-count').textContent=count+' of '+checks.length+' drills complete';document.getElementById('dance-progress-percent').textContent=pct+'%';document.getElementById('dance-progress-fill').style.width=pct+'%';completed[focus.value]=checks.map(x=>x.checked);localStorage.setItem(doneKey,JSON.stringify(completed))}
-      function renderPlan(){const name=focus.value;document.getElementById('dance-session-title').textContent=name+' practice';list.innerHTML='';(plans[name]||plans.House).forEach((drill,i)=>{const row=document.createElement('label');row.className='dance-drill-row';const cb=document.createElement('input');cb.type='checkbox';cb.checked=!!completed[name]?.[i];const body=document.createElement('span');const title=document.createElement('b');title.textContent=(i+1).toString().padStart(2,'0')+' / '+drill[0];const desc=document.createElement('small');desc.textContent=drill[1];body.append(title,desc);row.append(cb,body);cb.addEventListener('change',updateProgress);list.append(row)});updateProgress();remaining=60;display.textContent=fmt(remaining);timerLabel.textContent='Ready when you are';document.getElementById('dance-timer-start').textContent='Start'}
-      document.querySelectorAll('[data-dance-tab]').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('[data-dance-tab]').forEach(x=>x.classList.toggle('active',x===btn));document.getElementById('dance-guided').hidden=btn.dataset.danceTab!=='guided';document.getElementById('dance-video').hidden=btn.dataset.danceTab!=='video'}));
-      focus.addEventListener('change',renderPlan);
-      document.getElementById('dance-timer-start').addEventListener('click',()=>{if(timer){clearInterval(timer);timer=null;document.getElementById('dance-timer-start').textContent='Resume';return}timerLabel.textContent='Session in progress';document.getElementById('dance-timer-start').textContent='Pause';timer=setInterval(()=>{remaining=Math.max(0,remaining-1);display.textContent=fmt(remaining);if(!remaining){clearInterval(timer);timer=null;document.getElementById('dance-timer-start').textContent='Start again';timerLabel.textContent='Timer complete — take a breather.'}},1000)});
-      document.getElementById('dance-timer-reset').addEventListener('click',()=>{clearInterval(timer);timer=null;remaining=60;display.textContent=fmt(remaining);timerLabel.textContent='Ready when you are';document.getElementById('dance-timer-start').textContent='Start'});
-      [['dance-reference-file','dance-reference-preview'],['dance-own-file','dance-own-preview']].forEach(([inputId,videoId])=>{const input=document.getElementById(inputId),video=document.getElementById(videoId);let url=null;input.addEventListener('change',()=>{if(url)URL.revokeObjectURL(url);const file=input.files?.[0];if(!file)return;url=URL.createObjectURL(file);video.src=url;video.hidden=false})});
-      renderPlan();
+      const image = window.vocalStudioSplashImage || 'assets/codex-clipboard-4867f544-5382-49d8-b7aa-2c66a13402e2.png';
+      let finished = false;
+      const finish = () => { if (finished) return; finished = true; reveal(); };
+      art.addEventListener('load', finish, {once:true});
+      art.addEventListener('error', finish, {once:true});
+      art.src = image;
+      if (art.complete) finish();
+      window.setTimeout(finish, 5000);
     })();
   </script>
   <title>Vocal Studio — a happy place to practice</title>
@@ -151,7 +125,25 @@
       </div>
       <div class="entry-gate-foot">LISTEN · MOVE · CREATE</div>
     </div>
-    <section class="dance-home" id="dance-home" hidden aria-label="Dance Studio home">
+    
+
+  </section>
+  <aside class="sidebar dance-sidebar" aria-label="Dance Studio navigation">
+    <a class="brand dance-brand" href="#" id="dance-brand-home"><span class="brand-mark">✧</span><span>dance<span class="brand-light"> studio</span><small>MOVE · LEARN · CREATE</small></span></a>
+    <div class="nav-label">YOUR MOVEMENT SPACE</div>
+    <nav aria-label="Dance navigation">
+      <button class="nav-item active" type="button" data-dance-view="home"><span>⌂</span> Home</button>
+      <button class="nav-item" type="button" data-dance-view="studio"><span>◉</span> Practice studio</button>
+      <button class="nav-item" type="button" data-dance-view="guided"><span>✧</span> Guided training</button>
+      <button class="nav-item" type="button" data-dance-view="video"><span>▣</span> Video practice</button>
+    </nav>
+    <div class="sidebar-bottom"><div class="avatar">✧</div><div><b>Your movement</b><small>Saved on this device</small></div><span class="local-dot"></span></div>
+    <button class="dance-sidebar-back" id="dance-back-choices" type="button">← Creative choices</button>
+  </aside>
+  <main class="dance-main">
+    <header class="topbar"><div class="breadcrumb">YOUR SPACE <span>/</span> <b id="dance-crumb">DANCE HOME</b></div><div class="today" id="dance-today"></div></header>
+    <div class="dance-main-content">
+      <section class="dance-home" id="dance-home" aria-label="Dance Studio home">
       <header class="dance-home-header">
         <div>
           <div class="entry-gate-kicker">YOUR MOVEMENT SPACE</div>
@@ -189,7 +181,7 @@
       </div>
       <div class="dance-home-footer"><span>LISTEN · MOVE · CREATE</span><button class="entry-back-button" id="back-to-choices" type="button">← Back to creative choices</button></div>
     </section>
-    <section class="dance-studio" id="dance-studio" hidden aria-label="Dance Practice Studio">
+      <section class="dance-studio" id="dance-studio" hidden aria-label="Dance Practice Studio">
       <header class="dance-home-header">
         <div><div class="entry-gate-kicker">YOUR TRAINING SPACE</div><h1>Practice with <em>purpose.</em></h1><p>Guided sessions and video review, together in one studio.</p></div>
         <div class="dance-home-mark" aria-hidden="true">✦</div>
@@ -214,8 +206,9 @@
       </section>
       <div class="dance-home-footer"><span>LEARN · PRACTISE · REVIEW</span><button class="entry-back-button" id="dance-studio-back" type="button">← Back to Dance Home</button></div>
     </section>
+    </div>
+  </main>
 
-  </section>
   <aside class="sidebar">
     <a class="brand" href="#studio"><span class="brand-mark">♫</span><span>vocal<span class="brand-light"> studio</span><small>A HAPPY PLACE TO PRACTICE</small></span></a>
     <div class="nav-label">YOUR PRACTICE SPACE</div>
@@ -344,20 +337,103 @@
 
   <script>
     (() => {
-      const gate = document.getElementById('entry-gate');
-      const danceHome = document.getElementById('dance-home');
-      document.getElementById('enter-vocal').addEventListener('click', () => {
-        try { sessionStorage.setItem('vocal-studio-entered','1'); sessionStorage.setItem('vocal-studio-last-view','home'); } catch (_) {}
-        document.body.classList.remove('entry-selecting');
+      const gate=document.getElementById('entry-gate');
+      const danceHome=document.getElementById('dance-home');
+      const danceStudio=document.getElementById('dance-studio');
+      const crumb=document.getElementById('dance-crumb');
+      const nav=[...document.querySelectorAll('[data-dance-view]')];
+      function showDanceView(view){
+        const studio=view!=='home';
+        danceHome.hidden=studio;
+        danceStudio.hidden=!studio;
+        nav.forEach(b=>b.classList.toggle('active',b.dataset.danceView===view||(studio&&b.dataset.danceView==='studio'&&view==='studio')));
+        crumb.textContent=view==='home'?'DANCE HOME':view==='video'?'VIDEO PRACTICE':view==='guided'?'GUIDED TRAINING':'PRACTICE STUDIO';
+        if(view==='guided'||view==='video'){
+          document.querySelectorAll('[data-dance-tab]').forEach(x=>x.classList.toggle('active',x.dataset.danceTab===(view==='video'?'video':'guided')));
+          document.getElementById('dance-guided').hidden=view==='video';
+          document.getElementById('dance-video').hidden=view==='guided';
+        }
+        window.scrollTo({top:0,behavior:'smooth'});
+      }
+      function enterDance(){
+        gate.hidden=true;
+        document.body.classList.remove('entry-pending','entry-selecting');
+        document.body.classList.add('dance-mode');
+        showDanceView('home');
+        const today=document.getElementById('dance-today');
+        today.textContent=new Date().toLocaleDateString(undefined,{weekday:'short',month:'short',day:'numeric'});
+      }
+      function leaveDance(){
+        document.body.classList.remove('dance-mode');
+        document.body.classList.add('entry-selecting');
+        gate.hidden=false;
+        showDanceView('home');
+      }
+      document.getElementById('enter-vocal').addEventListener('click',()=>{
+        try{sessionStorage.setItem('vocal-studio-entered','1');sessionStorage.setItem('vocal-studio-last-view','home')}catch(_){}
+        document.body.classList.remove('entry-pending','entry-selecting');
       });
-      document.getElementById('enter-dance').addEventListener('click', () => {
-        gate.classList.add('show-dance-home');
-        danceHome.hidden = false;
+      document.getElementById('enter-dance').addEventListener('click',enterDance);
+      document.getElementById('back-to-choices').addEventListener('click',leaveDance);
+      document.getElementById('dance-back-choices').addEventListener('click',leaveDance);
+      document.getElementById('dance-brand-home').addEventListener('click',e=>{e.preventDefault();showDanceView('home')});
+      nav.forEach(btn=>btn.addEventListener('click',()=>showDanceView(btn.dataset.danceView)));
+      document.getElementById('open-dance-studio').addEventListener('click',()=>showDanceView('studio'));
+      document.getElementById('dance-studio-back').addEventListener('click',()=>showDanceView('home'));
+      const plans={
+        'House':[['Groove pulse','Find a relaxed bounce and keep it comfortable.'],['Footwork pattern','Practise a simple step pattern slowly, then with music.'],['Weight shifts','Move your weight smoothly from side to side.'],['Freestyle round','Repeat a short phrase and explore your own timing.']],
+        'Tutting':[['Wrist and arm pathways','Explore clear, comfortable angles without forcing joints.'],['Shape practice','Make simple geometric shapes with your arms.'],['Transitions','Move between shapes slowly and smoothly.'],['Musical phrase','Link a few shapes to a short musical phrase.']],
+        'Waacking':[['Arm pathways','Practise relaxed arm circles within a comfortable range.'],['Timing accents','Match simple arm patterns to clear musical beats.'],['Poses and pauses','Explore shapes and stillness between movements.'],['Freestyle phrase','Combine patterns with your own expression.']],
+        'Hip-hop':[['Bounce and groove','Find a steady bounce with relaxed shoulders.'],['Rocking','Practise side-to-side weight changes.'],['Basic step','Repeat a simple step at a comfortable tempo.'],['Musicality round','Try the same step with different accents.']],
+        'Popping':[['Isolation','Practise small, controlled movements one area at a time.'],['Hit timing','Explore gentle muscle contractions without forcing.'],['Robot pathway','Move between positions with clear pauses.'],['Texture round','Try smooth and sharp qualities at an easy pace.']],
+        'Flexibility & mobility':[['Joint circles','Use small, comfortable ranges to warm up.'],['Dynamic mobility','Move gently through a range you can control.'],['Active range','Practise controlled movement without pushing end range.'],['Cool-down check','Finish with relaxed breathing and easy movement.']],
+        'Core & control':[['Balance check','Find a stable stance and steady breathing.'],['Slow weight shifts','Move slowly while keeping control.'],['Core awareness','Practise gentle bracing while breathing normally.'],['Coordination round','Combine a simple arm and leg pattern.']],
+        'Dime stops & isolations':[['Stillness practice','Pause cleanly between comfortable movements.'],['Head and shoulder isolation','Move one area at a time, gently.'],['Direction changes','Practise changing direction with control.'],['Short phrase','Combine pauses and isolations into a short phrase.']],
+        'Musicality':[['Listen for the beat','Notice the steady pulse in a short section.'],['Find accents','Listen for sounds that stand out.'],['Change texture','Try one movement smoothly, then sharply.'],['Movement response','Choose movements that reflect what you hear.']]
+      };
+      const focus=document.getElementById('dance-focus'),list=document.getElementById('dance-drill-list');
+      const doneKey='dance-studio-completed-v1';
+      let completed={};try{completed=JSON.parse(localStorage.getItem(doneKey)||'{}')||{}}catch(_){}
+      let timer=null,remaining=60;
+      const display=document.getElementById('dance-timer-display'),timerLabel=document.getElementById('dance-timer-label');
+      const fmt=n=>String(Math.floor(n/60)).padStart(2,'0')+':'+String(n%60).padStart(2,'0');
+      function updateProgress(){
+        const checks=[...list.querySelectorAll('input[type=checkbox]')],count=checks.filter(x=>x.checked).length,pct=Math.round(count/checks.length*100);
+        document.getElementById('dance-complete-count').textContent=count+' of '+checks.length+' drills complete';
+        document.getElementById('dance-progress-percent').textContent=pct+'%';
+        document.getElementById('dance-progress-fill').style.width=pct+'%';
+        completed[focus.value]=checks.map(x=>x.checked);localStorage.setItem(doneKey,JSON.stringify(completed));
+      }
+      function renderPlan(){
+        const name=focus.value;document.getElementById('dance-session-title').textContent=name+' practice';list.innerHTML='';
+        (plans[name]||plans.House).forEach((drill,i)=>{
+          const row=document.createElement('label');row.className='dance-drill-row';
+          const cb=document.createElement('input');cb.type='checkbox';cb.checked=!!completed[name]?.[i];
+          const body=document.createElement('span'),title=document.createElement('b'),desc=document.createElement('small');
+          title.textContent=(i+1).toString().padStart(2,'0')+' / '+drill[0];desc.textContent=drill[1];body.append(title,desc);row.append(cb,body);
+          cb.addEventListener('change',updateProgress);list.append(row);
+        });
+        updateProgress();remaining=60;display.textContent=fmt(remaining);timerLabel.textContent='Ready when you are';document.getElementById('dance-timer-start').textContent='Start';
+      }
+      document.querySelectorAll('[data-dance-tab]').forEach(btn=>btn.addEventListener('click',()=>{
+        document.querySelectorAll('[data-dance-tab]').forEach(x=>x.classList.toggle('active',x===btn));
+        document.getElementById('dance-guided').hidden=btn.dataset.danceTab!=='guided';
+        document.getElementById('dance-video').hidden=btn.dataset.danceTab!=='video';
+        nav.forEach(x=>x.classList.toggle('active',x.dataset.danceView===(btn.dataset.danceTab==='video'?'video':'guided')||x.dataset.danceView==='studio'&&false));
+        crumb.textContent=btn.dataset.danceTab==='video'?'VIDEO PRACTICE':'GUIDED TRAINING';
+      }));
+      focus.addEventListener('change',renderPlan);
+      document.getElementById('dance-timer-start').addEventListener('click',()=>{
+        if(timer){clearInterval(timer);timer=null;document.getElementById('dance-timer-start').textContent='Resume';return}
+        timerLabel.textContent='Session in progress';document.getElementById('dance-timer-start').textContent='Pause';
+        timer=setInterval(()=>{remaining=Math.max(0,remaining-1);display.textContent=fmt(remaining);if(!remaining){clearInterval(timer);timer=null;document.getElementById('dance-timer-start').textContent='Start again';timerLabel.textContent='Timer complete — take a breather.'}},1000);
       });
-      document.getElementById('back-to-choices').addEventListener('click', () => {
-        gate.classList.remove('show-dance-home');
-        danceHome.hidden = true;
+      document.getElementById('dance-timer-reset').addEventListener('click',()=>{clearInterval(timer);timer=null;remaining=60;display.textContent=fmt(remaining);timerLabel.textContent='Ready when you are';document.getElementById('dance-timer-start').textContent='Start'});
+      [['dance-reference-file','dance-reference-preview'],['dance-own-file','dance-own-preview']].forEach(([inputId,videoId])=>{
+        const input=document.getElementById(inputId),video=document.getElementById(videoId);let url=null;
+        input.addEventListener('change',()=>{if(url)URL.revokeObjectURL(url);const file=input.files?.[0];if(!file)return;url=URL.createObjectURL(file);video.src=url;video.hidden=false});
       });
+      renderPlan();
     })();
   </script>
   <script src="rewards.js?v=streak-rewards-20261110"></script>
