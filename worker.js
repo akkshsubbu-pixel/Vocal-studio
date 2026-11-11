@@ -6,7 +6,7 @@ const ALLOWED_ORIGINS = new Set([
 
 const INSTRUCTIONS = `You are Seok Woo (석우), the friendly AI vocal-studio companion inside Vocal Studio.
 LANGUAGE RULES:
-- Support exactly the user's requested language preferences: Tanglish (Tamil written in Latin letters), English, and Korean.
+- Support Tanglish (Tamil written in Latin letters), English, and Korean.
 - Detect the language and style of each user message and reply in that same language/style.
 - If the user naturally mixes Tanglish, English, and Korean, mirror that mix naturally.
 - Never switch to Hindi or another language unless the user explicitly asks.
@@ -50,12 +50,15 @@ export default {
     if (!ALLOWED_ORIGINS.has(origin)) {
       return Response.json({ error: "Origin not allowed." }, { status: 403, headers: cors });
     }
+
     const url = new URL(request.url);
     if (url.pathname !== "/chat" || request.method !== "POST") {
       return Response.json({ error: "Not found." }, { status: 404, headers: cors });
     }
-    if (!env.OPENAI_API_KEY) {
-      return Response.json({ error: "The AI service is not configured yet." }, { status: 503, headers: cors });
+    if (!env.AI || typeof env.AI.run !== "function") {
+      return Response.json({
+        error: "Cloudflare AI binding is missing. Add a Workers AI binding named AI to this Worker."
+      }, { status: 503, headers: cors });
     }
 
     let body;
@@ -69,56 +72,45 @@ export default {
     const safeMessages = messages
       .filter(item => item && ["user", "assistant"].includes(item.role) && typeof item.content === "string")
       .map(item => ({ role: item.role, content: item.content.slice(0, 2000) }));
+
     if (!safeMessages.length || safeMessages[safeMessages.length - 1].role !== "user") {
       return Response.json({ error: "Please send a message first." }, { status: 400, headers: cors });
     }
 
     try {
-      const response = await fetch("https://api.openai.com/v1/responses", {
-        method: "POST",
-        headers: {
-          "Authorization": `Bearer ${env.OPENAI_API_KEY}`,
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          model: "gpt-5.4-mini",
-          instructions: INSTRUCTIONS,
-          input: safeMessages,
-          max_output_tokens: 500
-        })
+      const result = await env.AI.run("@cf/zai-org/glm-4.7-flash", {
+        messages: [
+          { role: "system", content: INSTRUCTIONS },
+          ...safeMessages
+        ],
+        max_tokens: 500,
+        reasoning_effort: "low",
+        chat_template_kwargs: { enable_thinking: false }
       });
 
-      const data = await response.json().catch(() => ({}));
-      if (!response.ok) {
-        const apiError = data && data.error ? data.error : {};
-        const message = typeof apiError.message === "string"
-          ? apiError.message.slice(0, 500)
-          : "The API returned an error without a message.";
-        console.error("OpenAI API request failed", {
-          status: response.status,
-          type: apiError.type || null,
-          code: apiError.code || null,
-          message
-        });
+      const reply = typeof result?.response === "string"
+        ? result.response.trim()
+        : "";
+
+      if (!reply) {
+        console.error("Cloudflare Workers AI returned no text", result);
         return Response.json({
-          error: `OpenAI API error (${response.status}): ${message}`,
-          code: apiError.code || apiError.type || null
+          error: "The free AI model returned an empty reply. Please try again."
         }, { status: 502, headers: cors });
       }
 
-      const reply = (data.output || [])
-        .flatMap(item => item.content || [])
-        .filter(item => item.type === "output_text")
-        .map(item => item.text)
-        .join("\n")
-        .trim();
-
-      if (!reply) {
-        return Response.json({ error: "I didn't get a text reply. Please try again." }, { status: 502, headers: cors });
-      }
-      return Response.json({ reply }, { headers: { ...cors, "Content-Type": "application/json; charset=utf-8" } });
-    } catch {
-      return Response.json({ error: "Connection problem. Please try again in a moment." }, { status: 502, headers: cors });
+      return Response.json(
+        { reply },
+        { headers: { ...cors, "Content-Type": "application/json; charset=utf-8" } }
+      );
+    } catch (error) {
+      const message = error && typeof error.message === "string"
+        ? error.message.slice(0, 400)
+        : "Unknown Workers AI error";
+      console.error("Cloudflare Workers AI request failed", message);
+      return Response.json({
+        error: `Cloudflare AI error: ${message}`
+      }, { status: 502, headers: cors });
     }
   }
 };
