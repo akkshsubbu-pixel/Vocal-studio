@@ -92,7 +92,10 @@ export default {
         result?.response,
         result?.result?.response,
         result?.output_text,
-        result?.text
+        result?.text,
+        result?.choices?.[0]?.message?.content,
+        result?.choices?.[0]?.text,
+        result?.result?.choices?.[0]?.message?.content
       ].find(value => typeof value === "string" && value.trim().length > 0)?.trim() || "";
 
       if (!reply) {
