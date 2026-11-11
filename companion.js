@@ -141,6 +141,7 @@
       });
       const data = await response.json();
       if (!response.ok || !data.reply) throw new Error(data.error || 'The AI service is unavailable.');
+      if (Array.isArray(extra.danceFrames) && data.reviewType !== 'dance-vision') throw new Error('Seok Woo’s dance-vision update has not been deployed to the AI server yet. Your video frames were not analysed.');
       conversation.push({ role: 'assistant', content: data.reply });
       if (conversation.length > 16) conversation.splice(0, conversation.length - 16);
       addMessage(data.reply, 'buddy');
