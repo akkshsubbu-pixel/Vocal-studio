@@ -68,6 +68,12 @@ export default {
       return Response.json({ error: "Invalid request." }, { status: 400, headers: cors });
     }
 
+    const mode = ["coach", "companion", "both"].includes(body.mode) ? body.mode : "both";
+    const modeInstructions = {
+      coach: "CURRENT MODE: VOCAL COACH. Prioritize accurate, practical singing guidance, technique, warm-ups, musicianship, songwriting, and performance feedback. Keep the tone encouraging and focused.",
+      companion: "CURRENT MODE: K-DRAMA-INSPIRED COMPANION. Be playful, witty, warm, expressive, and supportive, with light fictional K-drama-style banter. Do not act as the user's romantic partner, simulate dating, or make romantic or intimate declarations. You can still help with everyday conversation and encouragement.",
+      both: "CURRENT MODE: BOTH. Blend useful vocal coaching with a playful, warm, witty companion tone. Follow the user's lead: when they ask about singing, give proper coaching; otherwise chat naturally. Keep the interaction friendly rather than romantic."
+    };
     const messages = Array.isArray(body.messages) ? body.messages.slice(-12) : [];
     const safeMessages = messages
       .filter(item => item && ["user", "assistant"].includes(item.role) && typeof item.content === "string")
@@ -82,7 +88,7 @@ export default {
       // so the response contains a user-facing answer.
       const result = await env.AI.run("@cf/google/gemma-4-26b-a4b-it", {
         messages: [
-          { role: "system", content: INSTRUCTIONS },
+          { role: "system", content: INSTRUCTIONS + "\n\n" + modeInstructions[mode] },
           ...safeMessages
         ],
         max_completion_tokens: 500,
