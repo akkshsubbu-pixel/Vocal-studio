@@ -182,30 +182,20 @@
       <div class="dance-home-footer"><span>LISTEN · MOVE · CREATE</span><button class="entry-back-button" id="back-to-choices" type="button">← Back to creative choices</button></div>
     </section>
       <section class="dance-studio" id="dance-studio" hidden aria-label="Dance Practice Studio">
-      <header class="dance-home-header">
-        <div><div class="entry-gate-kicker">YOUR TRAINING SPACE</div><h1>Practice with <em>purpose.</em></h1><p>Guided sessions and video review, together in one studio.</p></div>
-        <div class="dance-home-mark" aria-hidden="true">✦</div>
-      </header>
-      <div class="dance-studio-tabs"><button type="button" class="dance-tab active" data-dance-tab="guided">GUIDED TRAINING</button><button type="button" class="dance-tab" data-dance-tab="video">VIDEO PRACTICE</button></div>
-      <section class="dance-studio-panel" id="dance-guided">
-        <div class="dance-welcome-panel"><div class="dance-panel-kicker">01 / YOUR SESSION</div><h2>Choose what you want to work on.</h2><p>Pick a style or a foundation. Start gently, take breaks when you need them, and focus on clear movement rather than speed.</p>
-          <label class="dance-field-label" for="dance-focus">TRAINING FOCUS</label><select id="dance-focus" class="dance-select"><option value="House">House</option><option value="Tutting">Tutting</option><option value="Waacking">Waacking</option><option value="Hip-hop">Hip-hop</option><option value="Popping">Popping</option><option value="Flexibility & mobility">Flexibility & mobility</option><option value="Core & control">Core & control</option><option value="Dime stops & isolations">Dime stops & isolations</option><option value="Musicality">Musicality</option></select>
-        </div>
-        <div class="dance-home-section-head"><div><div class="dance-panel-kicker">02 / SESSION PLAN</div><h2 id="dance-session-title">House foundations</h2></div><span>YOUR OWN PACE</span></div>
-        <div class="dance-drill-list" id="dance-drill-list"></div>
-        <div class="dance-timer-card"><div><div class="dance-panel-kicker">PRACTICE TIMER</div><strong id="dance-timer-display">01:00</strong><p id="dance-timer-label">Ready when you are</p></div><div class="dance-timer-actions"><button type="button" class="dance-action-button" id="dance-timer-start">Start</button><button type="button" class="dance-action-button secondary" id="dance-timer-reset">Reset</button></div></div>
-        <div class="dance-session-progress"><div><span id="dance-complete-count">0 of 4 drills complete</span><span id="dance-progress-percent">0%</span></div><div class="dance-progress-track"><i id="dance-progress-fill"></i></div></div>
-      </section>
-      <section class="dance-studio-panel" id="dance-video" hidden>
-        <div class="dance-welcome-panel"><div class="dance-panel-kicker">VIDEO PRACTICE</div><h2>Watch. Practise. Review.</h2><p>Add a reference clip and your own practice video. Both stay on this device; the studio lets you play them side by side for visual review.</p></div>
-        <div class="dance-video-grid">
-          <article class="dance-video-card"><label for="dance-reference-file">REFERENCE VIDEO</label><input id="dance-reference-file" type="file" accept="video/*"><video id="dance-reference-preview" controls playsinline></video><p>Choose a tutorial or reference clip.</p></article>
-          <article class="dance-video-card"><label for="dance-own-file">YOUR PRACTICE VIDEO</label><input id="dance-own-file" type="file" accept="video/*" capture="environment"><video id="dance-own-preview" controls playsinline></video><p>Choose a saved clip or record one with your device camera.</p></article>
-        </div>
-        <div class="dance-video-note"><b>Review tip</b><span>Compare one detail at a time — timing, pathways, direction or musical accents. Video is previewed locally and is not uploaded to a server.</span></div>
-      </section>
-      <div class="dance-home-footer"><span>LEARN · PRACTISE · REVIEW</span><button class="entry-back-button" id="dance-studio-back" type="button">← Back to Dance Home</button></div>
-    </section>
+<div class="hero-row dance-hero-row"><div><div class="eyebrow">MOVE · LEARN · REPEAT</div><h1>Make every move<br><em>a little more you.</em></h1><p class="lead">Train your foundations, explore your styles, and review your movement — one focused session at a time.</p></div><div class="hero-note dance-hero-note"><span>✿</span><div><b>A little note for today</b><p>Small steps make confident dancers.</p></div></div></div>
+<div class="studio-grid dance-studio-grid">
+<section class="card setup-card dance-setup-card" id="dance-guided"><div class="card-head"><div><div class="eyebrow">01 / SET UP YOUR SESSION</div><h2>Choose your training focus</h2></div><span class="step-pill">GUIDED</span></div>
+<label class="dance-field-label" for="dance-focus">TRAINING FOCUS</label><select id="dance-focus" class="dance-select"><option value="House">House</option><option value="Tutting">Tutting</option><option value="Waacking">Waacking</option><option value="Hip-hop">Hip-hop</option><option value="Popping">Popping</option><option value="Flexibility & mobility">Flexibility & mobility</option><option value="Core & control">Core & control</option><option value="Dime stops & isolations">Dime stops & isolations</option><option value="Musicality">Musicality</option></select>
+<div class="dance-session-head"><div class="eyebrow">YOUR SESSION PLAN</div><h2 id="dance-session-title">House practice</h2></div><div class="dance-drill-list" id="dance-drill-list"></div>
+<div class="dance-timer-card"><div><div class="eyebrow">PRACTICE TIMER</div><strong id="dance-timer-display">01:00</strong><p id="dance-timer-label">Ready when you are</p></div><div class="dance-timer-actions"><button type="button" class="dance-action-button" id="dance-timer-start">Start</button><button type="button" class="dance-action-button secondary" id="dance-timer-reset">Reset</button></div></div>
+<div class="dance-session-progress"><div><span id="dance-complete-count">0 of 4 drills complete</span><span id="dance-progress-percent">0%</span></div><div class="dance-progress-track"><i id="dance-progress-fill"></i></div></div></section>
+<section class="card results-card dance-review-card" id="dance-video"><div class="card-head"><div><div class="eyebrow">02 / YOUR PRACTICE REVIEW</div><h2>Watch. Practise. Review.</h2></div><span class="live-badge"><i></i> PRIVATE</span></div>
+<p class="dance-review-intro">Add a reference video and your own practice clip. Play them here to compare timing, pathways and movement quality.</p>
+<div class="dance-video-grid"><article class="dance-video-card"><label for="dance-reference-file">REFERENCE VIDEO</label><input id="dance-reference-file" type="file" accept="video/*"><video id="dance-reference-preview" controls playsinline></video><p>Choose a tutorial or reference clip.</p></article>
+<article class="dance-video-card"><label for="dance-own-file">YOUR PRACTICE VIDEO</label><input id="dance-own-file" type="file" accept="video/*" capture="environment"><video id="dance-own-preview" controls playsinline></video><p>Choose a saved clip or record one with your device camera.</p></article></div>
+<div class="dance-video-note"><b>Review tip</b><span>Compare one detail at a time — timing, pathways, direction or musical accents. Videos are previewed locally on this device.</span></div>
+<div class="dance-empty-loop"><div class="dance-loop-art">✧　♫　〰</div><h3>Your practice loop starts here</h3><p>Load a reference and your take to review your movement side by side.</p><div class="dance-loop-steps"><span>01 Load</span><b>→</b><span>02 Practise</span><b>→</b><span>03 Review</span></div></div></section></div>
+<div class="dance-home-footer"><span>LEARN · PRACTISE · REVIEW</span><button class="entry-back-button" id="dance-studio-back" type="button">← Back to Dance Home</button></div></section>
     </div>
   </main>
 
@@ -343,17 +333,11 @@
       const crumb=document.getElementById('dance-crumb');
       const nav=[...document.querySelectorAll('[data-dance-view]')];
       function showDanceView(view){
-        const studio=view!=='home';
-        danceHome.hidden=studio;
-        danceStudio.hidden=!studio;
-        nav.forEach(b=>b.classList.toggle('active',b.dataset.danceView===view||(studio&&b.dataset.danceView==='studio'&&view==='studio')));
-        crumb.textContent=view==='home'?'DANCE HOME':view==='video'?'VIDEO PRACTICE':view==='guided'?'GUIDED TRAINING':'PRACTICE STUDIO';
-        if(view==='guided'||view==='video'){
-          document.querySelectorAll('[data-dance-tab]').forEach(x=>x.classList.toggle('active',x.dataset.danceTab===(view==='video'?'video':'guided')));
-          document.getElementById('dance-guided').hidden=view==='video';
-          document.getElementById('dance-video').hidden=view==='guided';
-        }
-        window.scrollTo({top:0,behavior:'smooth'});
+        const studio=view!=='home';danceHome.hidden=studio;danceStudio.hidden=!studio;
+        nav.forEach(b=>b.classList.toggle('active',b.dataset.danceView===view));
+        crumb.textContent=view==='home'?'DANCE HOME':'PRACTICE STUDIO';
+        if(studio&&(view==='guided'||view==='video')) document.getElementById(view==='video'?'dance-video':'dance-guided').scrollIntoView({behavior:'smooth',block:'start'});
+        else window.scrollTo({top:0,behavior:'smooth'});
       }
       function enterDance(){
         gate.hidden=true;
@@ -415,13 +399,6 @@
         });
         updateProgress();remaining=60;display.textContent=fmt(remaining);timerLabel.textContent='Ready when you are';document.getElementById('dance-timer-start').textContent='Start';
       }
-      document.querySelectorAll('[data-dance-tab]').forEach(btn=>btn.addEventListener('click',()=>{
-        document.querySelectorAll('[data-dance-tab]').forEach(x=>x.classList.toggle('active',x===btn));
-        document.getElementById('dance-guided').hidden=btn.dataset.danceTab!=='guided';
-        document.getElementById('dance-video').hidden=btn.dataset.danceTab!=='video';
-        nav.forEach(x=>x.classList.toggle('active',x.dataset.danceView===(btn.dataset.danceTab==='video'?'video':'guided')||x.dataset.danceView==='studio'&&false));
-        crumb.textContent=btn.dataset.danceTab==='video'?'VIDEO PRACTICE':'GUIDED TRAINING';
-      }));
       focus.addEventListener('change',renderPlan);
       document.getElementById('dance-timer-start').addEventListener('click',()=>{
         if(timer){clearInterval(timer);timer=null;document.getElementById('dance-timer-start').textContent='Resume';return}
