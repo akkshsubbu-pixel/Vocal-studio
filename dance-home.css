@@ -248,27 +248,27 @@ body.dance-mode > .companion-dock .companion-chat{pointer-events:auto!important}
 .dance-stretch-player-head{display:flex;justify-content:space-between;align-items:center;gap:12px}
 .dance-stretch-player-head h3{margin:5px 0 0;color:var(--h-text);font:600 21px var(--serif)}
 .dance-stretch-count{color:var(--h-primary-bright);font:800 11px var(--sans);letter-spacing:.1em}
-.dance-stretch-stage{position:relative;display:grid;place-items:center;min-height:220px;margin-top:15px;overflow:hidden;border:1px solid var(--h-edge);border-radius:14px;background:radial-gradient(ellipse at 50% 75%,var(--h-panel-tint),transparent 62%),linear-gradient(150deg,#f8dce8 0%,#f4e5ee 48%,#fbe9df 100%)}
-.dance-stretch-character{position:relative;width:120px;height:170px;animation:stretch-breathe 3s ease-in-out infinite}
-.stretch-head{position:absolute;top:9px;left:48px;width:25px;height:25px;border-radius:50%;background:#704a50;color:transparent;box-shadow:inset 0 -4px #59383e}
-.stretch-body{position:absolute;top:39px;left:53px;width:17px;height:60px;border-radius:12px;background:#c34b70;transform:rotate(-4deg)}
-.stretch-arm,.stretch-leg{position:absolute;display:block;height:9px;border-radius:9px;background:#704a50;transform-origin:5px 5px}
-.stretch-arm.left{top:48px;left:56px;width:49px;transform:rotate(150deg);animation:stretch-left-arm 8s ease-in-out infinite}
-.stretch-arm.right{top:48px;left:63px;width:49px;transform:rotate(25deg);animation:stretch-right-arm 8s ease-in-out infinite}
-.stretch-leg.left{top:94px;left:57px;width:64px;transform:rotate(105deg)}
-.stretch-leg.right{top:94px;left:62px;width:64px;transform:rotate(75deg)}
-.dance-stretch-player[data-step="1"] .stretch-arm.left{transform:rotate(185deg)}
-.dance-stretch-player[data-step="1"] .stretch-arm.right{transform:rotate(15deg)}
-.dance-stretch-player[data-step="2"] .stretch-arm.left{transform:rotate(215deg)}
-.dance-stretch-player[data-step="2"] .stretch-arm.right{transform:rotate(-65deg)}
+.dance-stretch-stage{position:relative;display:grid;place-items:center;min-height:260px;margin-top:15px;overflow:hidden;border:1px solid var(--h-edge);border-radius:14px;background:radial-gradient(ellipse at 50% 75%,var(--h-panel-tint),transparent 62%),linear-gradient(150deg,#f8dce8 0%,#f4e5ee 48%,#fbe9df 100%)}
+.dance-stretch-character{position:relative;width:150px;height:190px;animation:stretch-breathe 3s ease-in-out infinite}
+.stretch-head{position:absolute;top:8px;left:61px;width:29px;height:29px;border-radius:50%;background:#704a50;color:transparent;box-shadow:inset 0 -5px #59383e}
+.stretch-head:after{content:"";position:absolute;top:11px;left:8px;width:4px;height:4px;border-radius:50%;background:#fff;box-shadow:10px 0 #fff}
+.stretch-body{position:absolute;top:42px;left:66px;width:20px;height:66px;border-radius:14px;background:#c34b70;transform:rotate(-4deg);transform-origin:50% 5px;transition:transform 1s ease}
+.stretch-arm,.stretch-leg{position:absolute;display:block;height:10px;border-radius:10px;background:#704a50;transform-origin:5px 5px;transition:transform 1s ease}
+.stretch-arm.left{top:53px;left:68px;width:57px;transform:rotate(150deg)}
+.stretch-arm.right{top:53px;left:78px;width:57px;transform:rotate(25deg)}
+.stretch-leg.left{top:103px;left:70px;width:70px;transform:rotate(105deg)}
+.stretch-leg.right{top:103px;left:77px;width:70px;transform:rotate(75deg)}
+.dance-stretch-player[data-step="0"] .stretch-arm.left{transform:rotate(150deg)}
+.dance-stretch-player[data-step="1"] .stretch-arm.left{transform:rotate(215deg)}
+.dance-stretch-player[data-step="1"] .stretch-arm.right{transform:rotate(-35deg)}
+.dance-stretch-player[data-step="1"] .stretch-body{transform:rotate(-13deg)}
+.dance-stretch-player[data-step="2"] .stretch-arm.left{transform:rotate(15deg)}
+.dance-stretch-player[data-step="2"] .stretch-arm.right{transform:rotate(165deg)}
 .dance-stretch-player[data-step="3"] .stretch-leg.left{transform:rotate(145deg)}
 .dance-stretch-player[data-step="3"] .stretch-leg.right{transform:rotate(35deg)}
-.dance-stretch-player[data-step="4"] .stretch-body{transform:rotate(28deg)}
-.dance-stretch-player[data-step="4"] .stretch-leg.left{transform:rotate(160deg)}
-.dance-stretch-player[data-step="4"] .stretch-leg.right{transform:rotate(20deg)}
-.dance-stretch-player[data-step="5"] .stretch-leg.left{transform:rotate(155deg)}
-.dance-stretch-player[data-step="5"] .stretch-leg.right{transform:rotate(15deg)}
-.dance-stretch-sparkle{position:absolute;bottom:16px;color:#bd6483;font-size:17px;letter-spacing:8px}
+.dance-stretch-player[data-step="4"] .stretch-body{transform:rotate(24deg)}
+.dance-stretch-player[data-step="5"] .stretch-body{transform:rotate(-12deg)}
+.dance-stretch-sparkle{position:absolute;bottom:16px;color:#bd6483;font-size:17px;letter-spacing:8px;animation:stretch-twinkle 2s ease-in-out infinite}
 .dance-stretch-step{margin-top:14px}
 .dance-stretch-step>span{color:var(--h-text);font:600 18px var(--serif)}
 .dance-stretch-step p{margin:5px 0 0;color:var(--h-muted);font:12px/1.65 var(--sans)}
@@ -278,13 +278,10 @@ body.dance-mode > .companion-dock .companion-chat{pointer-events:auto!important}
 .dance-stretch-controls{display:flex;flex-wrap:wrap;gap:8px;margin-top:15px}
 .dance-stretch-controls button{flex:1;min-width:90px}
 .dance-stretch-hint{display:block;margin-top:12px;color:var(--h-muted);font:10px/1.6 var(--sans)}
-@keyframes stretch-breathe{0%,100%{translate:0 0}50%{translate:0 -3px}}
-@keyframes stretch-left-arm{0%,100%{rotate:0deg}50%{rotate:12deg}}
-@keyframes stretch-right-arm{0%,100%{rotate:0deg}50%{rotate:-12deg}}
-@media(prefers-reduced-motion:reduce){.dance-stretch-character,.stretch-arm{animation:none!important}}
+@keyframes stretch-breathe{0%,100%{translate:0 0}50%{translate:0 -4px}}
+@keyframes stretch-twinkle{0%,100%{opacity:.55;transform:scale(.96)}50%{opacity:1;transform:scale(1.05)}}
+@media(prefers-reduced-motion:reduce){.dance-stretch-character,.dance-stretch-sparkle{animation:none!important}.stretch-arm,.stretch-leg,.stretch-body{transition:none!important}}
 @media(max-width:520px){.dance-stretch-controls{display:grid;grid-template-columns:1fr 1fr}.dance-stretch-controls #dance-stretch-play{grid-column:1/-1;grid-row:1}}
-
-
 /* Cute illustrated cue embedded in Dance > Warm-up > Stretches. */
 .dance-stretch-art-gallery{margin:20px 0 8px;padding:16px;border:1px solid var(--h-edge);border-radius:16px;background:var(--h-bg)}
 .dance-stretch-art-gallery>.dance-panel-kicker{margin-bottom:12px}
