@@ -134,6 +134,7 @@
     <nav aria-label="Dance navigation">
       <button class="nav-item active" type="button" data-dance-view="home"><span>⌂</span> Home</button>
       <button class="nav-item" type="button" data-dance-view="studio"><span>◉</span> Practice studio</button>
+      <button class="nav-item" type="button" data-dance-view="warmup"><span>✧</span> Warm-up</button>
     </nav>
     <div class="sidebar-bottom"><div class="avatar">✧</div><div><b>Your movement</b><small>Saved on this device</small></div><span class="local-dot"></span></div>
     <button class="dance-sidebar-back" id="dance-back-choices" type="button">← Creative choices</button>
@@ -214,6 +215,28 @@
           <p class="dance-ai-status" id="dance-ai-status" aria-live="polite">Load both videos and agree to the frame-sharing note to request an AI review.</p>
         </article>
         <div class="dance-studio-footer"><span>REFERENCE → PERFORMANCE → IMPROVEMENT</span><span>Your videos stay in this browser session.</span></div>
+      </section>
+      <section class="dance-warmup" id="dance-warmup" hidden aria-label="Dance warm-up">
+        <header class="dance-home-header">
+          <div>
+            <div class="entry-gate-kicker">PREPARE · MOVE · RECOVER</div>
+            <h1>Your body, <em>ready to move.</em></h1>
+            <p>Choose what your body needs before or after dance practice.</p>
+          </div>
+          <div class="dance-home-mark" aria-hidden="true">✧</div>
+        </header>
+        <div class="dance-warmup-options" role="group" aria-label="Warm-up categories">
+          <button class="dance-warmup-option active" type="button" data-warmup-option="stretches"><span>✧</span><b>Stretches</b><small>Comfortable flexibility</small></button>
+          <button class="dance-warmup-option" type="button" data-warmup-option="mobility"><span>↗</span><b>Mobility</b><small>Control & range of motion</small></button>
+          <button class="dance-warmup-option" type="button" data-warmup-option="warmup"><span>♨</span><b>Warm-up</b><small>Get ready to dance</small></button>
+          <button class="dance-warmup-option" type="button" data-warmup-option="cooldown"><span>☾</span><b>Cool-down</b><small>Ease out after practice</small></button>
+        </div>
+        <article class="dance-warmup-detail" aria-live="polite">
+          <div class="dance-panel-kicker" id="dance-warmup-kicker">01 / STRETCHES</div>
+          <h2 id="dance-warmup-title">Stretches</h2>
+          <p id="dance-warmup-description">A comfortable flexibility session for dance. We'll add the exercises from your selected reference videos here.</p>
+          <div class="dance-warmup-note">Move within a comfortable range. No forcing, bouncing or pushing into pain.</div>
+        </article>
       </section>
     </div>
   </main>
@@ -349,16 +372,35 @@
       const gate=document.getElementById('entry-gate');
       const danceHome=document.getElementById('dance-home');
       const danceStudio=document.getElementById('dance-studio');
+      const danceWarmup=document.getElementById('dance-warmup');
       const crumb=document.getElementById('dance-crumb');
       const nav=[...document.querySelectorAll('[data-dance-view]')];
       function showDanceView(view){
         const studio=view==='studio';
-        danceHome.hidden=studio;
+        const warmup=view==='warmup';
+        danceHome.hidden=studio||warmup;
         danceStudio.hidden=!studio;
+        danceWarmup.hidden=!warmup;
         nav.forEach(b=>b.classList.toggle('active',b.dataset.danceView===view));
-        crumb.textContent=studio?'PRACTICE STUDIO':'DANCE HOME';
+        crumb.textContent=studio?'PRACTICE STUDIO':warmup?'WARM-UP':'DANCE HOME';
         window.scrollTo({top:0,behavior:'smooth'});
       }
+      const warmupOptions={
+        stretches:{kicker:'01 / STRETCHES',title:'Stretches',description:"A comfortable flexibility session for dance. We'll add the exercises from your selected reference videos here."},
+        mobility:{kicker:'02 / MOBILITY',title:'Mobility',description:'Controlled movements to explore comfortable joint range and improve movement control. Your routine will be added here.'},
+        warmup:{kicker:'03 / WARM-UP',title:'Warm-up',description:'A gradual, dance-focused preparation session to help you feel ready to move. Your routine will be added here.'},
+        cooldown:{kicker:'04 / COOL-DOWN',title:'Cool-down',description:'A gentle wind-down after practice, with relaxed movements and comfortable stretches. Your routine will be added here.'}
+      };
+      document.querySelectorAll('[data-warmup-option]').forEach(button=>{
+        button.addEventListener('click',()=>{
+          const option=warmupOptions[button.dataset.warmupOption];
+          if(!option)return;
+          document.querySelectorAll('[data-warmup-option]').forEach(item=>item.classList.toggle('active',item===button));
+          document.getElementById('dance-warmup-kicker').textContent=option.kicker;
+          document.getElementById('dance-warmup-title').textContent=option.title;
+          document.getElementById('dance-warmup-description').textContent=option.description;
+        });
+      });
       function enterDance(){
         gate.hidden=true;
         document.body.classList.remove('entry-pending','entry-selecting');
