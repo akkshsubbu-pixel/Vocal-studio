@@ -283,3 +283,10 @@ body.dance-mode > .companion-dock .companion-chat{pointer-events:auto!important}
 @keyframes stretch-right-arm{0%,100%{rotate:0deg}50%{rotate:-12deg}}
 @media(prefers-reduced-motion:reduce){.dance-stretch-character,.stretch-arm{animation:none!important}}
 @media(max-width:520px){.dance-stretch-controls{display:grid;grid-template-columns:1fr 1fr}.dance-stretch-controls #dance-stretch-play{grid-column:1/-1;grid-row:1}}
+
+
+/* Cute illustrated cue embedded in Dance > Warm-up > Stretches. */
+.dance-stretch-art-gallery{margin:20px 0 8px;padding:16px;border:1px solid var(--h-edge);border-radius:16px;background:var(--h-bg)}
+.dance-stretch-art-gallery>.dance-panel-kicker{margin-bottom:12px}
+.dance-stretch-art-gallery figure{margin:0;max-width:420px;overflow:hidden;border-radius:13px;background:var(--h-bg-secondary)}
+.dance-stretch-art-gallery img{display:block;width:100%;height:auto;aspect-ratio:1;object-fit:cover}
