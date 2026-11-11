@@ -88,15 +88,37 @@ export default {
         temperature: 0.7
       });
 
-      const reply = [
+      const candidates = [
         result?.response,
         result?.result?.response,
         result?.output_text,
         result?.text,
         result?.choices?.[0]?.message?.content,
         result?.choices?.[0]?.text,
-        result?.result?.choices?.[0]?.message?.content
-      ].find(value => typeof value === "string" && value.trim().length > 0)?.trim() || "";
+        result?.result?.choices?.[0]?.message?.content,
+        result?.result?.choices?.[0]?.text
+      ];
+
+      const toText = value => {
+        if (typeof value === "string") return value.trim();
+        if (Array.isArray(value)) {
+          return value.map(part => {
+            if (typeof part === "string") return part;
+            if (part && typeof part.text === "string") return part.text;
+            return "";
+          }).join("").trim();
+        }
+        return "";
+      };
+
+      const reply = candidates.map(toText).find(value => value.length > 0) || "";
+      console.log("Workers AI response shape:", JSON.stringify({
+        type: typeof result,
+        keys: result && typeof result === "object" ? Object.keys(result) : [],
+        choiceKeys: result?.choices?.[0] ? Object.keys(result.choices[0]) : [],
+        messageKeys: result?.choices?.[0]?.message ? Object.keys(result.choices[0].message) : [],
+        contentType: typeof result?.choices?.[0]?.message?.content
+      }));
 
       if (!reply) {
         console.error("Workers AI returned no text. Result keys:", result && typeof result === "object" ? Object.keys(result) : typeof result);
