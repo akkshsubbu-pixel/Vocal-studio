@@ -179,7 +179,46 @@
       </div>
       <div class="dance-home-footer"><span>LISTEN · MOVE · CREATE</span><button class="entry-back-button" id="back-to-choices" type="button">← Back to creative choices</button></div>
     </section>
-      <section class="dance-studio" id="dance-studio" hidden aria-label="Dance Practice Studio"></section>
+      <section class="dance-studio" id="dance-studio" hidden aria-label="Dance Practice Studio">
+        <div class="dance-hero-row">
+          <div><div class="eyebrow">✧ WATCH · MOVE · REFINE</div><h1>Make every take<br><em>more intentional.</em></h1><p class="lead">Study the reference, record your version, then give yourself useful and honest feedback.</p></div>
+          <div class="dance-hero-note"><span>✦</span><div><b>A note for today</b><p>Clean basics beat rushed tricks.</p></div></div>
+        </div>
+        <div class="dance-studio-grid">
+          <article class="dance-setup-card dance-video-workspace">
+            <div class="card-head"><div><div class="eyebrow">01 / YOUR REFERENCE</div><h2>Choose what to learn</h2></div><span class="step-pill">REFERENCE</span></div>
+            <label class="dance-upload-zone" for="dance-reference-file"><span class="dance-upload-icon">↑</span><b id="dance-reference-name">Upload a choreography video</b><small>MP4, MOV, WEBM · choose a saved video</small><input id="dance-reference-file" type="file" accept="video/*"></label>
+            <video id="dance-reference-preview" class="dance-preview" controls playsinline preload="metadata" hidden></video>
+            <p class="dance-file-status" id="dance-reference-status">No reference video loaded.</p>
+            <div class="dance-section-fields"><label>START (sec)<input id="dance-section-start" type="number" min="0" step="0.5" value="0"></label><label>END (sec)<input id="dance-section-end" type="number" min="0" step="0.5" placeholder="optional"></label></div>
+            <button class="dance-action-button secondary dance-full-button" id="dance-set-section" type="button">Set section on both videos</button>
+            <p class="dance-small-hint">Use the same section on both videos when comparing your movement.</p>
+          </article>
+          <article class="dance-review-card dance-video-workspace">
+            <div class="card-head"><div><div class="eyebrow">02 / YOUR PERFORMANCE</div><h2>Record your version</h2></div><span class="step-pill">YOUR TAKE</span></div>
+            <label class="dance-upload-zone" for="dance-take-file"><span class="dance-upload-icon">↑</span><b id="dance-take-name">Upload your practice video</b><small>MP4, MOV, WEBM · choose your recorded take</small><input id="dance-take-file" type="file" accept="video/*"></label>
+            <video id="dance-take-preview" class="dance-preview" controls playsinline preload="metadata" hidden></video>
+            <p class="dance-file-status" id="dance-take-status">No practice video loaded.</p>
+            <button class="dance-action-button dance-full-button" id="dance-compare-play" type="button" disabled>▶ Play both from the selected section</button>
+            <p class="dance-small-hint">Play both videos side by side, pause, and replay the same moment.</p>
+          </article>
+        </div>
+        <article class="dance-reality-card">
+          <div class="dance-reality-heading"><div><div class="eyebrow">03 / THE REALITY CHECK</div><h2>Honest feedback. Useful fixes.</h2><p>Choose what you noticed while comparing your take. This coach guide turns your observations into a focused correction plan — it does not pretend to analyse body movement automatically.</p></div><span class="dance-reality-mark">✦</span></div>
+          <div class="dance-reality-grid">
+            <label class="dance-check-option"><input type="checkbox" value="timing"><span><b>Timing & musicality</b><small>Late, early, or missing musical accents</small></span></label>
+            <label class="dance-check-option"><input type="checkbox" value="control"><span><b>Control & isolations</b><small>Extra movement or unclear stops</small></span></label>
+            <label class="dance-check-option"><input type="checkbox" value="precision"><span><b>Precision & shapes</b><small>Unclear angles, lines, or hand placement</small></span></label>
+            <label class="dance-check-option"><input type="checkbox" value="transitions"><span><b>Transitions & flow</b><small>Hesitation or disconnected movements</small></span></label>
+            <label class="dance-check-option"><input type="checkbox" value="dynamics"><span><b>Dynamics & texture</b><small>Same energy throughout, little contrast</small></span></label>
+            <label class="dance-check-option"><input type="checkbox" value="performance"><span><b>Performance & presence</b><small>Low commitment or unclear intention</small></span></label>
+          </div>
+          <div class="dance-coach-inputs"><label for="dance-style-focus">STYLE YOU ARE PRACTISING<select id="dance-style-focus" class="dance-select"><option>House</option><option>Tutting</option><option>Waacking</option><option>Hip-hop</option><option>Popping</option><option>Choreography / mixed style</option></select></label><label for="dance-honest-notes">WHAT DID YOU NOTICE? <span>Optional</span><textarea id="dance-honest-notes" rows="3" placeholder="Be specific: which moment felt messy, rushed, stiff, or unclear?"></textarea></label></div>
+          <button class="dance-action-button dance-generate-feedback" id="dance-generate-feedback" type="button">Give me the honest breakdown →</button>
+          <div class="dance-feedback-output" id="dance-feedback-output" aria-live="polite" hidden></div>
+        </article>
+        <div class="dance-studio-footer"><span>REFERENCE → PERFORMANCE → IMPROVEMENT</span><span>Your videos stay in this browser session.</span></div>
+      </section>
     </div>
   </main>
 
@@ -346,6 +385,51 @@
       document.getElementById('dance-brand-home').addEventListener('click',e=>{e.preventDefault();showDanceView('home')});
       nav.forEach(btn=>btn.addEventListener('click',()=>showDanceView(btn.dataset.danceView)));
       document.getElementById('open-dance-studio').addEventListener('click',()=>showDanceView('studio'));
+      const danceVideoUrls={reference:null,take:null};
+      function loadDanceVideo(inputId,videoId,nameId,statusId,key){
+        const input=document.getElementById(inputId),video=document.getElementById(videoId);
+        input.addEventListener('change',()=>{
+          const file=input.files&&input.files[0];if(!file)return;
+          if(danceVideoUrls[key])URL.revokeObjectURL(danceVideoUrls[key]);
+          danceVideoUrls[key]=URL.createObjectURL(file);video.src=danceVideoUrls[key];video.hidden=false;
+          document.getElementById(nameId).textContent=file.name;
+          document.getElementById(statusId).textContent='Loaded · '+(file.size/1024/1024).toFixed(1)+' MB';
+          document.getElementById('dance-compare-play').disabled=!(danceVideoUrls.reference&&danceVideoUrls.take);
+        });
+      }
+      loadDanceVideo('dance-reference-file','dance-reference-preview','dance-reference-name','dance-reference-status','reference');
+      loadDanceVideo('dance-take-file','dance-take-preview','dance-take-name','dance-take-status','take');
+      const danceRef=document.getElementById('dance-reference-preview'),danceTake=document.getElementById('dance-take-preview');
+      document.getElementById('dance-set-section').addEventListener('click',()=>{
+        const start=Math.max(0,Number(document.getElementById('dance-section-start').value)||0);
+        const end=Number(document.getElementById('dance-section-end').value);
+        [danceRef,danceTake].forEach(v=>{if(v.src){v.currentTime=Math.min(start,Number.isFinite(v.duration)?v.duration:start);}});
+        if(Number.isFinite(end)&&end>start){[danceRef,danceTake].forEach(v=>{if(v.src)v.dataset.sectionEnd=String(end);});}
+      });
+      document.getElementById('dance-compare-play').addEventListener('click',async()=>{
+        if(!danceRef.src||!danceTake.src)return;
+        const start=Math.max(0,Number(document.getElementById('dance-section-start').value)||0);
+        [danceRef,danceTake].forEach(v=>{v.pause();v.currentTime=Math.min(start,Number.isFinite(v.duration)?v.duration:start);});
+        try{await Promise.all([danceRef.play(),danceTake.play()]);}catch(_){document.getElementById('dance-take-status').textContent='Press play on each preview if your browser blocks simultaneous playback.';}
+      });
+      const danceFeedback={
+        timing:{title:'Fix the beat before adding speed.',detail:'Pick one 8-count. Mark the pulse, then practise the movement slowly while saying the counts. Add the music back only when the accents land consistently.',drill:'Drill: 3 slow rounds, 3 at medium tempo, then 2 with the music.'},
+        control:{title:'Make the movement smaller until you can control it.',detail:'If nearby body parts move when they should stay quiet, reduce the range. Use a mirror or short recording to check whether each stop is clear.',drill:'Drill: 5 controlled repetitions per isolation, with a brief stillness after each one.'},
+        precision:{title:'Your shapes need a clearer finish point.',detail:'Pause at the key positions and check the direction, level, hand placement and spacing. Do not rush from one shape into the next.',drill:'Drill: hold each key shape for 2 comfortable counts, then connect them slowly.'},
+        transitions:{title:'The gaps between moves are part of the choreography.',detail:'Find the exact weight shift or pathway that connects the two movements. Practise the transition alone instead of repeatedly running the whole phrase.',drill:'Drill: loop the two counts before and after the transition for 6 clean repetitions.'},
+        dynamics:{title:'One energy level makes the phrase look flat.',detail:'Identify where the music asks for a hit, softness, suspension or release. Choose a clear contrast rather than making every move equally big.',drill:'Drill: repeat the phrase once softly, once sharply, then match the musical texture.'},
+        performance:{title:'Commit to a clear intention for each phrase.',detail:'Decide what the movement is communicating. Keep your focus and finish each action instead of mentally moving on early.',drill:'Drill: perform the phrase twice with one clear intention, then review the recording.'}
+      };
+      document.getElementById('dance-generate-feedback').addEventListener('click',()=>{
+        const chosen=[...document.querySelectorAll('.dance-check-option input:checked')].map(x=>x.value);
+        const host=document.getElementById('dance-feedback-output');
+        if(!chosen.length){host.hidden=false;host.innerHTML='<b>Choose at least one area first.</b><p>Select the things you genuinely noticed in your take. Honest inputs make useful feedback.</p>';return;}
+        const style=document.getElementById('dance-style-focus').value;
+        const notes=document.getElementById('dance-honest-notes').value.trim();
+        host.hidden=false;
+        host.innerHTML='<div class="dance-feedback-kicker">YOUR '+style.toUpperCase()+' COACH NOTES</div><h3>Start with these corrections.</h3>'+chosen.map((key,i)=>{const item=danceFeedback[key];return '<section class="dance-feedback-item"><span>0'+(i+1)+'</span><div><h4>'+item.title+'</h4><p>'+item.detail+'</p><small>'+item.drill+'</small></div></section>';}).join('')+(notes?'<div class="dance-user-observation"><b>Your observation</b><p></p></div>':'')+'<p class="dance-feedback-foot">Work on the first correction before trying to fix everything at once. Re-record the same section and compare again.</p>';
+        if(notes)host.querySelector('.dance-user-observation p').textContent=notes;
+      });
     })();
   </script>
   <script src="rewards.js?v=streak-rewards-20261110"></script>
