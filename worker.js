@@ -88,14 +88,14 @@ export default {
         const frames = body.danceFrames.slice(0, 10).filter(frame =>
           frame && typeof frame.label === "string" &&
           typeof frame.data === "string" &&
-          /^data:image\\/(jpeg|png);base64,/.test(frame.data) &&
+          /^data:image\/(jpeg|png);base64,/.test(frame.data) &&
           frame.data.length <= 1800000
         );
         if (!frames.length) {
           return Response.json({ error: "No valid dance frames were received. Please try the review again." }, { status: 400, headers: cors });
         }
         const imageContent = [
-          { type: "text", text: "Review the dance reference and the user's take using the labeled still frames below. Be candid, respectful, specific, and evidence-based. Compare visible poses, limb pathways, shapes, placement, and apparent control only where the stills support it. Still frames cannot establish exact timing, musicality, motion quality, or transitions; clearly say those need video/audio playback. Do not infer or judge body shape, attractiveness, weight, or physical traits. Give 2-3 priority corrections and a safe, practical drill. Frame labels identify REFERENCE versus YOUR TAKE." },
+          { type: "text", text: "User's requested focus: " + (safeMessages[safeMessages.length - 1]?.content || "Compare the dance reference and take.") + " Review the dance reference and the user's take using the labeled still frames below. Be candid, respectful, specific, and evidence-based. Compare visible poses, limb pathways, shapes, placement, and apparent control only where the stills support it. Still frames cannot establish exact timing, musicality, motion quality, or transitions; clearly say those need video/audio playback. Do not infer or judge body shape, attractiveness, weight, or physical traits. Give 2-3 priority corrections and a safe, practical drill. Frame labels identify REFERENCE versus YOUR TAKE." },
           ...frames.flatMap(frame => [
             { type: "text", text: frame.label },
             { type: "image_url", image_url: { url: frame.data } }
