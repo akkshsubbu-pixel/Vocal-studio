@@ -21,12 +21,20 @@
     {id:'rewards',label:'Streaks & rewards',keys:['reward','scratch card','streak','star coin','badge']}
   ];
   const AI_ENDPOINT = 'https://seok-woo-ai.akksh-subbu.workers.dev/chat';
-  const greetings = [
-    'Hey! I’m Seok Woo (석우). Ready to work on your vocals?',
-    'Welcome back! What are we practising today?',
-    'Heyyy! Want to work on a song, technique, or a quick vocal exercise?',
-    'Your studio is ready. What would you like help with today?'
-  ];
+  const greetings = {
+    vocal: [
+      'Hey! I’m Seok Woo (석우). Ready to work on your vocals?',
+      'Welcome back! What are we practising today?',
+      'Heyyy! Want to work on a song, technique, or a quick vocal exercise?',
+      'Your vocal studio is ready. What would you like help with today?'
+    ],
+    dance: [
+      'Hey! Seok Woo is here in your Dance Space. What are we working on today?',
+      'Dance Studio is open. Want to work on technique, musicality, or performance?',
+      'Ready for a dance session? Tell me what you’re practising and I’ll help you sharpen it.',
+      'I’m here for your movement practice. What should we break down first?'
+    ]
+  };
   let greeted = false;
   let greetingInChat = false;
   let currentGreeting = '';
@@ -69,15 +77,40 @@
   });
   updateModeButtons();
 
+  function studioContext() {
+    return document.body.classList.contains('dance-mode') ? 'dance' : 'vocal';
+  }
   function selectGreeting() {
-    const key = 'vocal-studio-companion-last-greeting';
+    const options = greetings[studioContext()];
+    const key = 'seok-woo-last-greeting-' + studioContext();
     let previous = -1;
     try { previous = Number(localStorage.getItem(key)); } catch (_) {}
-    let index = Math.floor(Math.random() * greetings.length);
-    if (greetings.length > 1 && Number.isInteger(previous) && previous >= 0 && index === previous) index = (index + 1 + Math.floor(Math.random() * (greetings.length - 1))) % greetings.length;
+    let index = Math.floor(Math.random() * options.length);
+    if (options.length > 1 && Number.isInteger(previous) && previous >= 0 && index === previous) index = (index + 1 + Math.floor(Math.random() * (options.length - 1))) % options.length;
     try { localStorage.setItem(key, String(index)); } catch (_) {}
-    return greetings[index];
+    return options[index];
   }
+  function syncStudioContext() {
+    const dance = studioContext() === 'dance';
+    input.placeholder = dance ? 'Ask Seok Woo about your dance studio…' : 'Ask Seok Woo about your vocal studio…';
+    const formLabel = form.querySelector('label');
+    if (formLabel) formLabel.textContent = dance ? 'Ask Seok Woo about your dance studio' : 'Ask Seok Woo about your vocal studio';
+    const promptLabels = dance ? ['Dance technique','Musicality tips','Review my performance'] : ['Pitch monitor','Pick an exercise','My rewards'];
+    const promptTexts = dance
+      ? ['Help me improve my dance technique','How can I improve my musicality?','Help me review my dance performance']
+      : ['How do I use the pitch monitor?','Help me choose an exercise','How do streaks and rewards work?'];
+    if (prompts) prompts.querySelectorAll('[data-prompt]').forEach((button,index) => {
+      if (promptLabels[index]) button.textContent = promptLabels[index];
+      if (promptTexts[index]) button.dataset.prompt = promptTexts[index];
+    });
+    modeBar.querySelectorAll('[data-mode="coach"]').forEach(button => button.textContent = dance ? '💃 Dance Coach' : '🎤 Vocal Coach');
+    if (currentGreeting && !greetingInChat) {
+      currentGreeting = selectGreeting();
+      greetingBubble.textContent = currentGreeting;
+    }
+  }
+  new MutationObserver(syncStudioContext).observe(document.body, {attributes:true, attributeFilter:['class']});
+  syncStudioContext();
 
   function addMessage(text, from='buddy', actions=[]) {
     const row = document.createElement('div');
@@ -129,7 +162,10 @@
       addMessage('My AI connection is almost ready! The secure Cloudflare Worker needs to be deployed and its URL added to my settings.');
       return;
     }
-    conversation.push({ role: 'user', content: text });
+    const contextInstruction = studioContext() === 'dance'
+      ? '[STUDIO CONTEXT: You are Seok Woo in the user’s DANCE SPACE. Act as a knowledgeable, direct, encouraging dance coach and companion. Focus on dance technique, musicality, timing, isolations, control, transitions, choreography, freestyle and performance. Do not give vocal-training advice unless the user asks for it. Be honest and specific, never insulting. When analysing dance frames, only claim what is visible in the supplied frames.]'
+      : '[STUDIO CONTEXT: You are Seok Woo in the user’s VOCAL SPACE. Focus on singing, vocal technique, pitch, musicality, exercises and vocal performance. Do not give dance-training advice unless the user asks for it.]';
+    conversation.push({ role: 'user', content: contextInstruction + '\n\n' + text });
     const sendButton = form.querySelector('button[type="submit"]');
     if (sendButton) sendButton.disabled = true;
     input.disabled = true;
