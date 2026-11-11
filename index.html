@@ -39,7 +39,7 @@
   <link rel="stylesheet" href="splash.css?v=cherry-red-20261111">
   <link rel="stylesheet" href="theme-cherry.css">
   <link rel="stylesheet" href="theme-dynamic.css">
-  <link rel="stylesheet" href="dance-home.css?v=dance-stretch-reference-4-20261111">
+  <link rel="stylesheet" href="dance-home.css?v=animated-stretch-guide-20261111">
   <link rel="stylesheet" href="vocal-home.css">
   <link rel="stylesheet" href="companion.css">
   <script>
@@ -420,6 +420,8 @@
           document.getElementById('dance-warmup-description').textContent=option.description;
           const reference4=document.getElementById('dance-stretch-reference-4');
           if(reference4)reference4.hidden=button.dataset.warmupOption!=='stretches';
+          const stretchPlayer=document.getElementById('dance-stretch-player');
+          if(stretchPlayer)stretchPlayer.hidden=button.dataset.warmupOption!=='stretches';
         });
       });
       const stretchSteps=[
