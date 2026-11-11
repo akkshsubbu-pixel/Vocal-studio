@@ -113,7 +113,7 @@
     return destinations.filter(item => item.keys.some(key => normalized.includes(key)));
   }
 
-  async function replyTo(raw) {
+  async function replyTo(raw, extra = {}) {
     const text = raw.trim();
     if (!text) return;
     addMessage(text, 'you');
@@ -137,7 +137,7 @@
       const response = await fetch(AI_ENDPOINT, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: conversation.slice(-12), mode: currentMode })
+        body: JSON.stringify({ messages: conversation.slice(-12), mode: currentMode, ...(Array.isArray(extra.danceFrames) ? { danceFrames: extra.danceFrames } : {}) })
       });
       const data = await response.json();
       if (!response.ok || !data.reply) throw new Error(data.error || 'The AI service is unavailable.');
@@ -174,6 +174,16 @@
       closeTimer = window.setTimeout(() => { if (!isOpen) chat.hidden = true; }, 190);
     }
   }
+
+  window.seokWooDanceReview = async ({frames, prompt} = {}) => {
+    if (!Array.isArray(frames) || !frames.length || typeof prompt !== 'string') {
+      addMessage('I need the selected reference and take frames before I can review your dance.', 'buddy');
+      setOpen(true);
+      return;
+    }
+    setOpen(true);
+    await replyTo(prompt, { danceFrames: frames });
+  };
 
   toggle.addEventListener('click', () => setOpen(!isOpen));
   $('#companion-close').addEventListener('click', () => setOpen(false));
