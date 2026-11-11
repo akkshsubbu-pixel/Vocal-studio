@@ -400,17 +400,31 @@
       loadDanceVideo('dance-reference-file','dance-reference-preview','dance-reference-name','dance-reference-status','reference');
       loadDanceVideo('dance-take-file','dance-take-preview','dance-take-name','dance-take-status','take');
       const danceRef=document.getElementById('dance-reference-preview'),danceTake=document.getElementById('dance-take-preview');
+      function seekDanceVideo(video,time){
+        const seek=()=>{video.currentTime=Math.min(time,Number.isFinite(video.duration)?video.duration:time);};
+        if(video.readyState>=1)seek();else video.addEventListener('loadedmetadata',seek,{once:true});
+      }
       document.getElementById('dance-set-section').addEventListener('click',()=>{
         const start=Math.max(0,Number(document.getElementById('dance-section-start').value)||0);
         const end=Number(document.getElementById('dance-section-end').value);
-        [danceRef,danceTake].forEach(v=>{if(v.src){v.currentTime=Math.min(start,Number.isFinite(v.duration)?v.duration:start);}});
-        if(Number.isFinite(end)&&end>start){[danceRef,danceTake].forEach(v=>{if(v.src)v.dataset.sectionEnd=String(end);});}
+        [danceRef,danceTake].forEach(v=>{
+          if(!v.src)return;
+          if(Number.isFinite(end)&&end>start)v.dataset.sectionEnd=String(end);else delete v.dataset.sectionEnd;
+          seekDanceVideo(v,start);
+        });
       });
+      [danceRef,danceTake].forEach(v=>v.addEventListener('timeupdate',()=>{
+        const end=Number(v.dataset.sectionEnd);
+        if(Number.isFinite(end)&&end>0&&v.currentTime>=end)v.pause();
+      }));
       document.getElementById('dance-compare-play').addEventListener('click',async()=>{
         if(!danceRef.src||!danceTake.src)return;
         const start=Math.max(0,Number(document.getElementById('dance-section-start').value)||0);
-        [danceRef,danceTake].forEach(v=>{v.pause();v.currentTime=Math.min(start,Number.isFinite(v.duration)?v.duration:start);});
-        try{await Promise.all([danceRef.play(),danceTake.play()]);}catch(_){document.getElementById('dance-take-status').textContent='Press play on each preview if your browser blocks simultaneous playback.';}
+        try{
+          await Promise.all([danceRef,danceTake].map(v=>v.readyState>=1?Promise.resolve():new Promise(resolve=>v.addEventListener('loadedmetadata',resolve,{once:true}))));
+          [danceRef,danceTake].forEach(v=>{v.pause();seekDanceVideo(v,start);});
+          await Promise.all([danceRef.play(),danceTake.play()]);
+        }catch(_){document.getElementById('dance-take-status').textContent='Press play on each preview if your browser blocks simultaneous playback.';}
       });
       const danceFeedback={
         timing:{title:'Fix the beat before adding speed.',detail:'Pick one 8-count. Mark the pulse, then practise the movement slowly while saying the counts. Add the music back only when the accents land consistently.',drill:'Drill: 3 slow rounds, 3 at medium tempo, then 2 with the music.'},
