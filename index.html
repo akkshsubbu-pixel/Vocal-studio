@@ -66,17 +66,19 @@
           splash.classList.add('splash-exit');
           window.setTimeout(() => {
             splash.hidden = true;
+            document.body.classList.remove('entry-pending');
+            document.body.classList.add('entry-selecting');
             const appChrome = {cherry:'#170810',ruby:'#180b07',gold:'#181104',lime:'#121402',emerald:'#06140d',teal:'#061419',blue:'#07111d'};
             document.querySelector('meta[name="theme-color"]').content = appChrome[document.documentElement.dataset.appPalette] || appChrome.cherry;
           }, 900);
-        }, 2000);
+        }, 10000);
       };
       if (splash.classList.contains('splash-image-ready')) startSplashTimer();
       else splash.addEventListener('splash-image-ready', startSplashTimer, {once:true});
     });
   </script>
 </head>
-<body>
+<body class="entry-pending">
   <div id="launch-splash" class="launch-splash" role="status" aria-label="Welcome to Vocal Studio">
     <img id="splash-art" alt="Fire with Roots: a glowing crown, microphone, musical notes, fire, lotus, peacock feather, and artist goals under a starry sky" fetchpriority="high" decoding="async">
     <span class="splash-sparkle sparkle-one" aria-hidden="true">✦</span><span class="splash-sparkle sparkle-two" aria-hidden="true">✧</span><span class="splash-sparkle sparkle-three" aria-hidden="true">✦</span><span class="splash-sparkle sparkle-four" aria-hidden="true">✧</span><span class="splash-sparkle sparkle-five" aria-hidden="true">✦</span><span class="splash-sparkle sparkle-six" aria-hidden="true">✧</span><span class="splash-sparkle sparkle-seven" aria-hidden="true">✦</span><span class="splash-sparkle sparkle-eight" aria-hidden="true">✧</span><span class="splash-sparkle sparkle-nine" aria-hidden="true">✦</span><span class="splash-sparkle sparkle-ten" aria-hidden="true">✧</span><span class="splash-sparkle sparkle-eleven" aria-hidden="true">✦</span><span class="splash-sparkle sparkle-twelve" aria-hidden="true">✧</span><span class="splash-sparkle sparkle-thirteen" aria-hidden="true">✦</span>
@@ -106,6 +108,36 @@
       window.setTimeout(finish, 5000);
     })();
   </script>
+
+  <section class="entry-gate" id="entry-gate" aria-label="Choose your practice space">
+    <div class="entry-gate-inner">
+      <div class="entry-gate-kicker">YOUR CREATIVE SPACE</div>
+      <h1>Where shall we <em>begin?</em></h1>
+      <p>Choose what you want to work on today.</p>
+      <div class="entry-gate-options">
+        <button class="entry-choice entry-choice-vocal" id="enter-vocal" type="button">
+          <span class="entry-choice-icon" aria-hidden="true">♫</span>
+          <span class="entry-choice-title">Vocal</span>
+          <span class="entry-choice-subtitle">Your voice studio</span>
+          <span class="entry-choice-arrow" aria-hidden="true">→</span>
+        </button>
+        <button class="entry-choice entry-choice-dance" id="enter-dance" type="button">
+          <span class="entry-choice-icon" aria-hidden="true">✧</span>
+          <span class="entry-choice-title">Dance</span>
+          <span class="entry-choice-subtitle">Movement & performance</span>
+          <span class="entry-choice-arrow" aria-hidden="true">→</span>
+        </button>
+      </div>
+      <div class="entry-gate-foot">LISTEN · MOVE · CREATE</div>
+    </div>
+    <div class="dance-coming-soon" id="dance-coming-soon" hidden>
+      <div class="entry-gate-kicker">YOUR NEXT CREATIVE SPACE</div>
+      <div class="coming-soon-symbol" aria-hidden="true">✦</div>
+      <h1>Dance is <em>coming soon.</em></h1>
+      <p>We’ll build your dance space next. Your Vocal Studio is ready whenever you are.</p>
+      <button class="entry-back-button" id="back-to-choices" type="button">← Back to choices</button>
+    </div>
+  </section>
   <aside class="sidebar">
     <a class="brand" href="#studio"><span class="brand-mark">♫</span><span>vocal<span class="brand-light"> studio</span><small>A HAPPY PLACE TO PRACTICE</small></span></a>
     <div class="nav-label">YOUR PRACTICE SPACE</div>
@@ -193,6 +225,24 @@
     </button>
   </aside>
   <audio id="reference-audio"></audio><audio id="take-audio"></audio><audio id="visualiser-audio"></audio>
+
+  <script>
+    (() => {
+      const gate = document.getElementById('entry-gate');
+      const comingSoon = document.getElementById('dance-coming-soon');
+      document.getElementById('enter-vocal').addEventListener('click', () => {
+        document.body.classList.remove('entry-selecting');
+      });
+      document.getElementById('enter-dance').addEventListener('click', () => {
+        gate.classList.add('show-coming-soon');
+        comingSoon.hidden = false;
+      });
+      document.getElementById('back-to-choices').addEventListener('click', () => {
+        gate.classList.remove('show-coming-soon');
+        comingSoon.hidden = true;
+      });
+    })();
+  </script>
   <script src="rewards.js?v=streak-rewards-20261110"></script>
   <script src="pitch-detector.js?v=monitor-pipeline-20261110"></script>
   <script src="app.js?v=monitor-pipeline-20261110"></script>
