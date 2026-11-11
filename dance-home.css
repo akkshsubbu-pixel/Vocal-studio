@@ -182,3 +182,10 @@ body.dance-mode .dance-main{display:block}
 @media(max-width:900px){.dance-reality-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:760px){.dance-studio-grid,.dance-coach-inputs{grid-template-columns:1fr}.dance-reality-grid{grid-template-columns:1fr}.dance-studio-footer{flex-direction:column}.dance-reality-heading{gap:10px}}
 @media(max-width:420px){.dance-section-fields{grid-template-columns:1fr}.dance-upload-zone{min-height:120px}}
+
+.dance-consent-option{display:flex;gap:11px;align-items:flex-start;margin-top:17px;padding:14px;border:1px solid var(--h-edge);border-radius:12px;background:var(--h-bg);cursor:pointer}
+.dance-consent-option input{flex:0 0 auto;width:17px;height:17px;margin:2px 0 0;accent-color:var(--h-primary)}
+.dance-consent-option b{display:block;color:var(--h-text);font:700 12px var(--sans)}
+.dance-consent-option small{display:block;margin-top:5px;color:var(--h-muted);font:10px/1.55 var(--sans)}
+.dance-generate-feedback:disabled{opacity:.48;cursor:not-allowed}
+.dance-ai-status{min-height:18px;margin:10px 0 0;color:var(--h-muted);font:11px/1.6 var(--sans)}
