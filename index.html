@@ -204,18 +204,14 @@
           </article>
         </div>
         <article class="dance-reality-card">
-          <div class="dance-reality-heading"><div><div class="eyebrow">03 / THE REALITY CHECK</div><h2>Honest feedback. Useful fixes.</h2><p>Choose what you noticed while comparing your take. This coach guide turns your observations into a focused correction plan — it does not pretend to analyse body movement automatically.</p></div><span class="dance-reality-mark">✦</span></div>
-          <div class="dance-reality-grid">
-            <label class="dance-check-option"><input type="checkbox" value="timing"><span><b>Timing & musicality</b><small>Late, early, or missing musical accents</small></span></label>
-            <label class="dance-check-option"><input type="checkbox" value="control"><span><b>Control & isolations</b><small>Extra movement or unclear stops</small></span></label>
-            <label class="dance-check-option"><input type="checkbox" value="precision"><span><b>Precision & shapes</b><small>Unclear angles, lines, or hand placement</small></span></label>
-            <label class="dance-check-option"><input type="checkbox" value="transitions"><span><b>Transitions & flow</b><small>Hesitation or disconnected movements</small></span></label>
-            <label class="dance-check-option"><input type="checkbox" value="dynamics"><span><b>Dynamics & texture</b><small>Same energy throughout, little contrast</small></span></label>
-            <label class="dance-check-option"><input type="checkbox" value="performance"><span><b>Performance & presence</b><small>Low commitment or unclear intention</small></span></label>
+          <div class="dance-reality-heading"><div><div class="eyebrow">03 / THE REALITY CHECK</div><h2>Seok Woo's dance review.</h2><p>Your AI companion will review selected frames from both videos and give you direct, specific feedback. He'll separate what he can see from what needs a closer look.</p></div><span class="dance-reality-mark">✦</span></div>
+          <div class="dance-coach-inputs">
+            <label for="dance-style-focus">STYLE YOU ARE PRACTISING<select id="dance-style-focus" class="dance-select"><option>House</option><option>Tutting</option><option>Waacking</option><option>Hip-hop</option><option>Popping</option><option>Choreography / mixed style</option></select></label>
+            <label for="dance-honest-notes">WHAT SHOULD SEOK WOO PAY EXTRA ATTENTION TO? <span>Optional</span><textarea id="dance-honest-notes" rows="3" placeholder="For example: my timing, footwork, arm pathways, transitions..."></textarea></label>
           </div>
-          <div class="dance-coach-inputs"><label for="dance-style-focus">STYLE YOU ARE PRACTISING<select id="dance-style-focus" class="dance-select"><option>House</option><option>Tutting</option><option>Waacking</option><option>Hip-hop</option><option>Popping</option><option>Choreography / mixed style</option></select></label><label for="dance-honest-notes">WHAT DID YOU NOTICE? <span>Optional</span><textarea id="dance-honest-notes" rows="3" placeholder="Be specific: which moment felt messy, rushed, stiff, or unclear?"></textarea></label></div>
-          <button class="dance-action-button dance-generate-feedback" id="dance-generate-feedback" type="button">Give me the honest breakdown →</button>
-          <div class="dance-feedback-output" id="dance-feedback-output" aria-live="polite" hidden></div>
+          <label class="dance-consent-option"><input id="dance-ai-consent" type="checkbox"><span><b>I'm okay with sending selected video frames for AI review.</b><small>Only still frames are sent to the AI service — not the full video. Up to 5 frames from each video are sampled. Don't upload anything you don't want analysed by the online service.</small></span></label>
+          <button class="dance-action-button dance-generate-feedback" id="dance-generate-feedback" type="button" disabled>Ask Seok Woo for my honest review →</button>
+          <p class="dance-ai-status" id="dance-ai-status" aria-live="polite">Load both videos and agree to the frame-sharing note to request an AI review.</p>
         </article>
         <div class="dance-studio-footer"><span>REFERENCE → PERFORMANCE → IMPROVEMENT</span><span>Your videos stay in this browser session.</span></div>
       </section>
@@ -426,24 +422,71 @@
           await Promise.all([danceRef.play(),danceTake.play()]);
         }catch(_){document.getElementById('dance-take-status').textContent='Press play on each preview if your browser blocks simultaneous playback.';}
       });
-      const danceFeedback={
-        timing:{title:'Fix the beat before adding speed.',detail:'Pick one 8-count. Mark the pulse, then practise the movement slowly while saying the counts. Add the music back only when the accents land consistently.',drill:'Drill: 3 slow rounds, 3 at medium tempo, then 2 with the music.'},
-        control:{title:'Make the movement smaller until you can control it.',detail:'If nearby body parts move when they should stay quiet, reduce the range. Use a mirror or short recording to check whether each stop is clear.',drill:'Drill: 5 controlled repetitions per isolation, with a brief stillness after each one.'},
-        precision:{title:'Your shapes need a clearer finish point.',detail:'Pause at the key positions and check the direction, level, hand placement and spacing. Do not rush from one shape into the next.',drill:'Drill: hold each key shape for 2 comfortable counts, then connect them slowly.'},
-        transitions:{title:'The gaps between moves are part of the choreography.',detail:'Find the exact weight shift or pathway that connects the two movements. Practise the transition alone instead of repeatedly running the whole phrase.',drill:'Drill: loop the two counts before and after the transition for 6 clean repetitions.'},
-        dynamics:{title:'One energy level makes the phrase look flat.',detail:'Identify where the music asks for a hit, softness, suspension or release. Choose a clear contrast rather than making every move equally big.',drill:'Drill: repeat the phrase once softly, once sharply, then match the musical texture.'},
-        performance:{title:'Commit to a clear intention for each phrase.',detail:'Decide what the movement is communicating. Keep your focus and finish each action instead of mentally moving on early.',drill:'Drill: perform the phrase twice with one clear intention, then review the recording.'}
-      };
-      document.getElementById('dance-generate-feedback').addEventListener('click',()=>{
-        const chosen=[...document.querySelectorAll('.dance-check-option input:checked')].map(x=>x.value);
-        const host=document.getElementById('dance-feedback-output');
-        if(!chosen.length){host.hidden=false;host.innerHTML='<b>Choose at least one area first.</b><p>Select the things you genuinely noticed in your take. Honest inputs make useful feedback.</p>';return;}
-        const style=document.getElementById('dance-style-focus').value;
-        const notes=document.getElementById('dance-honest-notes').value.trim();
-        host.hidden=false;
-        host.innerHTML='<div class="dance-feedback-kicker">YOUR '+style.toUpperCase()+' COACH NOTES</div><h3>Start with these corrections.</h3>'+chosen.map((key,i)=>{const item=danceFeedback[key];return '<section class="dance-feedback-item"><span>0'+(i+1)+'</span><div><h4>'+item.title+'</h4><p>'+item.detail+'</p><small>'+item.drill+'</small></div></section>';}).join('')+(notes?'<div class="dance-user-observation"><b>Your observation</b><p></p></div>':'')+'<p class="dance-feedback-foot">Work on the first correction before trying to fix everything at once. Re-record the same section and compare again.</p>';
-        if(notes)host.querySelector('.dance-user-observation p').textContent=notes;
+      const danceReviewButton=document.getElementById('dance-generate-feedback');
+      const danceConsent=document.getElementById('dance-ai-consent');
+      const danceReviewStatus=document.getElementById('dance-ai-status');
+      function updateDanceReviewReady(){
+        danceReviewButton.disabled=!(danceRef.src&&danceTake.src&&danceConsent.checked);
+      }
+      danceConsent.addEventListener('change',updateDanceReviewReady);
+      function waitForVideoSeek(video,time){
+        return new Promise((resolve,reject)=>{
+          const done=()=>{cleanup();resolve();};
+          const fail=()=>{cleanup();reject(new Error('Could not read a frame from one of the videos.'));};
+          const cleanup=()=>{video.removeEventListener('seeked',done);video.removeEventListener('error',fail);};
+          if(Math.abs(video.currentTime-time)<0.04){resolve();return;}
+          video.addEventListener('seeked',done,{once:true});video.addEventListener('error',fail,{once:true});
+          video.currentTime=time;
+        });
+      }
+      async function sampleDanceFrames(video,label){
+        if(!video.src)throw new Error('Please load both videos first.');
+        if(video.readyState<1)await new Promise((resolve,reject)=>{video.addEventListener('loadedmetadata',resolve,{once:true});video.addEventListener('error',()=>reject(new Error('A video could not be read.')),{once:true});});
+        const start=Math.max(0,Number(document.getElementById('dance-section-start').value)||0);
+        const enteredEnd=Number(document.getElementById('dance-section-end').value);
+        const end=Number.isFinite(enteredEnd)&&enteredEnd>start?Math.min(enteredEnd,video.duration):video.duration;
+        if(!Number.isFinite(end)||end<=start)throw new Error('Check the start and end times for your selected section.');
+        const oldTime=video.currentTime,wasPaused=video.paused,frames=[];
+        const canvas=document.createElement('canvas'),ctx=canvas.getContext('2d');
+        try{
+          for(let i=0;i<5;i++){
+            const t=start+(end-start)*(i/4);
+            await waitForVideoSeek(video,t);
+            const scale=Math.min(1,512/video.videoWidth);
+            canvas.width=Math.max(1,Math.round(video.videoWidth*scale));
+            canvas.height=Math.max(1,Math.round(video.videoHeight*scale));
+            ctx.drawImage(video,0,0,canvas.width,canvas.height);
+            frames.push({label:label+' · '+(i+1)+'/5 · '+t.toFixed(1)+' sec',data:canvas.toDataURL('image/jpeg',0.62)});
+          }
+        }finally{
+          if(Number.isFinite(oldTime))await waitForVideoSeek(video,Math.min(oldTime,video.duration)).catch(()=>{});
+          if(!wasPaused)video.play().catch(()=>{});
+        }
+        return frames;
+      }
+      danceReviewButton.addEventListener('click',async()=>{
+        if(!danceConsent.checked){danceReviewStatus.textContent='Please tick the frame-sharing note first.';return;}
+        if(typeof window.seokWooDanceReview!=='function'){danceReviewStatus.textContent='Seok Woo’s AI chat is not available on this page yet.';return;}
+        danceReviewButton.disabled=true;danceReviewStatus.textContent='Preparing a few still frames from your two videos…';
+        try{
+          const [referenceFrames,takeFrames]=await Promise.all([
+            sampleDanceFrames(danceRef,'REFERENCE'),
+            sampleDanceFrames(danceTake,'YOUR TAKE')
+          ]);
+          const frames=[...referenceFrames,...takeFrames];
+          danceReviewStatus.textContent='Sending 10 selected frames to Seok Woo for review…';
+          const style=document.getElementById('dance-style-focus').value;
+          const notes=document.getElementById('dance-honest-notes').value.trim();
+          await window.seokWooDanceReview({
+            frames,
+            prompt:'Please compare these selected frames from my dance reference and my own take. Dance style: '+style+'. '+(notes?'Pay special attention to: '+notes+'. ':'')+'Give me direct, respectful, evidence-based feedback: what matches, what differs, the 2-3 highest-priority corrections, and a short safe practice drill. Identify the reference frames and my take frames by their labels. Do not guess about movement between still frames, exact timing, or audio; say clearly what cannot be judged from still images. Do not comment on my body shape or appearance.'
+          });
+          danceReviewStatus.textContent='Your selected frames were sent to Seok Woo. Check the AI chat for the review.';
+        }catch(error){
+          danceReviewStatus.textContent=error.message||'Could not prepare the review. Please try again.';
+        }finally{updateDanceReviewReady();}
       });
+      updateDanceReviewReady();
     })();
   </script>
   <script src="rewards.js?v=streak-rewards-20261110"></script>
