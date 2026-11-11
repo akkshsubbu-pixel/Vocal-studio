@@ -1,76 +1,215 @@
-.companion-dock{--h-bg:#170810;--h-bg-light:#70213e;--h-bg-secondary:#3e1428;--h-panel:#24101a;--h-panel-raised:#321421;--h-panel-tint:#2b1420;--h-text:#fff4f7;--h-muted:#c6afb9;--h-soft:#d0b9c3;--h-primary:#e33762;--h-primary-bright:#ff78a9;--h-primary-deep:#9c1744;--h-secondary:#ff91b7;--h-metal:#e4d8de;--h-edge:#ead4dc55;--h-edge-bright:#ff9dbd88;--h-glow:rgba(255,86,138,.28);--h-focus:#e5c98f;--h-reflection:rgba(255,120,169,.12);--h-button-text:#fff;position:fixed;right:max(18px,env(safe-area-inset-right));bottom:max(18px,env(safe-area-inset-bottom));z-index:9990;font-family:var(--sans,'Nunito',sans-serif);color:var(--h-text);pointer-events:none}
-.companion-dock button,.companion-chat{pointer-events:auto}
-.companion-toggle{position:relative;display:grid;place-items:center;width:78px;height:78px;padding:4px;border:1px solid var(--h-edge-bright);border-radius:50%;overflow:visible;background:linear-gradient(145deg,var(--h-panel-raised),var(--h-panel) 54%,var(--h-primary-deep));box-shadow:inset 0 1px 0 #fff9,0 5px 24px #0007,0 0 22px var(--h-glow);cursor:pointer;animation:companion-float 4.2s ease-in-out infinite}
-.companion-toggle:hover{transform:translateY(-2px);box-shadow:inset 0 1px 0 #fff9,0 8px 28px #0008,0 0 30px var(--h-glow)}
-.companion-halo{position:absolute;inset:-5px;border-radius:50%;background:conic-gradient(from 35deg,var(--h-primary-bright),var(--h-metal),var(--h-secondary),var(--h-primary),var(--h-metal),var(--h-primary-bright));opacity:.72;filter:blur(8px);z-index:-1;pointer-events:none}
-.companion-avatar,.companion-chat-avatar{display:block;object-fit:cover;object-position:50% 24%;background:#fffaf7;filter:none!important;mix-blend-mode:normal;border-radius:50%;user-select:none;-webkit-user-drag:none}
-.companion-avatar{width:68px;height:68px;border:1px solid #fff9;box-shadow:inset 0 0 0 1px #fff5}
-.companion-spark{position:absolute;color:var(--h-metal);text-shadow:0 0 12px var(--h-primary-bright),0 0 20px var(--h-glow);pointer-events:none;animation:companion-twinkle 2.6s ease-in-out infinite alternate}
-.companion-spark-one{top:-7px;right:6px;font-size:16px}.companion-spark-two{bottom:5px;left:-7px;font-size:13px;animation-delay:1.1s}
-.companion-chat{position:absolute;right:0;bottom:94px;display:flex;flex-direction:column;width:min(356px,calc(100vw - 26px));max-height:min(520px,calc(100dvh - 132px));overflow:hidden;border:1px solid var(--h-edge-bright);border-radius:21px;background:radial-gradient(ellipse at 4% 0%,var(--h-reflection),transparent 44%),linear-gradient(145deg,color-mix(in srgb,var(--h-panel-raised) 94%,#fff 6%),var(--h-panel) 60%,var(--h-bg-secondary));box-shadow:inset 0 1px 0 #fff2,0 18px 60px #0009,0 0 32px var(--h-glow);backdrop-filter:blur(22px);opacity:0;transform:translateY(9px) scale(.985);transition:opacity .18s ease,transform .18s ease;transform-origin:bottom right}
-.companion-chat.is-open{opacity:1;transform:translateY(0) scale(1)}
-.companion-chat[hidden]{display:none}
-.companion-chat-head{display:flex;align-items:center;gap:10px;padding:13px 14px;border-bottom:1px solid var(--h-edge);background:linear-gradient(105deg,var(--h-panel-raised),color-mix(in srgb,var(--h-panel) 82%,var(--h-primary) 18%))}
-.companion-chat-avatar{width:40px;height:40px;border:1px solid var(--h-edge-bright);box-shadow:0 0 12px var(--h-glow)}
-.companion-chat-head>div{display:grid;gap:3px;min-width:0;flex:1}.companion-chat-head strong{font-size:15px;color:var(--h-text)}.companion-chat-head span{font-size:8px;letter-spacing:.12em;color:var(--h-secondary)}
-.companion-close{display:grid;place-items:center;width:32px;height:32px;border:1px solid var(--h-edge);border-radius:50%;background:var(--h-panel);color:var(--h-text);font-size:22px;line-height:1;cursor:pointer}
-.companion-messages{display:flex;flex:1;flex-direction:column;gap:10px;min-height:118px;padding:14px;overflow:auto;overscroll-behavior:contain;scrollbar-color:var(--h-primary-deep) transparent}
-.companion-message{max-width:91%;animation:companion-message-in .2s ease both}.companion-message p{margin:0;padding:10px 12px;border:1px solid var(--h-edge);border-radius:14px 14px 14px 4px;background:linear-gradient(140deg,var(--h-panel-raised),var(--h-panel));color:var(--h-text);font-size:13px;line-height:1.5;overflow-wrap:anywhere}
-.companion-message.from-you{align-self:flex-end}.companion-message.from-you p{border-color:var(--h-edge-bright);border-radius:14px 14px 4px 14px;background:linear-gradient(125deg,var(--h-primary-deep),var(--h-primary));color:var(--h-button-text,#fff)}
-.companion-actions{display:flex;flex-wrap:wrap;gap:5px;margin:7px 0 0}.companion-actions button,.companion-prompts button{border:1px solid var(--h-edge);border-radius:999px;padding:6px 9px;background:linear-gradient(120deg,var(--h-panel-raised),var(--h-panel));color:var(--h-secondary);font:600 10px var(--sans,'Nunito',sans-serif);cursor:pointer}.companion-actions button:hover,.companion-prompts button:hover{border-color:var(--h-edge-bright);box-shadow:0 0 12px var(--h-glow);color:var(--h-text)}
-.companion-prompts{display:flex;gap:6px;padding:0 12px 10px;overflow-x:auto;scrollbar-width:none}.companion-prompts::-webkit-scrollbar{display:none}.companion-prompts button{flex:none;font-size:9px}
-.companion-form{display:flex;gap:8px;padding:10px 12px;border-top:1px solid var(--h-edge);background:#0002}.companion-form input{min-width:0;flex:1;padding:10px 12px;border:1px solid var(--h-edge);border-radius:999px;background:var(--h-bg)!important;color:var(--h-text)!important;font:500 12px var(--sans,'Nunito',sans-serif)}.companion-form input::placeholder{color:var(--h-muted)}.companion-form button{width:38px;height:38px;border:1px solid var(--h-edge-bright);border-radius:50%;background:linear-gradient(140deg,var(--h-primary-deep),var(--h-primary),var(--h-primary-bright));color:var(--h-button-text,#fff);font-size:19px;font-weight:800;cursor:pointer;box-shadow:0 0 14px var(--h-glow)}
-.companion-note{margin:0;padding:0 14px 9px;text-align:center;color:var(--h-muted);font-size:9px;letter-spacing:.02em}
-.companion-greeting{position:absolute;right:1px;bottom:94px;width:min(290px,calc(100vw - 30px));padding:11px 14px;border:1px solid var(--h-edge-bright);border-radius:16px 16px 4px 16px;background:radial-gradient(ellipse at 0% 0%,var(--h-reflection),transparent 55%),linear-gradient(125deg,var(--h-panel-raised),var(--h-bg-secondary));box-shadow:inset 0 1px 0 #fff3,0 9px 28px #0008,0 0 22px var(--h-glow);color:var(--h-text);font-size:13px;font-weight:700;line-height:1.4;pointer-events:none;animation:companion-message-in .3s ease both}
-.companion-greeting[hidden]{display:none}
-.sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-@keyframes companion-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}@keyframes companion-twinkle{from{opacity:.45;transform:scale(.82) rotate(-8deg)}to{opacity:1;transform:scale(1.12) rotate(8deg)}}@keyframes companion-message-in{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
-@media(max-width:520px){.companion-dock{right:max(12px,env(safe-area-inset-right));bottom:max(12px,env(safe-area-inset-bottom))}.companion-toggle{width:68px;height:68px}.companion-avatar{width:58px;height:58px}.companion-chat{bottom:82px;max-height:min(490px,calc(100dvh - 110px))}}
-@media(prefers-reduced-motion:reduce){.companion-toggle,.companion-spark,.companion-message,.companion-greeting{animation:none}.companion-toggle,.companion-toggle:hover{transform:none}.companion-chat{transition:none}}
+(() => {
+  'use strict';
+  const $ = selector => document.querySelector(selector);
+  const toggle = $('#companion-toggle');
+  const chat = $('#companion-chat');
+  const messages = $('#companion-messages');
+  const form = $('#companion-form');
+  const input = $('#companion-input');
+  const prompts = $('#companion-prompts');
+  const greetingBubble = $('#companion-greeting');
+  if (!toggle || !chat || !messages || !form || !input || !greetingBubble) return;
 
-/* Seok Woo flying-bot hover animation */
-.companion-toggle {
-  transform-origin: 50% 55%;
-  animation: seokwoo-flight 6.8s ease-in-out infinite;
-  will-change: transform;
-}
-.companion-toggle .companion-halo {
-  animation: seokwoo-aura 3.4s ease-in-out infinite;
-}
-.companion-toggle .companion-spark-one {
-  animation: seokwoo-orbit-one 4.8s ease-in-out infinite;
-}
-.companion-toggle .companion-spark-two {
-  animation: seokwoo-orbit-two 5.6s ease-in-out infinite;
-}
-.companion-toggle:hover {
-  animation-play-state: paused;
-  transform: translateY(-5px) scale(1.04);
-}
-@keyframes seokwoo-flight {
-  0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg); }
-  16% { transform: translate3d(-9px, -13px, 0) rotate(-4deg); }
-  34% { transform: translate3d(-16px, -5px, 0) rotate(-2deg); }
-  52% { transform: translate3d(-7px, -19px, 0) rotate(3deg); }
-  70% { transform: translate3d(5px, -10px, 0) rotate(4deg); }
-  86% { transform: translate3d(3px, -3px, 0) rotate(1deg); }
-}
-@keyframes seokwoo-aura {
-  0%, 100% { opacity: .52; transform: scale(.94); filter: blur(8px); }
-  50% { opacity: .95; transform: scale(1.12); filter: blur(12px); }
-}
-@keyframes seokwoo-orbit-one {
-  0%, 100% { transform: translate(0, 0) scale(.85) rotate(-8deg); }
-  50% { transform: translate(5px, -8px) scale(1.2) rotate(18deg); }
-}
-@keyframes seokwoo-orbit-two {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(-6px, 5px) scale(.8); }
-}
-@media (prefers-reduced-motion: reduce) {
-  .companion-toggle, .companion-toggle .companion-halo,
-  .companion-toggle .companion-spark-one, .companion-toggle .companion-spark-two {
-    animation: none !important;
-    transform: none !important;
+  const destinations = [
+    {id:'studio',label:'Practice studio',keys:['studio','practice studio','reference','compare','comparison','record a take']},
+    {id:'singing',label:'Western Notes Visualiser',keys:['western','visualiser','visualizer','song playback','compare notes','note graph']},
+    {id:'monitor',label:'Live Pitch Monitor',keys:['pitch monitor','live pitch','pitch tracker','monitor']},
+    {id:'warmups',label:'Warm-up sessions',keys:['warm up','warm-up','warmup']},
+    {id:'exercises',label:'Exercise library',keys:['exercise','practice exercise','siren','honey voice']},
+    {id:'ear',label:'Ear training',keys:['ear training','interval','train my ear']},
+    {id:'progress',label:'Progress & schedule',keys:['schedule','calendar','progress','artist goal','practice plan']},
+    {id:'rewards',label:'Streaks & rewards',keys:['reward','scratch card','streak','star coin','badge']}
+  ];
+  const AI_ENDPOINT = 'https://seok-woo-ai.akksh-subbu.workers.dev/chat';
+  const greetings = [
+    'Hey! I’m Seok Woo (석우). Ready to work on your vocals?',
+    'Welcome back! What are we practising today?',
+    'Heyyy! Want to work on a song, technique, or a quick vocal exercise?',
+    'Your studio is ready. What would you like help with today?'
+  ];
+  let greeted = false;
+  let greetingInChat = false;
+  let currentGreeting = '';
+  let isOpen = false;
+  let closeTimer = 0;
+  let addressCount = 0;
+  const conversation = [];
+  const modeKey = 'vocal-studio-seok-woo-mode';
+  let currentMode = 'both';
+  try {
+    const savedMode = localStorage.getItem(modeKey);
+    if (['coach','companion','both'].includes(savedMode)) currentMode = savedMode;
+  } catch (_) {}
+
+  // Add a compact mode picker without changing the existing chat layout.
+  const modeBar = document.createElement('div');
+  modeBar.className = 'seok-mode-bar';
+  modeBar.setAttribute('aria-label', 'Choose Seok Woo mode');
+  modeBar.innerHTML = '<span>MODE</span><button type="button" data-mode="coach">🎤 Vocal Coach</button><button type="button" data-mode="companion">✨ Companion</button><button type="button" data-mode="both">Both</button>';
+  const chatHead = chat.querySelector('.companion-chat-head');
+  if (chatHead) chatHead.insertAdjacentElement('afterend', modeBar);
+
+  const modeStyle = document.createElement('style');
+  modeStyle.textContent = '.seok-mode-bar{display:flex;align-items:center;gap:6px;flex-wrap:wrap;padding:9px 12px;border-bottom:1px solid #e9e7e1;background:#fbfaf7}.seok-mode-bar span{font-size:9px;letter-spacing:1px;color:#858a91;margin-right:3px}.seok-mode-bar button{border:1px solid #e5e1d9;background:#fff;color:#626a69;border-radius:16px;padding:6px 9px;font-size:10px}.seok-mode-bar button[aria-pressed="true"]{background:#edf2ef;border-color:#497c73;color:#35665e;font-weight:700}.companion-note{font-size:10px;color:#858a91}';
+  document.head.appendChild(modeStyle);
+
+  function updateModeButtons() {
+    modeBar.querySelectorAll('[data-mode]').forEach(button => {
+      button.setAttribute('aria-pressed', String(button.dataset.mode === currentMode));
+    });
   }
-}
+  modeBar.addEventListener('click', event => {
+    const button = event.target.closest('[data-mode]');
+    if (!button) return;
+    currentMode = button.dataset.mode;
+    try { localStorage.setItem(modeKey, currentMode); } catch (_) {}
+    updateModeButtons();
+    const labels = {coach:'Vocal Coach', companion:'K-drama Companion', both:'Both Modes'};
+    addMessage('Mode changed to ' + labels[currentMode] + '. What shall we do?', 'buddy');
+  });
+  updateModeButtons();
+
+  function selectGreeting() {
+    const key = 'vocal-studio-companion-last-greeting';
+    let previous = -1;
+    try { previous = Number(localStorage.getItem(key)); } catch (_) {}
+    let index = Math.floor(Math.random() * greetings.length);
+    if (greetings.length > 1 && Number.isInteger(previous) && previous >= 0 && index === previous) index = (index + 1 + Math.floor(Math.random() * (greetings.length - 1))) % greetings.length;
+    try { localStorage.setItem(key, String(index)); } catch (_) {}
+    return greetings[index];
+  }
+
+  function addMessage(text, from='buddy', actions=[]) {
+    const row = document.createElement('div');
+    row.className = 'companion-message ' + (from === 'you' ? 'from-you' : 'from-buddy');
+    const bubble = document.createElement('p');
+    bubble.textContent = text;
+    row.appendChild(bubble);
+    if (actions.length) {
+      const links = document.createElement('div');
+      links.className = 'companion-actions';
+      for (const item of actions) {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.textContent = item.label;
+        button.addEventListener('click', () => openDestination(item.id));
+        links.appendChild(button);
+      }
+      row.appendChild(links);
+    }
+    messages.appendChild(row);
+    messages.scrollTop = messages.scrollHeight;
+  }
+
+  function openDestination(id) {
+    const nav = [...document.querySelectorAll('.nav-item[data-view]')].find(item => item.dataset.view === id);
+    if (nav) nav.click();
+    const destination = destinations.find(item => item.id === id);
+    addMessage(destination ? `Here you go — ${destination.label} is open. What would you like to try?` : 'I couldn’t find that page. Try one of the navigation buttons.', 'buddy');
+  }
+
+  function matchingDestinations(text) {
+    const normalized = text.toLowerCase();
+    return destinations.filter(item => item.keys.some(key => normalized.includes(key)));
+  }
+
+  async function replyTo(raw) {
+    const text = raw.trim();
+    if (!text) return;
+    addMessage(text, 'you');
+    const matches = matchingDestinations(text);
+    const wantsNavigation = /\b(open|go to|show|take me|navigate|bring me|switch to)\b/i.test(text);
+    if (wantsNavigation && matches.length) {
+      const destination = matches[0];
+      addMessage('On it — opening ' + destination.label + '.');
+      openDestination(destination.id);
+      return;
+    }
+    if (!AI_ENDPOINT || AI_ENDPOINT.includes('YOUR-WORKER-NAME')) {
+      addMessage('My AI connection is almost ready! The secure Cloudflare Worker needs to be deployed and its URL added to my settings.');
+      return;
+    }
+    conversation.push({ role: 'user', content: text });
+    const sendButton = form.querySelector('button[type="submit"]');
+    if (sendButton) sendButton.disabled = true;
+    input.disabled = true;
+    try {
+      const response = await fetch(AI_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: conversation.slice(-12), mode: currentMode })
+      });
+      const data = await response.json();
+      if (!response.ok || !data.reply) throw new Error(data.error || 'The AI service is unavailable.');
+      conversation.push({ role: 'assistant', content: data.reply });
+      if (conversation.length > 16) conversation.splice(0, conversation.length - 16);
+      addMessage(data.reply, 'buddy');
+    } catch (error) {
+      conversation.pop();
+      addMessage(error.message || 'I couldn’t connect just now. Please try again.');
+    } finally {
+      input.disabled = false;
+      if (sendButton) sendButton.disabled = false;
+      input.focus();
+    }
+  }
+
+  function setOpen(open) {
+    clearTimeout(closeTimer);
+    isOpen = open;
+    toggle.setAttribute('aria-expanded', String(open));
+    toggle.setAttribute('aria-label', open ? 'Close chat with Seok Woo' : 'Open chat with Seok Woo');
+    if (open) {
+      chat.hidden = false;
+      requestAnimationFrame(() => chat.classList.add('is-open'));
+      greetingBubble.hidden = true;
+      if (!greetingInChat && currentGreeting) {
+        addMessage(currentGreeting, 'buddy');
+        greetingInChat = true;
+        greeted = true;
+      }
+      input.focus();
+    } else {
+      chat.classList.remove('is-open');
+      closeTimer = window.setTimeout(() => { if (!isOpen) chat.hidden = true; }, 190);
+    }
+  }
+
+  toggle.addEventListener('click', () => setOpen(!isOpen));
+  $('#companion-close').addEventListener('click', () => setOpen(false));
+  form.addEventListener('submit', event => {
+    event.preventDefault();
+    const text = input.value;
+    input.value = '';
+    replyTo(text);
+  });
+  prompts.addEventListener('click', event => {
+    const button = event.target.closest('[data-prompt]');
+    if (!button) return;
+    replyTo(button.dataset.prompt);
+  });
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && isOpen) setOpen(false);
+  });
+
+  function greetAfterSplash() {
+    if (greeted) return;
+    currentGreeting = selectGreeting();
+    greetingBubble.textContent = currentGreeting;
+    greetingBubble.hidden = false;
+    greeted = true;
+  }
+
+  const splash = $('#launch-splash');
+  if (splash && !splash.hidden) {
+    const splashObserver = new MutationObserver(() => {
+      if (splash.hidden) {
+        splashObserver.disconnect();
+        greetAfterSplash();
+      }
+    });
+    splashObserver.observe(splash, {attributes:true, attributeFilter:['hidden']});
+  } else {
+    greetAfterSplash();
+  }
+})();
