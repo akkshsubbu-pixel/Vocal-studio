@@ -20,7 +20,7 @@
     {id:'progress',label:'Progress & schedule',keys:['schedule','calendar','progress','artist goal','practice plan']},
     {id:'rewards',label:'Streaks & rewards',keys:['reward','scratch card','streak','star coin','badge']}
   ];
-  const AI_ENDPOINT = 'https://YOUR-WORKER-NAME.workers.dev/chat';
+  const AI_ENDPOINT = 'https://seok-woo-ai.akksh-subbu.workers.dev/chat';
   const greetings = [
     'Hey! I’m Seok Woo (석우). Ready to work on your vocals?',
     'Welcome back! What are we practising today?',
