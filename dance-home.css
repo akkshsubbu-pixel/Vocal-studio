@@ -287,3 +287,9 @@ body.dance-mode > .companion-dock .companion-chat{pointer-events:auto!important}
 .dance-stretch-art-gallery>.dance-panel-kicker{margin-bottom:12px}
 .dance-stretch-art-gallery figure{margin:0;max-width:420px;overflow:hidden;border-radius:13px;background:var(--h-bg-secondary)}
 .dance-stretch-art-gallery img{display:block;width:100%;height:auto;aspect-ratio:1;object-fit:cover}
+
+
+/* Uploaded six-pose follow-along GIF */
+.dance-stretch-gif-stage{padding:12px;min-height:0;display:flex;align-items:center;justify-content:center}
+.dance-stretch-followalong-gif{display:block;width:min(100%,560px);height:auto;max-height:520px;object-fit:contain;border-radius:12px}
+@media(prefers-reduced-motion:reduce){.dance-stretch-followalong-gif{animation:none}}
