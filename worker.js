@@ -57,7 +57,7 @@ export default {
     }
     if (!env.AI || typeof env.AI.run !== "function") {
       return Response.json({
-        error: "Cloudflare AI binding is missing. Add a Workers AI binding named AI to this Worker."
+        error: "Cloudflare Workers AI binding is missing. Check that the binding variable is named AI."
       }, { status: 503, headers: cors });
     }
 
@@ -78,24 +78,27 @@ export default {
     }
 
     try {
-      const result = await env.AI.run("@cf/zai-org/glm-4.7-flash", {
+      // Use the Llama model shown in Cloudflare's own Workers AI binding example.
+      const result = await env.AI.run("@cf/meta/llama-3.1-8b-instruct", {
         messages: [
           { role: "system", content: INSTRUCTIONS },
           ...safeMessages
         ],
         max_tokens: 500,
-        reasoning_effort: "low",
-        chat_template_kwargs: { enable_thinking: false }
+        temperature: 0.7
       });
 
-      const reply = typeof result?.response === "string"
-        ? result.response.trim()
-        : "";
+      const reply = [
+        result?.response,
+        result?.result?.response,
+        result?.output_text,
+        result?.text
+      ].find(value => typeof value === "string" && value.trim().length > 0)?.trim() || "";
 
       if (!reply) {
-        console.error("Cloudflare Workers AI returned no text", result);
+        console.error("Workers AI returned no text. Result keys:", result && typeof result === "object" ? Object.keys(result) : typeof result);
         return Response.json({
-          error: "The free AI model returned an empty reply. Please try again."
+          error: "Cloudflare's AI model returned no text. Please try again; if it repeats, we'll inspect the model response."
         }, { status: 502, headers: cors });
       }
 
