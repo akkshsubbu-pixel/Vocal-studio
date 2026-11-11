@@ -236,6 +236,14 @@
           <h2 id="dance-warmup-title">Stretches</h2>
           <p id="dance-warmup-description">A comfortable flexibility session for dance. We'll add the exercises from your selected reference videos here.</p>
           <div class="dance-warmup-note">Move within a comfortable range. No forcing, bouncing or pushing into pain.</div>
+          <article class="dance-reference-card" id="dance-stretch-reference-4">
+            <div class="dance-reference-topline"><span>STRETCHES · REFERENCE 04</span><span>15 MIN</span></div>
+            <h3>15 MIN Full Body Flexibility Stretch Routine for Dancers</h3>
+            <p class="dance-reference-subtitle">Stretches for Open Hips and Arabesque</p>
+            <p class="dance-reference-description">A dancer-focused, full-body flexibility session with emphasis on open hips, back flexibility and chest opening to support arabesque work.</p>
+            <div class="dance-reference-tags"><span>OPEN HIPS</span><span>BACK FLEXIBILITY</span><span>CHEST OPENING</span><span>ARABESQUE</span></div>
+            <small class="dance-reference-credit">Your fourth reference video. Detailed exercise-by-exercise steps can be added when its transcript is available.</small>
+          </article>
         </article>
       </section>
     </div>
@@ -399,6 +407,8 @@
           document.getElementById('dance-warmup-kicker').textContent=option.kicker;
           document.getElementById('dance-warmup-title').textContent=option.title;
           document.getElementById('dance-warmup-description').textContent=option.description;
+          const reference4=document.getElementById('dance-stretch-reference-4');
+          if(reference4)reference4.hidden=button.dataset.warmupOption!=='stretches';
         });
       });
       function enterDance(){
