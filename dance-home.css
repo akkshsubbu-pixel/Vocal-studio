@@ -77,7 +77,7 @@
 
 /* Dance app shell — mirrors the Vocal Studio fixed sidebar + topbar workspace. */
 .dance-sidebar,.dance-main{display:none}
-body.dance-mode .entry-gate,body.dance-mode>.sidebar:not(.dance-sidebar),body.dance-mode>main:not(.dance-main),body.dance-mode .companion-dock{display:none!important}
+body.dance-mode .entry-gate,body.dance-mode>.sidebar:not(.dance-sidebar),body.dance-mode>main:not(.dance-main){display:none!important}
 body.dance-mode .dance-sidebar{display:flex}
 body.dance-mode .dance-main{display:block}
 .dance-sidebar{background:var(--h-panel)!important;border-right:1px solid var(--h-edge)!important;color:var(--h-text)}
@@ -189,3 +189,6 @@ body.dance-mode .dance-main{display:block}
 .dance-consent-option small{display:block;margin-top:5px;color:var(--h-muted);font:10px/1.55 var(--sans)}
 .dance-generate-feedback:disabled{opacity:.48;cursor:not-allowed}
 .dance-ai-status{min-height:18px;margin:10px 0 0;color:var(--h-muted);font:11px/1.6 var(--sans)}
+
+/* Keep Seok Woo's floating companion available throughout Dance mode. */
+body.dance-mode .companion-dock{display:block!important;z-index:10050}
