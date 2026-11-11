@@ -58,6 +58,15 @@
   <script>
     window.addEventListener('DOMContentLoaded', () => {
       const splash = document.getElementById('launch-splash');
+      const appChrome = {cherry:'#170810',ruby:'#180b07',gold:'#181104',lime:'#121402',emerald:'#06140d',teal:'#061419',blue:'#07111d'};
+      try {
+        if (sessionStorage.getItem('vocal-studio-entered') === '1') {
+          splash.hidden = true;
+          document.body.classList.remove('entry-pending','entry-selecting');
+          document.querySelector('meta[name="theme-color"]').content = appChrome[document.documentElement.dataset.appPalette] || appChrome.cherry;
+          return;
+        }
+      } catch (_) {}
       let timerStarted = false;
       const startSplashTimer = () => {
         if (timerStarted) return;
@@ -68,7 +77,6 @@
             splash.hidden = true;
             document.body.classList.remove('entry-pending');
             document.body.classList.add('entry-selecting');
-            const appChrome = {cherry:'#170810',ruby:'#180b07',gold:'#181104',lime:'#121402',emerald:'#06140d',teal:'#061419',blue:'#07111d'};
             document.querySelector('meta[name="theme-color"]').content = appChrome[document.documentElement.dataset.appPalette] || appChrome.cherry;
           }, 900);
         }, 10000);
@@ -231,6 +239,7 @@
       const gate = document.getElementById('entry-gate');
       const comingSoon = document.getElementById('dance-coming-soon');
       document.getElementById('enter-vocal').addEventListener('click', () => {
+        try { sessionStorage.setItem('vocal-studio-entered','1'); sessionStorage.setItem('vocal-studio-last-view','studio'); } catch (_) {}
         document.body.classList.remove('entry-selecting');
       });
       document.getElementById('enter-dance').addEventListener('click', () => {
@@ -245,7 +254,7 @@
   </script>
   <script src="rewards.js?v=streak-rewards-20261110"></script>
   <script src="pitch-detector.js?v=monitor-pipeline-20261110"></script>
-  <script src="app.js?v=visualiser-tabs-direct-20261111-3"></script>
+  <script src="app.js?v=restore-page-refresh-20261111-1"></script>
   <script src="companion.js?v=ai-companion-20261111"></script>
 </body>
 </html>
