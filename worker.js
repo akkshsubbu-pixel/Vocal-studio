@@ -88,9 +88,22 @@ export default {
         })
       });
 
-      const data = await response.json();
+      const data = await response.json().catch(() => ({}));
       if (!response.ok) {
-        return Response.json({ error: "The AI service couldn't answer right now. Please try again." }, { status: 502, headers: cors });
+        const apiError = data && data.error ? data.error : {};
+        const message = typeof apiError.message === "string"
+          ? apiError.message.slice(0, 500)
+          : "The API returned an error without a message.";
+        console.error("OpenAI API request failed", {
+          status: response.status,
+          type: apiError.type || null,
+          code: apiError.code || null,
+          message
+        });
+        return Response.json({
+          error: `OpenAI API error (${response.status}): ${message}`,
+          code: apiError.code || apiError.type || null
+        }, { status: 502, headers: cors });
       }
 
       const reply = (data.output || [])
