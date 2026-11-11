@@ -34,6 +34,40 @@
   let closeTimer = 0;
   let addressCount = 0;
   const conversation = [];
+  const modeKey = 'vocal-studio-seok-woo-mode';
+  let currentMode = 'both';
+  try {
+    const savedMode = localStorage.getItem(modeKey);
+    if (['coach','companion','both'].includes(savedMode)) currentMode = savedMode;
+  } catch (_) {}
+
+  // Add a compact mode picker without changing the existing chat layout.
+  const modeBar = document.createElement('div');
+  modeBar.className = 'seok-mode-bar';
+  modeBar.setAttribute('aria-label', 'Choose Seok Woo mode');
+  modeBar.innerHTML = '<span>MODE</span><button type="button" data-mode="coach">🎤 Vocal Coach</button><button type="button" data-mode="companion">✨ Companion</button><button type="button" data-mode="both">Both</button>';
+  const chatHead = chat.querySelector('.companion-chat-head');
+  if (chatHead) chatHead.insertAdjacentElement('afterend', modeBar);
+
+  const modeStyle = document.createElement('style');
+  modeStyle.textContent = '.seok-mode-bar{display:flex;align-items:center;gap:6px;flex-wrap:wrap;padding:9px 12px;border-bottom:1px solid #e9e7e1;background:#fbfaf7}.seok-mode-bar span{font-size:9px;letter-spacing:1px;color:#858a91;margin-right:3px}.seok-mode-bar button{border:1px solid #e5e1d9;background:#fff;color:#626a69;border-radius:16px;padding:6px 9px;font-size:10px}.seok-mode-bar button[aria-pressed="true"]{background:#edf2ef;border-color:#497c73;color:#35665e;font-weight:700}.companion-note{font-size:10px;color:#858a91}';
+  document.head.appendChild(modeStyle);
+
+  function updateModeButtons() {
+    modeBar.querySelectorAll('[data-mode]').forEach(button => {
+      button.setAttribute('aria-pressed', String(button.dataset.mode === currentMode));
+    });
+  }
+  modeBar.addEventListener('click', event => {
+    const button = event.target.closest('[data-mode]');
+    if (!button) return;
+    currentMode = button.dataset.mode;
+    try { localStorage.setItem(modeKey, currentMode); } catch (_) {}
+    updateModeButtons();
+    const labels = {coach:'Vocal Coach', companion:'K-drama Companion', both:'Both Modes'};
+    addMessage('Mode changed to ' + labels[currentMode] + '. What shall we do?', 'buddy');
+  });
+  updateModeButtons();
 
   function selectGreeting() {
     const key = 'vocal-studio-companion-last-greeting';
@@ -103,7 +137,7 @@
       const response = await fetch(AI_ENDPOINT, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: conversation.slice(-12) })
+        body: JSON.stringify({ messages: conversation.slice(-12), mode: currentMode })
       });
       const data = await response.json();
       if (!response.ok || !data.reply) throw new Error(data.error || 'The AI service is unavailable.');
