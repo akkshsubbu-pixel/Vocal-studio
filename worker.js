@@ -78,14 +78,16 @@ export default {
     }
 
     try {
-      // Use the Llama model shown in Cloudflare's own Workers AI binding example.
+      // Gemma 4 supports chat completions; disable its internal thinking mode
+      // so the response contains a user-facing answer.
       const result = await env.AI.run("@cf/google/gemma-4-26b-a4b-it", {
         messages: [
           { role: "system", content: INSTRUCTIONS },
           ...safeMessages
         ],
         max_completion_tokens: 500,
-        temperature: 0.7
+        temperature: 0.7,
+        chat_template_kwargs: { enable_thinking: false }
       });
 
       const candidates = [
