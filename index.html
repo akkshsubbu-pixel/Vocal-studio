@@ -236,6 +236,17 @@
           <h2 id="dance-warmup-title">Stretches</h2>
           <p id="dance-warmup-description">A comfortable flexibility session for dance. We'll add the exercises from your selected reference videos here.</p>
           <div class="dance-warmup-note">Move within a comfortable range. No forcing, bouncing or pushing into pain.</div>
+          <div class="dance-stretch-player" id="dance-stretch-player" data-step="0">
+            <div class="dance-stretch-player-head"><div><span class="dance-panel-kicker">FOLLOW-ALONG ANIMATION</span><h3>Cozy stretch flow</h3></div><span class="dance-stretch-count" id="dance-stretch-count">01 / 06</span></div>
+            <div class="dance-stretch-stage" aria-live="polite">
+              <div class="dance-stretch-character" aria-hidden="true"><span class="stretch-head">●</span><span class="stretch-body"></span><span class="stretch-arm left"></span><span class="stretch-arm right"></span><span class="stretch-leg left"></span><span class="stretch-leg right"></span></div>
+              <div class="dance-stretch-sparkle">✦　✧　✦</div>
+            </div>
+            <div class="dance-stretch-step"><span id="dance-stretch-label">Shoulder rolls</span><p id="dance-stretch-tip">Relax your shoulders and make slow, comfortable circles.</p></div>
+            <div class="dance-stretch-progress" id="dance-stretch-progress"><i class="active"></i><i></i><i></i><i></i><i></i><i></i></div>
+            <div class="dance-stretch-controls"><button class="dance-action-button secondary" id="dance-stretch-prev" type="button">← Back</button><button class="dance-action-button" id="dance-stretch-play" type="button">▶ Play guide</button><button class="dance-action-button secondary" id="dance-stretch-next" type="button">Next →</button></div>
+            <small class="dance-stretch-hint">Each pose stays on screen for 8 seconds. This is a simple animated guide, not a recorded instructor video.</small>
+          </div>
           <article class="dance-reference-card" id="dance-stretch-reference-4">
             <div class="dance-reference-topline"><span>STRETCHES · REFERENCE 04</span><span>15 MIN</span></div>
             <h3>15 MIN Full Body Flexibility Stretch Routine for Dancers</h3>
@@ -411,6 +422,34 @@
           if(reference4)reference4.hidden=button.dataset.warmupOption!=='stretches';
         });
       });
+      const stretchSteps=[
+        ['Shoulder rolls','Relax your shoulders and make slow, comfortable circles.'],
+        ['Cross-body shoulder stretch','Bring one arm across your chest; switch sides halfway through.'],
+        ['Standing side reach','Reach one arm overhead and lean gently to the opposite side; change sides.'],
+        ['Butterfly stretch','Sit tall with the soles of your feet together; let your knees relax naturally.'],
+        ['Gentle hamstring reach','Extend one leg with a soft knee and hinge forward only as far as comfortable; switch sides.'],
+        ['Half-kneeling hip opener','Kneel with one foot forward, stay upright and gently shift forward; switch sides.']
+      ];
+      let stretchStep=0,stretchTimer=null;
+      const stretchPlayer=document.getElementById('dance-stretch-player');
+      function renderStretchStep(){
+        const [label,tip]=stretchSteps[stretchStep];
+        stretchPlayer.dataset.step=String(stretchStep);
+        document.getElementById('dance-stretch-count').textContent=String(stretchStep+1).padStart(2,'0')+' / 06';
+        document.getElementById('dance-stretch-label').textContent=label;
+        document.getElementById('dance-stretch-tip').textContent=tip;
+        [...document.querySelectorAll('#dance-stretch-progress i')].forEach((dot,i)=>dot.classList.toggle('active',i===stretchStep));
+      }
+      function stopStretchGuide(){if(stretchTimer){clearInterval(stretchTimer);stretchTimer=null;}document.getElementById('dance-stretch-play').textContent='▶ Play guide';}
+      function nextStretchStep(){stretchStep=(stretchStep+1)%stretchSteps.length;renderStretchStep();}
+      document.getElementById('dance-stretch-prev').addEventListener('click',()=>{stopStretchGuide();stretchStep=(stretchStep+stretchSteps.length-1)%stretchSteps.length;renderStretchStep();});
+      document.getElementById('dance-stretch-next').addEventListener('click',()=>{stopStretchGuide();nextStretchStep();});
+      document.getElementById('dance-stretch-play').addEventListener('click',()=>{
+        if(stretchTimer){stopStretchGuide();return;}
+        document.getElementById('dance-stretch-play').textContent='Ⅱ Pause';
+        stretchTimer=setInterval(nextStretchStep,8000);
+      });
+      renderStretchStep();
       function enterDance(){
         gate.hidden=true;
         document.body.classList.remove('entry-pending','entry-selecting');
