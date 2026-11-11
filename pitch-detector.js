@@ -15,7 +15,7 @@
       const centered = samples[i] - mean;
       power += centered * centered;
     }
-    if (Math.sqrt(power / n) < 0.004) return null;
+    if (Math.sqrt(power / n) < 0.002) return null;
 
     const difference = new Float32Array(maxLag + 1);
     const normalized = new Float32Array(maxLag + 1);
@@ -59,7 +59,7 @@
       : 0;
     const frequency = sampleRate / (period + offset);
     const confidence = 1 - center;
-    if (confidence < 0.72 || frequency < minHz || frequency > maxHz) return null;
+    if (confidence < 0.68 || frequency < minHz || frequency > maxHz) return null;
     return { frequency, confidence };
   }
 
