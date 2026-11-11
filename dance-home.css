@@ -73,3 +73,50 @@
 .dance-video-note b{flex:0 0 auto;color:var(--h-secondary);font:800 10px Nunito,Arial,sans-serif}
 .dance-video-note span{color:var(--h-muted);font:11px/1.6 Nunito,Arial,sans-serif}
 @media(max-width:700px){.dance-drill-list,.dance-video-grid{grid-template-columns:1fr}.dance-timer-card{align-items:flex-start;flex-direction:column}.dance-studio-tabs{width:100%}.dance-tab{flex:1;padding:10px 8px;font-size:8px}}
+
+
+/* Dance app shell — mirrors the Vocal Studio fixed sidebar + topbar workspace. */
+.dance-sidebar,.dance-main{display:none}
+body.dance-mode .entry-gate,body.dance-mode>.sidebar:not(.dance-sidebar),body.dance-mode>main:not(.dance-main),body.dance-mode .companion-dock{display:none!important}
+body.dance-mode .dance-sidebar{display:flex}
+body.dance-mode .dance-main{display:block}
+.dance-sidebar{background:var(--h-panel)!important;border-right:1px solid var(--h-edge)!important;color:var(--h-text)}
+.dance-sidebar .brand{color:var(--h-text);margin-bottom:54px}
+.dance-sidebar .brand-mark{background:var(--h-primary)!important;color:#fff}
+.dance-sidebar .brand-light{color:var(--h-muted)}
+.dance-sidebar .brand small,.dance-sidebar .nav-label{color:var(--h-muted)}
+.dance-sidebar .nav-item{color:var(--h-muted)}
+.dance-sidebar .nav-item span{color:var(--h-secondary)}
+.dance-sidebar .nav-item:hover,.dance-sidebar .nav-item.active{background:var(--h-panel-raised)!important;color:var(--h-primary-bright)!important}
+.dance-sidebar .nav-item.active span{color:var(--h-primary-bright)}
+.dance-sidebar .sidebar-bottom{border-color:var(--h-edge);color:var(--h-text)}
+.dance-sidebar .sidebar-bottom small{color:var(--h-muted)}
+.dance-sidebar .avatar{background:var(--h-panel-raised);color:var(--h-primary-bright)}
+.dance-sidebar .local-dot{background:#78bd91}
+.dance-sidebar-back{margin-top:13px;padding:11px 9px;border:1px solid var(--h-edge);border-radius:8px;background:transparent;color:var(--h-muted);font:700 10px Nunito,Arial,sans-serif;text-align:left}
+.dance-sidebar-back:hover{border-color:var(--h-edge-bright);color:var(--h-primary-bright)}
+.dance-main{margin-left:244px;width:calc(100% - 244px);max-width:1700px;padding:0 5.2% 30px;color:var(--h-text)}
+.dance-main .topbar{border-color:var(--h-edge);color:var(--h-muted)}
+.dance-main .breadcrumb b{color:var(--h-secondary)}
+.dance-main .breadcrumb span{color:var(--h-edge-bright)}
+.dance-main .today{color:var(--h-muted)}
+.dance-main-content{padding-top:36px}
+.dance-main .dance-home,.dance-main .dance-studio{width:100%;max-width:1080px;margin:0 auto}
+.dance-main .dance-home[hidden],.dance-main .dance-studio[hidden]{display:none!important}
+.dance-main .dance-home:not([hidden]),.dance-main .dance-studio:not([hidden]){display:block}
+.dance-main .dance-home-footer .entry-back-button{display:none}
+.dance-main .dance-studio .dance-home-footer{display:none}
+@media(max-width:760px){
+ body.dance-mode .dance-sidebar{width:59px;padding:17px 7px}
+ body.dance-mode .dance-sidebar .brand{margin:0 auto 35px}
+ body.dance-mode .dance-sidebar .brand>span:nth-child(2),body.dance-mode .dance-sidebar .nav-label,body.dance-mode .dance-sidebar .nav-item:not(.active)::after{display:none}
+ body.dance-mode .dance-sidebar .nav-item{font-size:0;justify-content:center;padding:13px 0}
+ body.dance-mode .dance-sidebar .nav-item span{font-size:19px}
+ body.dance-mode .dance-sidebar .nav-item.active{font-size:0}
+ body.dance-mode .dance-sidebar .sidebar-bottom{justify-content:center;padding:14px 0}
+ body.dance-mode .dance-sidebar .sidebar-bottom>div:nth-child(2),body.dance-mode .dance-sidebar .local-dot{display:none}
+ body.dance-mode .dance-sidebar-back{font-size:0;text-align:center;padding:12px 0}
+ body.dance-mode .dance-main{margin-left:59px;width:calc(100% - 59px);padding:0 17px 25px}
+ body.dance-mode .dance-main .topbar{height:55px}
+ body.dance-mode .dance-main-content{padding-top:25px}
+}
