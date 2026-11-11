@@ -229,3 +229,15 @@ body.dance-mode > .companion-dock .companion-chat{pointer-events:auto!important}
 .dance-warmup-detail>p{max-width:700px;margin:0;color:var(--h-muted);font:13px/1.7 var(--sans)}
 .dance-warmup-note{margin-top:19px;padding:13px 15px;border:1px solid var(--h-edge);border-radius:11px;background:var(--h-bg);color:var(--h-secondary);font:11px/1.6 var(--sans)}
 @media(max-width:600px){.dance-warmup-options{gap:9px}.dance-warmup-option{min-height:112px;padding:15px}.dance-warmup-option>b{font-size:17px}}
+
+
+/* Individual reference routine card inside Dance > Warm-up > Stretches. */
+.dance-reference-card{margin-top:20px;padding:20px;border:1px solid var(--h-edge);border-radius:15px;background:var(--h-bg)}
+.dance-reference-card[hidden]{display:none!important}
+.dance-reference-topline{display:flex;justify-content:space-between;gap:12px;color:var(--h-primary-bright);font:700 10px var(--sans);letter-spacing:.12em}
+.dance-reference-card h3{margin:13px 0 5px;color:var(--h-text);font:600 20px/1.3 var(--serif)}
+.dance-reference-subtitle{margin:0;color:var(--h-secondary);font:italic 14px var(--serif)}
+.dance-reference-description{max-width:700px;margin:12px 0;color:var(--h-muted);font:13px/1.7 var(--sans)}
+.dance-reference-tags{display:flex;flex-wrap:wrap;gap:7px;margin-top:13px}
+.dance-reference-tags span{padding:6px 9px;border:1px solid var(--h-edge);border-radius:20px;color:var(--h-secondary);font:700 9px var(--sans);letter-spacing:.06em}
+.dance-reference-credit{display:block;margin-top:15px;color:var(--h-muted);font:11px/1.6 var(--sans)}
