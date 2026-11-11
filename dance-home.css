@@ -297,3 +297,8 @@ body.dance-mode > .companion-dock .companion-chat{pointer-events:auto!important}
 /* Keep the cute stretch cue visibly sized and show the full animation. */
 .dance-stretch-art-gallery figure{width:100%;max-width:560px;min-height:180px;display:grid;place-items:center;background:linear-gradient(145deg,#f8dce8,#fbe9df)}
 .dance-stretch-art-gallery img{width:100%;height:auto;max-height:520px;aspect-ratio:auto;object-fit:contain}
+
+/* Force the Cute Stretch Cue gallery and its local GIF to render in Dance Warm-up. */
+.dance-main .dance-stretch-art-gallery{display:block!important;visibility:visible!important;opacity:1!important;width:100%;min-height:220px;}
+.dance-main .dance-stretch-art-gallery figure{display:flex!important;align-items:center;justify-content:center;width:100%;max-width:560px;min-height:200px;margin:0;overflow:visible;background:linear-gradient(145deg,#f8dce8,#fbe9df);}
+.dance-main .dance-stretch-art-gallery img{display:block!important;visibility:visible!important;opacity:1!important;width:100%;max-width:560px;height:auto;max-height:520px;aspect-ratio:auto;object-fit:contain;}
