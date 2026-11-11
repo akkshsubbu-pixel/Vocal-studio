@@ -91,9 +91,19 @@
         splash.dispatchEvent(new Event('splash-image-ready'));
       };
       const image = window.vocalStudioSplashImage || 'assets/codex-clipboard-4867f544-5382-49d8-b7aa-2c66a13402e2.png';
-      art.addEventListener('load', reveal, {once:true});
+      // Always release the splash, even if a rotating artwork file is missing.
+      let finished = false;
+      const finish = () => {
+        if (finished) return;
+        finished = true;
+        reveal();
+      };
+      art.addEventListener('load', finish, {once:true});
+      art.addEventListener('error', finish, {once:true});
       art.src = image;
-      if (art.complete && art.naturalWidth) reveal();
+      if (art.complete) finish();
+      // Final safety net for slow or stalled image requests.
+      window.setTimeout(finish, 5000);
     })();
   </script>
   <aside class="sidebar">
