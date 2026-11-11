@@ -84,7 +84,49 @@ export default {
     }
 
     try {
-      // Gemma 4 supports chat completions; disable its internal thinking mode
+      if (Array.isArray(body.danceFrames) && body.danceFrames.length) {
+        const frames = body.danceFrames.slice(0, 10).filter(frame =>
+          frame && typeof frame.label === "string" &&
+          typeof frame.data === "string" &&
+          /^data:image\\/(jpeg|png);base64,/.test(frame.data) &&
+          frame.data.length <= 1800000
+        );
+        if (!frames.length) {
+          return Response.json({ error: "No valid dance frames were received. Please try the review again." }, { status: 400, headers: cors });
+        }
+        const imageContent = [
+          { type: "text", text: "Review the dance reference and the user's take using the labeled still frames below. Be candid, respectful, specific, and evidence-based. Compare visible poses, limb pathways, shapes, placement, and apparent control only where the stills support it. Still frames cannot establish exact timing, musicality, motion quality, or transitions; clearly say those need video/audio playback. Do not infer or judge body shape, attractiveness, weight, or physical traits. Give 2-3 priority corrections and a safe, practical drill. Frame labels identify REFERENCE versus YOUR TAKE." },
+          ...frames.flatMap(frame => [
+            { type: "text", text: frame.label },
+            { type: "image_url", image_url: { url: frame.data } }
+          ])
+        ];
+        const visionResult = await env.AI.run("@cf/meta/llama-3.2-11b-vision-instruct", {
+          messages: [
+            { role: "system", content: INSTRUCTIONS + "\n\nYou are Seok Woo, the user's direct but respectful dance coach. Give honest, evidence-based feedback. Never invent details that are not visible." },
+            ...safeMessages.slice(0, -1),
+            { role: "user", content: imageContent }
+          ],
+          max_tokens: 700,
+          temperature: 0.35
+        });
+        const visionCandidates = [
+          visionResult?.response, visionResult?.result?.response,
+          visionResult?.output_text, visionResult?.text,
+          visionResult?.choices?.[0]?.message?.content,
+          visionResult?.choices?.[0]?.text
+        ];
+        const visionReply = visionCandidates.map(value =>
+          typeof value === "string" ? value.trim() :
+          Array.isArray(value) ? value.map(part => typeof part === "string" ? part : (part?.text || "")).join("").trim() : ""
+        ).find(value => value.length > 0) || "";
+        if (!visionReply) {
+          return Response.json({ error: "The vision model returned no feedback. Please try again." }, { status: 502, headers: cors });
+        }
+        return Response.json({ reply: visionReply }, { headers: { ...cors, "Content-Type": "application/json; charset=utf-8" } });
+      }
+
+      // Gemma 4 supports chat completions; disable its internal thinking mode disable its internal thinking mode
       // so the response contains a user-facing answer.
       const result = await env.AI.run("@cf/google/gemma-4-26b-a4b-it", {
         messages: [
