@@ -54,6 +54,7 @@
   <link rel="stylesheet" href="splash.css">
   <link rel="stylesheet" href="theme-cherry.css">
   <link rel="stylesheet" href="theme-dynamic.css">
+  <link rel="stylesheet" href="dance-home.css">
   <link rel="stylesheet" href="companion.css">
   <script>
     window.addEventListener('DOMContentLoaded', () => {
@@ -138,13 +139,43 @@
       </div>
       <div class="entry-gate-foot">LISTEN · MOVE · CREATE</div>
     </div>
-    <div class="dance-coming-soon" id="dance-coming-soon" hidden>
-      <div class="entry-gate-kicker">YOUR NEXT CREATIVE SPACE</div>
-      <div class="coming-soon-symbol" aria-hidden="true">✦</div>
-      <h1>Dance is <em>coming soon.</em></h1>
-      <p>We’ll build your dance space next. Your Vocal Studio is ready whenever you are.</p>
-      <button class="entry-back-button" id="back-to-choices" type="button">← Back to choices</button>
-    </div>
+    <section class="dance-home" id="dance-home" hidden aria-label="Dance Studio home">
+      <header class="dance-home-header">
+        <div>
+          <div class="entry-gate-kicker">YOUR MOVEMENT SPACE</div>
+          <h1>Move with <em>purpose.</em></h1>
+          <p>Build your foundation, explore your styles and grow as a performer.</p>
+        </div>
+        <div class="dance-home-mark" aria-hidden="true">✦</div>
+      </header>
+      <section class="dance-welcome-panel">
+        <div class="dance-panel-kicker">DANCE STUDIO · HOME</div>
+        <h2>Your training starts here.</h2>
+        <p>A space for technique, musicality, creativity and confident performance — at a pace that lets you learn well.</p>
+        <div class="dance-focus-chips"><span>FOUNDATION</span><span>FREESTYLE</span><span>PERFORMANCE</span></div>
+      </section>
+      <div class="dance-home-section-head"><div><div class="dance-panel-kicker">01 / BUILD YOUR BASE</div><h2>Foundations</h2></div><span>THE STARTING POINT</span></div>
+      <div class="dance-foundation-grid">
+        <article class="dance-home-card"><span class="dance-card-icon">✧</span><h3>Flexibility & mobility</h3><p>Develop comfortable range of motion, control and mobility for dance.</p></article>
+        <article class="dance-home-card"><span class="dance-card-icon">◈</span><h3>Core & control</h3><p>Build balance, stability, coordination and body awareness.</p></article>
+        <article class="dance-home-card"><span class="dance-card-icon">⌁</span><h3>Movement foundations</h3><p>Work on dime stops, isolations, popping basics and clean transitions.</p></article>
+      </div>
+      <div class="dance-home-section-head"><div><div class="dance-panel-kicker">02 / FIND YOUR LANGUAGE</div><h2>Your dance styles</h2></div><span>5 STYLES</span></div>
+      <div class="dance-style-grid">
+        <article class="dance-style-card"><span>01</span><h3>House</h3><p>Groove, footwork and flow</p></article>
+        <article class="dance-style-card"><span>02</span><h3>Tutting</h3><p>Lines, angles and precision</p></article>
+        <article class="dance-style-card"><span>03</span><h3>Waacking</h3><p>Arms, musicality and expression</p></article>
+        <article class="dance-style-card"><span>04</span><h3>Hip-hop</h3><p>Groove, bounce and foundations</p></article>
+        <article class="dance-style-card"><span>05</span><h3>Popping</h3><p>Hits, control and texture</p></article>
+      </div>
+      <div class="dance-home-section-head"><div><div class="dance-panel-kicker">03 / BECOME THE PERFORMER</div><h2>Performance lab</h2></div><span>GROW YOUR PRESENCE</span></div>
+      <div class="dance-performance-grid">
+        <article class="dance-home-card"><span class="dance-card-icon">♫</span><h3>Musicality</h3><p>Hear the layers, accents and feeling in the music.</p></article>
+        <article class="dance-home-card"><span class="dance-card-icon">✦</span><h3>Stage & camera</h3><p>Develop expression, confidence and performance choices.</p></article>
+        <article class="dance-home-card"><span class="dance-card-icon">↗</span><h3>Dance progress</h3><p>Keep track of what you practise and what you are learning.</p></article>
+      </div>
+      <div class="dance-home-footer"><span>LISTEN · MOVE · CREATE</span><button class="entry-back-button" id="back-to-choices" type="button">← Back to creative choices</button></div>
+    </section>
   </section>
   <aside class="sidebar">
     <a class="brand" href="#studio"><span class="brand-mark">♫</span><span>vocal<span class="brand-light"> studio</span><small>A HAPPY PLACE TO PRACTICE</small></span></a>
@@ -237,18 +268,18 @@
   <script>
     (() => {
       const gate = document.getElementById('entry-gate');
-      const comingSoon = document.getElementById('dance-coming-soon');
+      const danceHome = document.getElementById('dance-home');
       document.getElementById('enter-vocal').addEventListener('click', () => {
         try { sessionStorage.setItem('vocal-studio-entered','1'); sessionStorage.setItem('vocal-studio-last-view','studio'); } catch (_) {}
         document.body.classList.remove('entry-selecting');
       });
       document.getElementById('enter-dance').addEventListener('click', () => {
-        gate.classList.add('show-coming-soon');
-        comingSoon.hidden = false;
+        gate.classList.add('show-dance-home');
+        danceHome.hidden = false;
       });
       document.getElementById('back-to-choices').addEventListener('click', () => {
-        gate.classList.remove('show-coming-soon');
-        comingSoon.hidden = true;
+        gate.classList.remove('show-dance-home');
+        danceHome.hidden = true;
       });
     })();
   </script>
