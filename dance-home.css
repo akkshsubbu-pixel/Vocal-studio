@@ -241,3 +241,45 @@ body.dance-mode > .companion-dock .companion-chat{pointer-events:auto!important}
 .dance-reference-tags{display:flex;flex-wrap:wrap;gap:7px;margin-top:13px}
 .dance-reference-tags span{padding:6px 9px;border:1px solid var(--h-edge);border-radius:20px;color:var(--h-secondary);font:700 9px var(--sans);letter-spacing:.06em}
 .dance-reference-credit{display:block;margin-top:15px;color:var(--h-muted);font:11px/1.6 var(--sans)}
+
+
+/* Cute animated follow-along stretch guide. */
+.dance-stretch-player{margin-top:20px;padding:20px;border:1px solid var(--h-edge-bright);border-radius:17px;background:linear-gradient(145deg,var(--h-panel-raised),var(--h-bg))}
+.dance-stretch-player-head{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.dance-stretch-player-head h3{margin:5px 0 0;color:var(--h-text);font:600 21px var(--serif)}
+.dance-stretch-count{color:var(--h-primary-bright);font:800 11px var(--sans);letter-spacing:.1em}
+.dance-stretch-stage{position:relative;display:grid;place-items:center;min-height:220px;margin-top:15px;overflow:hidden;border:1px solid var(--h-edge);border-radius:14px;background:radial-gradient(ellipse at 50% 75%,var(--h-panel-tint),transparent 62%),linear-gradient(150deg,#f8dce8 0%,#f4e5ee 48%,#fbe9df 100%)}
+.dance-stretch-character{position:relative;width:120px;height:170px;animation:stretch-breathe 3s ease-in-out infinite}
+.stretch-head{position:absolute;top:9px;left:48px;width:25px;height:25px;border-radius:50%;background:#704a50;color:transparent;box-shadow:inset 0 -4px #59383e}
+.stretch-body{position:absolute;top:39px;left:53px;width:17px;height:60px;border-radius:12px;background:#c34b70;transform:rotate(-4deg)}
+.stretch-arm,.stretch-leg{position:absolute;display:block;height:9px;border-radius:9px;background:#704a50;transform-origin:5px 5px}
+.stretch-arm.left{top:48px;left:56px;width:49px;transform:rotate(150deg);animation:stretch-left-arm 8s ease-in-out infinite}
+.stretch-arm.right{top:48px;left:63px;width:49px;transform:rotate(25deg);animation:stretch-right-arm 8s ease-in-out infinite}
+.stretch-leg.left{top:94px;left:57px;width:64px;transform:rotate(105deg)}
+.stretch-leg.right{top:94px;left:62px;width:64px;transform:rotate(75deg)}
+.dance-stretch-player[data-step="1"] .stretch-arm.left{transform:rotate(185deg)}
+.dance-stretch-player[data-step="1"] .stretch-arm.right{transform:rotate(15deg)}
+.dance-stretch-player[data-step="2"] .stretch-arm.left{transform:rotate(215deg)}
+.dance-stretch-player[data-step="2"] .stretch-arm.right{transform:rotate(-65deg)}
+.dance-stretch-player[data-step="3"] .stretch-leg.left{transform:rotate(145deg)}
+.dance-stretch-player[data-step="3"] .stretch-leg.right{transform:rotate(35deg)}
+.dance-stretch-player[data-step="4"] .stretch-body{transform:rotate(28deg)}
+.dance-stretch-player[data-step="4"] .stretch-leg.left{transform:rotate(160deg)}
+.dance-stretch-player[data-step="4"] .stretch-leg.right{transform:rotate(20deg)}
+.dance-stretch-player[data-step="5"] .stretch-leg.left{transform:rotate(155deg)}
+.dance-stretch-player[data-step="5"] .stretch-leg.right{transform:rotate(15deg)}
+.dance-stretch-sparkle{position:absolute;bottom:16px;color:#bd6483;font-size:17px;letter-spacing:8px}
+.dance-stretch-step{margin-top:14px}
+.dance-stretch-step>span{color:var(--h-text);font:600 18px var(--serif)}
+.dance-stretch-step p{margin:5px 0 0;color:var(--h-muted);font:12px/1.65 var(--sans)}
+.dance-stretch-progress{display:flex;gap:6px;margin-top:15px}
+.dance-stretch-progress i{height:4px;flex:1;border-radius:8px;background:var(--h-edge)}
+.dance-stretch-progress i.active{background:var(--h-primary-bright)}
+.dance-stretch-controls{display:flex;flex-wrap:wrap;gap:8px;margin-top:15px}
+.dance-stretch-controls button{flex:1;min-width:90px}
+.dance-stretch-hint{display:block;margin-top:12px;color:var(--h-muted);font:10px/1.6 var(--sans)}
+@keyframes stretch-breathe{0%,100%{translate:0 0}50%{translate:0 -3px}}
+@keyframes stretch-left-arm{0%,100%{rotate:0deg}50%{rotate:12deg}}
+@keyframes stretch-right-arm{0%,100%{rotate:0deg}50%{rotate:-12deg}}
+@media(prefers-reduced-motion:reduce){.dance-stretch-character,.stretch-arm{animation:none!important}}
+@media(max-width:520px){.dance-stretch-controls{display:grid;grid-template-columns:1fr 1fr}.dance-stretch-controls #dance-stretch-play{grid-column:1/-1;grid-row:1}}
