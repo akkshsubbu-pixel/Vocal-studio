@@ -123,7 +123,7 @@ export default {
         if (!visionReply) {
           return Response.json({ error: "The vision model returned no feedback. Please try again." }, { status: 502, headers: cors });
         }
-        return Response.json({ reply: visionReply }, { headers: { ...cors, "Content-Type": "application/json; charset=utf-8" } });
+        return Response.json({ reply: visionReply, reviewType: "dance-vision" }, { headers: { ...cors, "Content-Type": "application/json; charset=utf-8" } });
       }
 
       // Gemma 4 supports chat completions; disable its internal thinking mode disable its internal thinking mode
