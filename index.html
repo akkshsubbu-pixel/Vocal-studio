@@ -3,25 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#160c18">
-  <script>
-    (() => {
-      const splash = document.getElementById('launch-splash');
-      const art = document.getElementById('splash-art');
-      const reveal = () => {
-        splash.classList.add('splash-image-ready');
-        splash.dispatchEvent(new Event('splash-image-ready'));
-      };
-      const image = window.vocalStudioSplashImage || 'assets/codex-clipboard-4867f544-5382-49d8-b7aa-2c66a13402e2.png';
-      let finished = false;
-      const finish = () => { if (finished) return; finished = true; reveal(); };
-      art.addEventListener('load', finish, {once:true});
-      art.addEventListener('error', finish, {once:true});
-      art.src = image;
-      if (art.complete) finish();
-      window.setTimeout(finish, 5000);
-    })();
-  </script>
+  <meta name="theme-color" content="#210812">
   <title>Vocal Studio — a happy place to practice</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -36,7 +18,7 @@
   <link rel="stylesheet" href="monitor-big.css">
   <link rel="stylesheet" href="monitor-dark.css">
   <link rel="stylesheet" href="rewards.css">
-  <link rel="stylesheet" href="splash.css?v=cherry-red-20261111">
+  <link rel="stylesheet" href="splash.css?v=cherry-red-20261112-fix1">
   <link rel="stylesheet" href="theme-cherry.css">
   <link rel="stylesheet" href="theme-dynamic.css">
   <link rel="stylesheet" href="dance-home.css?v=cute-stretch-cue-fix-20261112-2">
