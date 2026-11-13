@@ -2,7 +2,7 @@
 
 A browser based vocal practice app. It includes an audio comparison workflow, a live pitch monitor with a generated drone, three separate 30 minute warm-up sessions, an 18-practice library with categories, search, favorites, and completion tracking, exercise-level microphone pitch checks with saved scores, ear training, and a local practice history and schedule.
 
-The Western Note Visualiser has Live Singing, Song Playback, and Compare Takes modes. It plots microphone F0 or analyzed audio on a Western note-and-octave grid (C1–B7), supports sharp or flat spellings, highlights a major key, shows cents from measured live F0, and can replay selected song sections. Compare Takes overlays the latest aligned Practice Studio contours and marks note gaps. Song analysis runs locally on the full mix, so accompaniment can affect its melody estimate; no vocal-source separation is performed. The existing live pitch monitor remains a separate page with a scrolling trace, automatic three-octave or full C1–B7 range, adjustable time window and trace color, hold/resume, plus microphone recording, playback, and audio download (up to three minutes).
+The Western Note Visualiser has Live Singing, Song Playback, and Compare Takes modes. Uploaded-song melody contours use Essentia.js PredominantPitchMelodia (MELODIA) in the browser to estimate the predominant melodic line from accompanied audio, then plot it on the Western note-and-octave grid (C1–B7). It supports sharp or flat spellings, highlights a major key, shows cents from measured live F0, and can replay selected song sections. Compare Takes overlays the latest aligned Practice Studio contours and marks note gaps. Song analysis runs locally on the full mix, so accompaniment can affect its melody estimate; no vocal-source separation is performed. The existing live pitch monitor remains a separate page with a scrolling trace, automatic three-octave or full C1–B7 range, adjustable time window and trace color, hold/resume, plus microphone recording, playback, and audio download (up to three minutes).
 
 Both live monitors can record microphone audio alongside detected pitch samples, replay and scrub the take, and save it in this browser for later review. These recordings remain local to the browser.
 
@@ -34,3 +34,8 @@ This is an experimental practice aid. Accompaniment, harmonics, breathy or noisy
 This is the initial functional vertical slice. Analysis is in-browser and has no Python service or account sync. Song section labels, vibrato, runs, register classification, tone descriptors, and acoustic nuance scoring are not implemented yet. Warm-up suggestions add up to 30 minutes per session; the app does not run a timer. The completion score reflects all six exercises being checked off, rather than a biometric assessment.
 
 The exercise pitch check is a local signal-processing score, not an AI model. It measures voiced coverage and pitch steadiness; pitch-target exercises also compare the detected median note with the selected target. It cannot judge tone, style, expression, or overall singing quality.
+
+
+## Third-party licensing
+
+The Western Note Visualiser uses Essentia.js 0.1.3, licensed under the GNU Affero General Public License v3.0 (AGPL-3.0). See https://github.com/MTG/essentia.js and https://www.gnu.org/licenses/agpl-3.0.html for the upstream source and licence. The Essentia.js source and licence must be made available with this application; this project is distributed under AGPL-3.0 for the combined application.
