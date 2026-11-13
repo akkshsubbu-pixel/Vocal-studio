@@ -309,6 +309,24 @@
         <section class="dance-progress-panel"><div class="dance-panel-kicker">03 / SKILL CHECK-IN</div><h2>What are you developing?</h2><p>Mark skills when you feel ready. These are personal learning milestones, not scores or deadlines.</p>
           <div class="dance-skill-grid" id="dance-skill-grid"></div>
         </section>
+        <section class="dance-progress-panel dance-rewards-panel" aria-label="Dance streaks and rewards">
+          <div class="dance-panel-kicker">04 / CONSISTENCY & CELEBRATION</div><h2>Your dance streak & rewards</h2>
+          <p>Log a dance session to count the day. One practice day is enough to keep your streak moving — rest days are part of learning too.</p>
+          <div class="dance-reward-stats">
+            <article><span>CURRENT STREAK</span><strong id="dance-current-streak">0</strong><small>days in a row</small></article>
+            <article><span>LONGEST STREAK</span><strong id="dance-longest-streak">0</strong><small>best run</small></article>
+            <article><span>NEXT MILESTONE</span><strong id="dance-next-milestone">3 days</strong><small id="dance-next-reward">1 reward card</small></article>
+            <article><span>STAR COINS</span><strong id="dance-star-coins">0</strong><small>earned through practice</small></article>
+          </div>
+          <div class="dance-rewards-layout">
+            <article class="dance-reward-subpanel"><div class="dance-reward-head"><div><b>Practice calendar</b><small>Days with a completed dance log</small></div><div class="dance-reward-month"><button type="button" id="dance-streak-prev" aria-label="Previous month">‹</button><strong id="dance-streak-month"></strong><button type="button" id="dance-streak-next" aria-label="Next month">›</button></div></div>
+              <div class="dance-streak-weekdays"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span></div><div class="dance-streak-calendar" id="dance-streak-calendar"></div><small class="dance-streak-legend"><i></i> Dance session logged</small>
+            </article>
+            <article class="dance-reward-subpanel"><b>Milestone path</b><small>Earn a reward as your consecutive practice days grow.</small><div class="dance-streak-milestones" id="dance-streak-milestones"></div></article>
+          </div>
+          <article class="dance-reward-subpanel dance-reward-unlock"><div><b>Your reward cards</b><small id="dance-reward-card-count">No cards yet</small></div><div class="dance-reward-open-row"><p id="dance-reward-card-message">Reach a 3-day streak to earn your first reward card.</p><button class="dance-action-button" id="dance-reward-open" type="button" disabled>Open reward card</button></div><div class="dance-reward-reveal" id="dance-reward-reveal" hidden aria-live="polite"></div></article>
+          <article class="dance-reward-subpanel"><div class="dance-reward-head"><div><b>Reward collection</b><small>Little keepsakes from your dance journey</small></div><strong id="dance-reward-collection-count">0 rewards</strong></div><div class="dance-reward-collection" id="dance-reward-collection"></div></article>
+        </section>
       </section>
     </div>
   </main>
@@ -467,12 +485,52 @@
       let danceData=readDanceStore();
       function saveDanceStore(){localStorage.setItem(danceStoreKey,JSON.stringify(danceData))}
       const danceSkills=['Comfortable mobility routine','Core stability & balance','Dime stops','Clean isolations','House groove & gliding','Tutting lines & angles','Waacking arm pathways','Hip-hop bounce & groove','Popping hits & control','Musicality & accents','Stage presence','Camera performance'];
+      let danceRewardMonth=new Date(new Date().getFullYear(),new Date().getMonth(),1),danceRewardState=null;
+      const danceRewardStorageKey='vs-dance-streak-rewards-v1';
+      function getDanceRewardState(){
+        if(danceRewardState)return danceRewardState;
+        let saved=null;try{saved=JSON.parse(localStorage.getItem(danceRewardStorageKey)||'null')}catch(_){}
+        danceRewardState=VocalRewards.normalizeState(saved||VocalRewards.emptyState());
+        if(!saved){const dates=[...new Set(danceData.logs.map(x=>x.date).filter(x=>/^\d{4}-\d{2}-\d{2}$/.test(x)))].sort();dates.forEach(date=>{danceRewardState=VocalRewards.recordPractice(danceRewardState,date).state});localStorage.setItem(danceRewardStorageKey,JSON.stringify(danceRewardState))}
+        return danceRewardState;
+      }
+      function saveDanceRewardState(){localStorage.setItem(danceRewardStorageKey,JSON.stringify(danceRewardState))}
+      function recordDanceRewardPractice(date){
+        const result=VocalRewards.recordPractice(getDanceRewardState(),date);danceRewardState=result.state;
+        if(!result.duplicate){saveDanceRewardState();if(result.awards.length)document.getElementById('dance-reward-card-message').textContent=result.awards.map(a=>a.type==='cards'?a.milestone+'-day streak — '+a.count+' reward card'+(a.count===1?'':'s')+' unlocked':a.milestone+'-day streak — '+a.reward.name+' earned').join(' · ')}
+      }
+      function renderDanceRewards(){
+        const state=getDanceRewardState(),stats=VocalRewards.streakStats(state.practiceDates,new Date(),state.longestStreak),next=stats.nextMilestone;
+        document.getElementById('dance-current-streak').textContent=stats.current;document.getElementById('dance-longest-streak').textContent=stats.longest;
+        document.getElementById('dance-next-milestone').textContent=next?next.days+' days':'Hall of Fame';
+        document.getElementById('dance-next-reward').textContent=next?(next.cards?next.cards+' reward card'+(next.cards===1?'':'s'):next.rarity+' reward'):'All milestones reached';
+        document.getElementById('dance-star-coins').textContent=state.starCoins;
+        const first=new Date(danceRewardMonth.getFullYear(),danceRewardMonth.getMonth(),1),year=first.getFullYear(),month=first.getMonth(),days=new Date(year,month+1,0).getDate(),offset=(first.getDay()+6)%7,done=new Set(state.practiceDates),today=VocalRewards.dateKey(new Date());
+        document.getElementById('dance-streak-month').textContent=first.toLocaleDateString(undefined,{month:'short',year:'numeric'});
+        let cal='';for(let i=0;i<offset;i++)cal+='<span class="dance-streak-day empty"></span>';
+        for(let d=1;d<=days;d++){const key=VocalRewards.dateKey(new Date(year,month,d,12)),marked=done.has(key);cal+='<span class="dance-streak-day '+(marked?'done ':'')+(key===today?'today':'')+'">'+d+'</span>'}
+        document.getElementById('dance-streak-calendar').innerHTML=cal;
+        document.getElementById('dance-streak-milestones').innerHTML=VocalRewards.MILESTONES.map(m=>{const earned=state.claimedMilestones.includes(m.days),reward=m.cards?m.cards+' reward card'+(m.cards===1?'':'s'):m.rarity+' reward';return '<div class="dance-streak-milestone '+(earned?'earned':'')+'"><span>'+(earned?'✦':'·')+'</span><div><b>'+m.days+' days</b><small>'+reward+'</small></div><em>'+(earned?'Earned':'Not yet')+'</em></div>'}).join('');
+        const pending=state.cards.filter(x=>x.status==='pending').length;document.getElementById('dance-reward-card-count').textContent=pending+' ready · '+state.cards.length+' earned;
+        document.getElementById('dance-reward-open').disabled=!pending;document.getElementById('dance-reward-open').textContent=pending?'Open reward card':'No cards ready';
+        const host=document.getElementById('dance-reward-collection');document.getElementById('dance-reward-collection-count').textContent=state.collection.length+' '+(state.collection.length===1?'reward':'rewards');
+        host.innerHTML=state.collection.length?state.collection.map(r=>'<div class="dance-collected-reward"><span>✦</span><div><b>'+r.name+'</b><small>'+r.description+'</small><small>'+r.rarity+' · '+(r.source==='scratch-card'?'Reward card':'Streak milestone')+'</small></div></div>').join(''):'<p class="dance-reward-empty">Your keepsakes will appear here as you reach milestones and open reward cards.</p>';
+      }
+      document.getElementById('dance-streak-prev').addEventListener('click',()=>{danceRewardMonth=new Date(danceRewardMonth.getFullYear(),danceRewardMonth.getMonth()-1,1);renderDanceRewards()});
+      document.getElementById('dance-streak-next').addEventListener('click',()=>{danceRewardMonth=new Date(danceRewardMonth.getFullYear(),danceRewardMonth.getMonth()+1,1);renderDanceRewards()});
+      document.getElementById('dance-reward-open').addEventListener('click',()=>{
+        const state=getDanceRewardState(),card=state.cards.find(x=>x.status==='pending');if(!card)return;
+        const result=VocalRewards.scratchCard(state,card.id);if(result.duplicate)return;danceRewardState=result.state;saveDanceRewardState();
+        const reveal=document.getElementById('dance-reward-reveal');reveal.hidden=false;reveal.innerHTML='<span>'+result.reward.rarity.toUpperCase()+' REWARD</span><b>'+result.reward.name+'</b><p>'+result.reward.description+'</p>';
+        document.getElementById('dance-reward-card-message').textContent='Reward opened and added to your collection!';renderDanceRewards();
+      });
       function renderDanceProgress(){
         const today=new Date(),weekStart=new Date(today);weekStart.setHours(0,0,0,0);weekStart.setDate(today.getDate()-((today.getDay()+6)%7));
         const weekLogs=danceData.logs.filter(x=>new Date(x.date+'T12:00:00')>=weekStart);
         document.getElementById('dance-stat-sessions').textContent=danceData.logs.length;
         document.getElementById('dance-stat-week').textContent=weekLogs.length;
         document.getElementById('dance-stat-minutes').textContent=danceData.logs.reduce((n,x)=>n+Number(x.minutes||0),0);
+        renderDanceRewards();
         const plan=document.getElementById('dance-plan-list');
         plan.innerHTML=danceData.plan.length?danceData.plan.map((x,i)=>'<div class="dance-plan-row"><div><b>'+x.day+' · '+x.focus+'</b><small>'+x.minutes+' min planned</small></div><button type="button" data-remove-plan="'+i+'" aria-label="Remove '+x.focus+' from '+x.day+'">×</button></div>').join(''):'<p class="dance-plan-empty">Your weekly plan will appear here.</p>';
         plan.querySelectorAll('[data-remove-plan]').forEach(b=>b.addEventListener('click',()=>{danceData.plan.splice(Number(b.dataset.removePlan),1);saveDanceStore();renderDanceProgress()}));
@@ -483,7 +541,7 @@
         grid.querySelectorAll('[data-dance-skill]').forEach(box=>box.addEventListener('change',()=>{const id=Number(box.dataset.danceSkill);danceData.skills=box.checked?[...new Set([...danceData.skills,id])]:danceData.skills.filter(x=>x!==id);saveDanceStore()}));
       }
       document.getElementById('dance-plan-add').addEventListener('click',()=>{const minutes=Math.max(5,Math.min(180,Number(document.getElementById('dance-plan-duration').value)||30));danceData.plan.push({day:document.getElementById('dance-plan-day').value,focus:document.getElementById('dance-plan-focus').value,minutes});saveDanceStore();renderDanceProgress()});
-      document.getElementById('dance-log-add').addEventListener('click',()=>{const minutes=Math.max(5,Math.min(240,Number(document.getElementById('dance-log-duration').value)||30));const date=document.getElementById('dance-log-date').value||new Date().toISOString().slice(0,10);danceData.logs.push({date,focus:document.getElementById('dance-log-focus').value,minutes,note:document.getElementById('dance-log-note').value.trim()});saveDanceStore();document.getElementById('dance-log-note').value='';document.getElementById('dance-log-status').textContent='Practice saved on this device.';renderDanceProgress()});
+      document.getElementById('dance-log-add').addEventListener('click',()=>{const minutes=Math.max(5,Math.min(240,Number(document.getElementById('dance-log-duration').value)||30));const date=document.getElementById('dance-log-date').value||new Date().toISOString().slice(0,10);danceData.logs.push({date,focus:document.getElementById('dance-log-focus').value,minutes,note:document.getElementById('dance-log-note').value.trim()});saveDanceStore();if(date<=VocalRewards.dateKey(new Date()))recordDanceRewardPractice(date);document.getElementById('dance-log-note').value='';document.getElementById('dance-log-status').textContent='Practice saved on this device.';renderDanceProgress()});
       document.getElementById('dance-log-date').value=new Date().toISOString().slice(0,10);
       const warmupOptions={
         stretches:{kicker:'01 / STRETCHES',title:'Stretches',description:"A comfortable flexibility session for dance. We'll add the exercises from your selected reference videos here."},
