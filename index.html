@@ -477,7 +477,7 @@
         document.getElementById('dance-mobility-count').textContent=String(mobilityStep+1).padStart(2,'0')+' / 18';
         document.getElementById('dance-mobility-label').textContent=label;
         document.getElementById('dance-mobility-tip').textContent=tip;
-        document.getElementById('dance-mobility-phase').textContent=mobilityRest?'20s REST':'40s MOVE';
+        document.getElementById('dance-mobility-phase').textContent=mobilitySeconds+'s '+(mobilityRest?'REST':'MOVE');
         document.getElementById('dance-mobility-progress').style.width=((mobilityRest?20-mobilitySeconds:40-mobilitySeconds)/(mobilityRest?20:40)*100)+'%';
         [...document.querySelectorAll('#dance-mobility-list li')].forEach((item,i)=>item.classList.toggle('active',i===mobilityStep));
       }
