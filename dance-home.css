@@ -329,3 +329,10 @@ body.dance-mode > .companion-dock .companion-chat{pointer-events:auto!important}
 .dance-mobility-list b{display:block;color:var(--h-text);font:600 12px var(--sans)}
 .dance-mobility-list small{display:block;margin-top:4px;color:var(--h-muted);font:10px/1.5 var(--sans)}
 @media(max-width:600px){.dance-mobility-list{grid-template-columns:1fr}.dance-mobility-controls{display:grid;grid-template-columns:1fr 1fr}.dance-mobility-controls #dance-mobility-play{grid-column:1/-1;grid-row:1}}
+
+
+/* Mobility follow-along animation */
+.dance-mobility-animation{margin:18px 0;padding:16px;border:1px solid rgba(190,35,73,.18);border-radius:20px;background:linear-gradient(145deg,rgba(255,239,243,.92),rgba(255,250,247,.96))}
+.dance-mobility-animation figure{margin:10px 0 8px;overflow:hidden;border-radius:14px;background:#fff}
+.dance-mobility-animation img{display:block;width:100%;max-height:360px;object-fit:contain}
+.dance-mobility-animation small{display:block;color:#815c68;line-height:1.5}
