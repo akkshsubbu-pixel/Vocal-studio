@@ -302,3 +302,30 @@ body.dance-mode > .companion-dock .companion-chat{pointer-events:auto!important}
 .dance-main .dance-stretch-art-gallery{display:block!important;visibility:visible!important;opacity:1!important;width:100%;min-height:220px;}
 .dance-main .dance-stretch-art-gallery figure{display:flex!important;align-items:center;justify-content:center;width:100%;max-width:560px;min-height:200px;margin:0;overflow:visible;background:linear-gradient(145deg,#f8dce8,#fbe9df);}
 .dance-main .dance-stretch-art-gallery img{display:block!important;visibility:visible!important;opacity:1!important;width:100%;max-width:560px;height:auto;max-height:520px;aspect-ratio:auto;object-fit:contain;}
+
+
+/* Full-body mobility routine guide */
+.dance-mobility-routine{margin:20px 0 8px;padding:18px;border:1px solid var(--h-edge-bright);border-radius:17px;background:linear-gradient(145deg,var(--h-panel-raised),var(--h-bg))}
+.dance-mobility-routine[hidden]{display:none!important}
+.dance-mobility-heading{display:flex;justify-content:space-between;gap:14px;align-items:flex-start}
+.dance-mobility-heading h3{margin:6px 0;color:var(--h-text);font:600 23px var(--serif)}
+.dance-mobility-heading p{margin:0;color:var(--h-muted);font:12px/1.65 var(--sans)}
+.dance-mobility-mark{color:var(--h-primary-bright);font-size:30px}
+.dance-mobility-safety{margin:15px 0;padding:12px 14px;border:1px solid var(--h-edge);border-radius:11px;background:var(--h-bg);color:var(--h-secondary);font:11px/1.65 var(--sans)}
+.dance-mobility-player{padding:17px;border:1px solid var(--h-edge);border-radius:14px;background:var(--h-bg)}
+.dance-mobility-player-top{display:flex;justify-content:space-between;align-items:center;color:var(--h-primary-bright);font:800 11px var(--sans);letter-spacing:.08em}
+.dance-mobility-player h4{margin:12px 0 5px;color:var(--h-text);font:600 20px var(--serif)}
+.dance-mobility-player p{min-height:42px;margin:0;color:var(--h-muted);font:12px/1.65 var(--sans)}
+.dance-mobility-phase{margin-top:14px;color:var(--h-primary-bright);font:800 13px var(--sans);letter-spacing:.1em}
+.dance-mobility-track{height:6px;margin-top:8px;overflow:hidden;border-radius:9px;background:var(--h-edge)}
+.dance-mobility-track i{display:block;width:0;height:100%;border-radius:9px;background:var(--h-primary-bright);transition:width .2s linear}
+.dance-mobility-controls{display:flex;gap:8px;margin-top:15px}
+.dance-mobility-controls button{flex:1;min-width:0}
+.dance-mobility-player>small{display:block;margin-top:11px;color:var(--h-muted);font:10px/1.6 var(--sans)}
+.dance-mobility-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:16px 0 0;padding:0;list-style:none;counter-reset:none}
+.dance-mobility-list li{display:flex;gap:10px;padding:11px;border:1px solid var(--h-edge);border-radius:11px;background:var(--h-bg)}
+.dance-mobility-list li.active{border-color:var(--h-primary-bright);background:var(--h-panel-tint)}
+.dance-mobility-list li>span{color:var(--h-primary-bright);font:800 10px var(--sans)}
+.dance-mobility-list b{display:block;color:var(--h-text);font:600 12px var(--sans)}
+.dance-mobility-list small{display:block;margin-top:4px;color:var(--h-muted);font:10px/1.5 var(--sans)}
+@media(max-width:600px){.dance-mobility-list{grid-template-columns:1fr}.dance-mobility-controls{display:grid;grid-template-columns:1fr 1fr}.dance-mobility-controls #dance-mobility-play{grid-column:1/-1;grid-row:1}}
