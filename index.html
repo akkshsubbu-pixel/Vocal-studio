@@ -138,6 +138,7 @@
       <button class="nav-item active" type="button" data-dance-view="home"><span>⌂</span> Home</button>
       <button class="nav-item" type="button" data-dance-view="studio"><span>◉</span> Practice studio</button>
       <button class="nav-item" type="button" data-dance-view="warmup"><span>✧</span> Warm-up</button>
+      <button class="nav-item" type="button" data-dance-view="movement"><span>✦</span> Movement Lab</button>
       <button class="nav-item" type="button" data-dance-view="rhythm"><span>♫</span> Rhythm training</button>
       <button class="nav-item" type="button" data-dance-view="progress"><span>↗</span> Progress & schedule</button>
       <button class="nav-item" type="button" data-dance-view="rewards"><span>✦</span> Streaks & rewards</button>
@@ -283,6 +284,22 @@
             <small class="dance-reference-credit">Your fourth reference video. Detailed exercise-by-exercise steps can be added when its transcript is available.</small>
           </article>
         </article>
+      </section>
+      <section class="dance-movement" id="dance-movement" hidden aria-label="Movement Lab">
+        <header class="dance-home-header"><div><div class="entry-gate-kicker">EXPLORE · EXPERIMENT · EXPRESS</div><h1>Welcome to <em>Movement Lab.</em></h1><p>A creative training space for technique, footwork, musicality, choreography and performance.</p></div><div class="dance-home-mark" aria-hidden="true">✦</div></header>
+        <section class="dance-movement-intro"><div class="dance-panel-kicker">YOUR MOVEMENT TOOLKIT</div><h2>Train the details. Build your own style.</h2><p>Choose a module to focus your practice. Start with foundations, work at a comfortable pace and give yourself time to review what you learn.</p></section>
+        <div class="dance-movement-grid">
+          <article class="dance-movement-card"><span>01 · CONTROL</span><h2>Technique Lab</h2><p>Body isolations, dime stops, waves, tutting lines, popping hits and clean transitions.</p><small>FOCUS · PRECISION & CONTROL</small></article>
+          <article class="dance-movement-card"><span>02 · GROOVE</span><h2>Footwork Academy</h2><p>House steps and gliding, hip-hop grooves, direction changes and coordination drills.</p><small>FOCUS · FLOW & FOOTWORK</small></article>
+          <article class="dance-movement-card"><span>03 · LISTEN</span><h2>Musicality Studio</h2><p>Explore the beat, bass, melody, percussion, lyrics, accents and subdivisions in music.</p><small>FOCUS · HEARING THE DETAILS</small></article>
+          <article class="dance-movement-card"><span>04 · CREATE</span><h2>Choreography Builder</h2><p>Plan 8-count combinations, arrange sections and keep notes for your own routines.</p><small>FOCUS · MAKING MOVEMENT</small></article>
+          <article class="dance-movement-card"><span>05 · IMPROVISE</span><h2>Freestyle Generator</h2><p>Try style prompts, musicality challenges and short improvisation ideas.</p><small>FOCUS · CONFIDENCE & CREATIVITY</small></article>
+          <article class="dance-movement-card"><span>06 · REVIEW</span><h2>Video Analysis</h2><p>Review your own practice recordings, compare attempts and note timing or clarity goals.</p><small>FOCUS · REFLECTION & PROGRESS</small></article>
+          <article class="dance-movement-card"><span>07 · PERFORM</span><h2>Performance Academy</h2><p>Practise stage presence, expression, camera awareness and dance-and-vocal integration.</p><small>FOCUS · PERFORMANCE SKILLS</small></article>
+          <article class="dance-movement-card"><span>08 · LEARN</span><h2>Dance Dictionary</h2><p>Build a searchable glossary of dance terms, moves, concepts and technique notes.</p><small>FOCUS · KNOWLEDGE & VOCABULARY</small></article>
+          <article class="dance-movement-card"><span>09 · STAGE</span><h2>Artist Performance Simulator</h2><p>Sketch a setlist, plan transitions and map the flow of a stage performance.</p><small>FOCUS · SHOW DESIGN</small></article>
+        </div>
+        <p class="dance-movement-note">These are your training modules. We can make each one interactive as we build it out.</p>
       </section>
       <section class="dance-rhythm" id="dance-rhythm" hidden aria-label="Rhythm training">
         <header class="dance-home-header"><div><div class="entry-gate-kicker">LISTEN · COUNT · MOVE</div><h1>Find your <em>rhythm.</em></h1><p>Build steady timing, hear the beat clearly and practise moving with the music.</p></div><div class="dance-home-mark" aria-hidden="true">♫</div></header>
@@ -482,6 +499,7 @@
       const danceHome=document.getElementById('dance-home');
       const danceStudio=document.getElementById('dance-studio');
       const danceWarmup=document.getElementById('dance-warmup');
+      const danceMovement=document.getElementById('dance-movement');
       const danceRhythm=document.getElementById('dance-rhythm');
       const danceProgress=document.getElementById('dance-progress');
       const danceRewardsPanel=document.getElementById('dance-rewards-panel');
@@ -492,16 +510,18 @@
       function showDanceView(view){
         const studio=view==='studio';
         const warmup=view==='warmup';
+        const movement=view==='movement';
         const rhythm=view==='rhythm';
         const rewards=view==='rewards';
         const progress=view==='progress'||rewards;
-        danceHome.hidden=studio||warmup||rhythm||progress;
+        danceHome.hidden=studio||warmup||movement||rhythm||progress;
         danceStudio.hidden=!studio;
         danceWarmup.hidden=!warmup;
+        danceMovement.hidden=!movement;
         danceRhythm.hidden=!rhythm;
         danceProgress.hidden=!progress;
         nav.forEach(b=>b.classList.toggle('active',b.dataset.danceView===view));
-        crumb.textContent=studio?'PRACTICE STUDIO':warmup?'WARM-UP':rhythm?'RHYTHM TRAINING':rewards?'STREAKS & REWARDS':progress?'PROGRESS & SCHEDULE':'DANCE HOME';
+        crumb.textContent=studio?'PRACTICE STUDIO':warmup?'WARM-UP':movement?'MOVEMENT LAB':rhythm?'RHYTHM TRAINING':rewards?'STREAKS & REWARDS':progress?'PROGRESS & SCHEDULE':'DANCE HOME';
         if(progress)renderDanceProgress();
         if(rewards){
           document.getElementById('dance-rewards-panel').scrollIntoView({behavior:'smooth',block:'start'});
