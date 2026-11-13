@@ -253,6 +253,23 @@
             <div class="dance-panel-kicker">CUTE STRETCH CUE</div>
             <figure><img alt="Cute animated six-pose stretching cue" loading="eager" src="https://raw.githubusercontent.com/akkshsubbu-pixel/Vocal-studio/main/assets/Cozy%20Six-Pose%20Stretching%20Sequence-2.gif" /></figure>
           </section>
+          <section class="dance-mobility-routine" id="dance-mobility-routine" hidden aria-label="Full body mobility routine">
+            <div class="dance-mobility-heading">
+              <div><div class="dance-panel-kicker">30 MIN · FULL BODY</div><h3>Full Body Mobility Flow</h3><p>18 gentle mobility movements. Use a comfortable range, move slowly and take extra rest whenever needed.</p></div>
+              <span class="dance-mobility-mark">✧</span>
+            </div>
+            <div class="dance-mobility-safety">Move without forcing your range. Skip any movement that feels uncomfortable. Bridge and plow are not required; use the gentle preparation options below instead.</div>
+            <div class="dance-mobility-player" id="dance-mobility-player" data-step="0">
+              <div class="dance-mobility-player-top"><span class="dance-panel-kicker">GUIDED STEP</span><span id="dance-mobility-count">01 / 18</span></div>
+              <h4 id="dance-mobility-label">Gentle hip openers</h4>
+              <p id="dance-mobility-tip">Stand tall and make small, controlled hip circles. Switch direction halfway through.</p>
+              <div class="dance-mobility-phase" id="dance-mobility-phase">40s MOVE</div>
+              <div class="dance-mobility-track"><i id="dance-mobility-progress"></i></div>
+              <div class="dance-mobility-controls"><button class="dance-action-button secondary" id="dance-mobility-prev" type="button">← Back</button><button class="dance-action-button" id="dance-mobility-play" type="button">▶ Start routine</button><button class="dance-action-button secondary" id="dance-mobility-next" type="button">Next →</button></div>
+              <small>40 seconds of gentle movement, then 20 seconds to rest and change position. You can pause at any time.</small>
+            </div>
+            <ol class="dance-mobility-list" id="dance-mobility-list"></ol>
+          </section>
           <article class="dance-reference-card" id="dance-stretch-reference-4">
             <div class="dance-reference-topline"><span>STRETCHES · REFERENCE 04</span><span>15 MIN</span></div>
             <h3>15 MIN Full Body Flexibility Stretch Routine for Dancers</h3>
@@ -412,7 +429,7 @@
       }
       const warmupOptions={
         stretches:{kicker:'01 / STRETCHES',title:'Stretches',description:"A comfortable flexibility session for dance. We'll add the exercises from your selected reference videos here."},
-        mobility:{kicker:'02 / MOBILITY',title:'Mobility',description:'Controlled movements to explore comfortable joint range and improve movement control. Your routine will be added here.'},
+        mobility:{kicker:'02 / MOBILITY',title:'Mobility',description:'A guided 18-step full-body mobility flow with 40 seconds of movement and 20 seconds to rest between exercises.'},
         warmup:{kicker:'03 / WARM-UP',title:'Warm-up',description:'A gradual, dance-focused preparation session to help you feel ready to move. Your routine will be added here.'},
         cooldown:{kicker:'04 / COOL-DOWN',title:'Cool-down',description:'A gentle wind-down after practice, with relaxed movements and comfortable stretches. Your routine will be added here.'}
       };
@@ -428,8 +445,50 @@
           if(reference4)reference4.hidden=button.dataset.warmupOption!=='stretches';
           const stretchPlayer=document.getElementById('dance-stretch-player');
           if(stretchPlayer)stretchPlayer.hidden=button.dataset.warmupOption!=='stretches';
+          const mobilityRoutine=document.getElementById('dance-mobility-routine');
+          if(mobilityRoutine)mobilityRoutine.hidden=button.dataset.warmupOption!=='mobility';
         });
       });
+      const mobilitySteps=[
+        ['Gentle hip openers','Stand tall and make small, controlled hip circles. Switch direction halfway through.'],
+        ['90/90 hip position','Sit in a comfortable 90/90 position with your chest lifted. Support yourself with your hands if needed.'],
+        ['90/90 good-morning hinge','From 90/90, hinge forward slightly from the hips while keeping your spine long.'],
+        ["World’s Greatest Stretch",'Use a supported low lunge and rotate gently through your upper back. Change sides halfway.'],
+        ['Half-kneeling twists','Kneel with one foot forward and rotate your chest gently. Switch sides halfway.'],
+        ['Standing windmills','Stand with feet comfortably apart and make slow, controlled arm-and-torso rotations.'],
+        ['Spinal waves','On hands and knees, gently move between rounding and lengthening your spine.'],
+        ['Gentle scorpion mobility','Lie on your front and move one bent leg across only as far as comfortable. Switch sides.'],
+        ['Supported pigeon stretch','Use hands or cushions for support; keep the stretch mild and switch sides.'],
+        ['Supported Cossack shifts','Shift gently side to side with a shallow bend; keep both feet grounded.'],
+        ['Pancake hinge','Sit with legs comfortably apart and hinge forward only a little, keeping the spine long.'],
+        ['Thoracic-spine rotations','Sit or kneel tall and rotate through your upper back without forcing your neck.'],
+        ['Natural leg extensions','Lie on your back and slowly extend one leg within a comfortable range. Alternate legs.'],
+        ['Low-lunge lift-off preparation','Use hands for support and make a small controlled lift or weight shift. Switch sides.'],
+        ['Puppy-dog stretch','From hands and knees, walk your hands forward and keep hips comfortably above knees.'],
+        ['Gentle bridge preparation','Lie on your back with knees bent; keep hips resting down and gently open your chest.'],
+        ['Supine tuck preparation','Lie on your back and gently draw bent knees toward your torso without rolling onto your neck.'],
+        ['Supine twists','With knees bent, let them move gently side to side within a comfortable range.']
+      ];
+      let mobilityStep=0,mobilityTimer=null,mobilitySeconds=40,mobilityRest=false;
+      const mobilityPlayer=document.getElementById('dance-mobility-player');
+      const mobilityPlay=document.getElementById('dance-mobility-play');
+      function renderMobilityStep(){
+        const [label,tip]=mobilitySteps[mobilityStep];
+        document.getElementById('dance-mobility-count').textContent=String(mobilityStep+1).padStart(2,'0')+' / 18';
+        document.getElementById('dance-mobility-label').textContent=label;
+        document.getElementById('dance-mobility-tip').textContent=tip;
+        document.getElementById('dance-mobility-phase').textContent=mobilityRest?'20s REST':'40s MOVE';
+        document.getElementById('dance-mobility-progress').style.width=((mobilityRest?20-mobilitySeconds:40-mobilitySeconds)/(mobilityRest?20:40)*100)+'%';
+        [...document.querySelectorAll('#dance-mobility-list li')].forEach((item,i)=>item.classList.toggle('active',i===mobilityStep));
+      }
+      function stopMobility(){if(mobilityTimer){clearInterval(mobilityTimer);mobilityTimer=null;}mobilityPlay.textContent='▶ Resume routine';}
+      function advanceMobility(){if(!mobilityRest){mobilityRest=true;mobilitySeconds=20;}else{mobilityRest=false;mobilitySeconds=40;mobilityStep=(mobilityStep+1)%mobilitySteps.length;}renderMobilityStep();}
+      function startMobility(){if(mobilityTimer){stopMobility();return;}mobilityPlay.textContent='Ⅱ Pause';mobilityTimer=setInterval(()=>{mobilitySeconds--;if(mobilitySeconds<=0){advanceMobility();}else renderMobilityStep();},1000);}
+      document.getElementById('dance-mobility-list').innerHTML=mobilitySteps.map((step,i)=>'<li><span>'+String(i+1).padStart(2,'0')+'</span><div><b>'+step[0]+'</b><small>'+step[1]+'</small></div></li>').join('');
+      mobilityPlay.addEventListener('click',startMobility);
+      document.getElementById('dance-mobility-prev').addEventListener('click',()=>{stopMobility();mobilityRest=false;mobilitySeconds=40;mobilityStep=(mobilityStep+mobilitySteps.length-1)%mobilitySteps.length;renderMobilityStep();});
+      document.getElementById('dance-mobility-next').addEventListener('click',()=>{stopMobility();mobilityRest=false;mobilitySeconds=40;mobilityStep=(mobilityStep+1)%mobilitySteps.length;renderMobilityStep();});
+      renderMobilityStep();
       const stretchSteps=[
         ['Shoulder rolls','Relax your shoulders and make slow, comfortable circles.'],
         ['Cross-body shoulder stretch','Bring one arm across your chest; switch sides halfway through.'],
