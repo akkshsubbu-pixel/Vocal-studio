@@ -336,3 +336,32 @@ body.dance-mode > .companion-dock .companion-chat{pointer-events:auto!important}
 .dance-mobility-animation figure{margin:10px 0 8px;overflow:hidden;border-radius:14px;background:#fff}
 .dance-mobility-animation img{display:block;width:100%;max-height:360px;object-fit:contain}
 .dance-mobility-animation small{display:block;color:#815c68;line-height:1.5}
+
+
+/* Dance progress and weekly schedule */
+.dance-progress[hidden]{display:none!important}
+.dance-progress{display:block;max-width:1120px;margin:0 auto;padding-bottom:36px}
+.dance-progress-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:20px 0}
+.dance-progress-stats article{padding:18px;border:1px solid rgba(190,35,73,.16);border-radius:18px;background:linear-gradient(145deg,#fff1f4,#fffaf8)}
+.dance-progress-stats span{display:block;font-size:10px;letter-spacing:.12em;color:#956878;font-weight:800}
+.dance-progress-stats strong{display:block;margin-top:8px;font-size:30px;color:#9e244b}
+.dance-progress-panel{margin:18px 0;padding:22px;border:1px solid rgba(190,35,73,.16);border-radius:22px;background:#fffaf9;box-shadow:0 10px 28px rgba(104,35,57,.05)}
+.dance-progress-panel h2{margin:6px 0 5px;color:#57243a}
+.dance-progress-panel>p{color:#876977;font-size:13px}
+.dance-plan-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:16px}
+.dance-plan-form label{display:flex;flex-direction:column;gap:6px;font-size:10px;letter-spacing:.1em;font-weight:800;color:#8d5c6d}
+.dance-plan-form input,.dance-plan-form select{width:100%;min-height:42px;padding:10px 12px;border:1px solid #ead3dc;border-radius:11px;background:#fff;color:#54283a;font:600 13px Nunito,sans-serif;letter-spacing:normal}
+.dance-plan-form .dance-plan-note{grid-column:1/-1}
+.dance-plan-form button{align-self:end;min-height:42px}
+.dance-plan-list,.dance-log-list{display:grid;gap:8px;margin-top:14px}
+.dance-plan-row,.dance-log-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;border-radius:13px;background:#fff0f3}
+.dance-plan-row b,.dance-log-row b{display:block;color:#58263b;font-size:13px}
+.dance-plan-row small,.dance-log-row small{display:block;margin-top:3px;color:#987483;font-size:11px}
+.dance-plan-row button{border:0;background:transparent;color:#a12c52;font-size:22px;cursor:pointer}
+.dance-log-row>span{color:#a12c52;font-weight:900}
+.dance-plan-empty{padding:14px;border:1px dashed #e8cbd6;border-radius:13px;color:#9a7b87;font-size:13px}
+.dance-log-status{min-height:18px;color:#9b3156;font-size:12px}
+.dance-skill-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:16px}
+.dance-skill-item{display:flex;align-items:center;gap:10px;padding:12px;border-radius:12px;background:#fff0f3;color:#65384a;font-size:13px}
+.dance-skill-item input{accent-color:#b52d57;width:17px;height:17px}
+@media(max-width:640px){.dance-progress-stats{gap:8px}.dance-progress-stats article{padding:13px}.dance-progress-stats strong{font-size:24px}.dance-plan-form,.dance-skill-grid{grid-template-columns:1fr}.dance-plan-form .dance-plan-note{grid-column:auto}.dance-progress-panel{padding:16px}}
