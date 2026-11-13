@@ -255,7 +255,7 @@
           </section>
           <section class="dance-mobility-routine" id="dance-mobility-routine" hidden aria-label="Full body mobility routine">
             <div class="dance-mobility-heading">
-              <div><div class="dance-panel-kicker">30 MIN · FULL BODY</div><h3>Full Body Mobility Flow</h3><p>18 gentle mobility movements. Use a comfortable range, move slowly and take extra rest whenever needed.</p></div>
+              <div><div class="dance-panel-kicker">30 MIN · FULL BODY</div><h3>Full Body Mobility Flow</h3><p>30 gentle mobility rounds. Use a comfortable range, move slowly and take extra rest whenever needed.</p></div>
               <span class="dance-mobility-mark">✧</span>
             </div>
             <div class="dance-mobility-safety">Move without forcing your range. Skip any movement that feels uncomfortable. Bridge and plow are not required; use the gentle preparation options below instead.</div>
@@ -451,30 +451,42 @@
       });
       const mobilitySteps=[
         ['Gentle hip openers','Stand tall and make small, controlled hip circles. Switch direction halfway through.'],
-        ['90/90 hip position','Sit in a comfortable 90/90 position with your chest lifted. Support yourself with your hands if needed.'],
-        ['90/90 good-morning hinge','From 90/90, hinge forward slightly from the hips while keeping your spine long.'],
-        ["World’s Greatest Stretch",'Use a supported low lunge and rotate gently through your upper back. Change sides halfway.'],
-        ['Half-kneeling twists','Kneel with one foot forward and rotate your chest gently. Switch sides halfway.'],
+        ['90/90 hip position — side one','Sit in a comfortable 90/90 position with your chest lifted. Support yourself with your hands.'],
+        ['90/90 hip position — side two','Switch the front and back legs, keeping the position comfortable and supported.'],
+        ['90/90 good-morning hinge — side one','Hinge forward slightly from the hips while keeping your spine long.'],
+        ['90/90 good-morning hinge — side two','Switch sides and repeat a small, controlled hip hinge.'],
+        ["World’s Greatest Stretch — side one",'Use a supported low lunge and rotate gently through your upper back.'],
+        ["World’s Greatest Stretch — side two",'Switch legs and repeat the supported lunge and gentle rotation.'],
+        ['Half-kneeling twist — side one','Kneel with one foot forward and rotate your chest gently.'],
+        ['Half-kneeling twist — side two','Switch the forward foot and repeat the gentle rotation.'],
         ['Standing windmills','Stand with feet comfortably apart and make slow, controlled arm-and-torso rotations.'],
         ['Spinal waves','On hands and knees, gently move between rounding and lengthening your spine.'],
-        ['Gentle scorpion mobility','Lie on your front and move one bent leg across only as far as comfortable. Switch sides.'],
-        ['Supported pigeon stretch','Use hands or cushions for support; keep the stretch mild and switch sides.'],
-        ['Supported Cossack shifts','Shift gently side to side with a shallow bend; keep both feet grounded.'],
+        ['Gentle scorpion mobility — side one','Lie on your front and move one bent leg across only as far as comfortable.'],
+        ['Gentle scorpion mobility — side two','Switch legs and keep the movement small and comfortable.'],
+        ['Supported pigeon — side one','Use hands or cushions for support; keep the stretch mild.'],
+        ['Supported pigeon — side two','Switch sides, using support and avoiding pressure on the knee.'],
+        ['Supported Cossack shifts — side one','Shift gently toward one side with a shallow bend; keep both feet grounded.'],
+        ['Supported Cossack shifts — side two','Shift gently toward the other side without forcing depth.'],
         ['Pancake hinge','Sit with legs comfortably apart and hinge forward only a little, keeping the spine long.'],
-        ['Thoracic-spine rotations','Sit or kneel tall and rotate through your upper back without forcing your neck.'],
-        ['Natural leg extensions','Lie on your back and slowly extend one leg within a comfortable range. Alternate legs.'],
-        ['Low-lunge lift-off preparation','Use hands for support and make a small controlled lift or weight shift. Switch sides.'],
+        ['Thoracic rotation — side one','Sit or kneel tall and rotate through your upper back without forcing your neck.'],
+        ['Thoracic rotation — side two','Rotate gently in the opposite direction.'],
+        ['Natural leg extension — side one','Lie on your back and slowly extend one leg within a comfortable range.'],
+        ['Natural leg extension — side two','Alternate legs and keep the movement controlled.'],
+        ['Low-lunge lift-off preparation — side one','Use hands for support and make a small controlled lift or weight shift.'],
+        ['Low-lunge lift-off preparation — side two','Switch sides and keep the range small and steady.'],
         ['Puppy-dog stretch','From hands and knees, walk your hands forward and keep hips comfortably above knees.'],
         ['Gentle bridge preparation','Lie on your back with knees bent; keep hips resting down and gently open your chest.'],
-        ['Supine tuck preparation','Lie on your back and gently draw bent knees toward your torso without rolling onto your neck.'],
-        ['Supine twists','With knees bent, let them move gently side to side within a comfortable range.']
+        ['Supine tuck preparation','Lie on your back and gently draw bent knees toward your torso; keep your head and neck relaxed.'],
+        ['Supine twist — side one','With knees bent, let them move gently to one side within a comfortable range.'],
+        ['Supine twist — side two','Let your knees move gently to the other side.'],
+        ['Easy reset breathing','Lie comfortably, breathe normally and let your body settle before finishing.']
       ];
       let mobilityStep=0,mobilityTimer=null,mobilitySeconds=40,mobilityRest=false;
       const mobilityPlayer=document.getElementById('dance-mobility-player');
       const mobilityPlay=document.getElementById('dance-mobility-play');
       function renderMobilityStep(){
         const [label,tip]=mobilitySteps[mobilityStep];
-        document.getElementById('dance-mobility-count').textContent=String(mobilityStep+1).padStart(2,'0')+' / 18';
+        document.getElementById('dance-mobility-count').textContent=String(mobilityStep+1).padStart(2,'0')+' / '+mobilitySteps.length;
         document.getElementById('dance-mobility-label').textContent=label;
         document.getElementById('dance-mobility-tip').textContent=tip;
         document.getElementById('dance-mobility-phase').textContent=mobilitySeconds+'s '+(mobilityRest?'REST':'MOVE');
