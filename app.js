@@ -95,6 +95,7 @@
            sample+=((channel[idx]||0)*(1-frac)+(channel[idx+1]||0)*frac)/buffer.numberOfChannels;
          }
          mono[i]=sample;
+         if(i>0&&i%50000===0)await new Promise(resolve=>setTimeout(resolve,0));
        }
        const points=[];
        for(let p=0;p+frame<count;p+=hop){
@@ -108,6 +109,10 @@
        if(!points.length)throw Error('There was not enough clear audio to estimate a pitch contour. Try a longer section.');
        return points;
      };
+     // Essentia's Melodia call is synchronous and can lock the UI on long
+     // recordings. Keep analysis on the yielding, chunked path until it runs
+     // in a Web Worker.
+     return basicFallback();
      if(typeof window.EssentiaWASM!=='function'||typeof window.Essentia!=='function')return basicFallback();
      try{
        if(!essentiaInstancePromise){
