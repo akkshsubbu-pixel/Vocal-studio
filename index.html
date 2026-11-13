@@ -138,6 +138,7 @@
       <button class="nav-item active" type="button" data-dance-view="home"><span>⌂</span> Home</button>
       <button class="nav-item" type="button" data-dance-view="studio"><span>◉</span> Practice studio</button>
       <button class="nav-item" type="button" data-dance-view="warmup"><span>✧</span> Warm-up</button>
+      <button class="nav-item" type="button" data-dance-view="rhythm"><span>♫</span> Rhythm training</button>
       <button class="nav-item" type="button" data-dance-view="progress"><span>↗</span> Progress & schedule</button>
       <button class="nav-item" type="button" data-dance-view="rewards"><span>✦</span> Streaks & rewards</button>
     </nav>
@@ -282,6 +283,23 @@
             <small class="dance-reference-credit">Your fourth reference video. Detailed exercise-by-exercise steps can be added when its transcript is available.</small>
           </article>
         </article>
+      </section>
+      <section class="dance-rhythm" id="dance-rhythm" hidden aria-label="Rhythm training">
+        <header class="dance-home-header"><div><div class="entry-gate-kicker">LISTEN · COUNT · MOVE</div><h1>Find your <em>rhythm.</em></h1><p>Build steady timing, hear the beat clearly and practise moving with the music.</p></div><div class="dance-home-mark" aria-hidden="true">♫</div></header>
+        <section class="dance-rhythm-panel"><div class="dance-panel-kicker">01 / METRONOME</div><h2>Set your tempo</h2><p>Start at a comfortable speed. Keep your steps relaxed and let the beat guide you.</p>
+          <div class="dance-rhythm-tempo"><strong id="dance-rhythm-bpm">80</strong><span>BPM</span></div>
+          <input id="dance-rhythm-tempo" class="dance-rhythm-slider" type="range" min="40" max="200" step="1" value="80" aria-label="Tempo in beats per minute">
+          <div class="dance-rhythm-range"><span>40 · SLOW</span><span>200 · FAST</span></div>
+          <div class="dance-rhythm-controls"><button class="dance-action-button" id="dance-rhythm-start" type="button">▶ Start beat</button><button class="dance-rhythm-secondary" id="dance-rhythm-stop" type="button" disabled>Stop</button><button class="dance-rhythm-secondary" id="dance-rhythm-tap" type="button">Tap tempo</button></div>
+          <div class="dance-rhythm-beat" id="dance-rhythm-beat" aria-live="polite"><span id="dance-rhythm-count">Ready?</span><small id="dance-rhythm-status">Press Start beat to begin</small></div>
+          <label class="dance-rhythm-subdivision">COUNTING PATTERN<select id="dance-rhythm-subdivision"><option value="1">Quarter notes · 1 2 3 4</option><option value="2">Eighth notes · 1 & 2 & 3 & 4 &</option></select></label>
+        </section>
+        <section class="dance-rhythm-panel"><div class="dance-panel-kicker">02 / PRACTISE THE PULSE</div><h2>Rhythm exercises</h2><div class="dance-rhythm-exercises">
+          <article><span>01</span><div><b>Find the 1</b><p>Listen to four steady beats. Clap gently on beat 1, then count 2, 3, 4 out loud.</p></div></article>
+          <article><span>02</span><div><b>Step on the beat</b><p>March or step in place on each beat. Keep the movement small and even.</p></div></article>
+          <article><span>03</span><div><b>Add the “&”</b><p>Switch to eighth notes. Say “1 & 2 & 3 & 4 &” and tap lightly on every count.</p></div></article>
+          <article><span>04</span><div><b>Move, then freeze</b><p>Dance freely for four counts, then pause for four counts while keeping the beat in your head.</p></div></article>
+        </div><p class="dance-rhythm-note">Try 2–3 rounds, then take a short break. Accuracy and comfort matter more than speed.</p></section>
       </section>
       <section class="dance-progress" id="dance-progress" hidden aria-label="Dance progress and schedule">
         <header class="dance-home-header"><div><div class="entry-gate-kicker">PLAN · PRACTISE · REFLECT</div><h1>Your dance, <em>in progress.</em></h1><p>Plan your sessions, record what you worked on and see your consistency grow.</p></div><div class="dance-home-mark">↗</div></header>
@@ -464,6 +482,7 @@
       const danceHome=document.getElementById('dance-home');
       const danceStudio=document.getElementById('dance-studio');
       const danceWarmup=document.getElementById('dance-warmup');
+      const danceRhythm=document.getElementById('dance-rhythm');
       const danceProgress=document.getElementById('dance-progress');
       const danceRewardsPanel=document.getElementById('dance-rewards-panel');
       // Keep rewards immediately visible at the top of Progress & Schedule.
@@ -473,14 +492,16 @@
       function showDanceView(view){
         const studio=view==='studio';
         const warmup=view==='warmup';
+        const rhythm=view==='rhythm';
         const rewards=view==='rewards';
         const progress=view==='progress'||rewards;
-        danceHome.hidden=studio||warmup||progress;
+        danceHome.hidden=studio||warmup||rhythm||progress;
         danceStudio.hidden=!studio;
         danceWarmup.hidden=!warmup;
+        danceRhythm.hidden=!rhythm;
         danceProgress.hidden=!progress;
         nav.forEach(b=>b.classList.toggle('active',b.dataset.danceView===view));
-        crumb.textContent=studio?'PRACTICE STUDIO':warmup?'WARM-UP':rewards?'STREAKS & REWARDS':progress?'PROGRESS & SCHEDULE':'DANCE HOME';
+        crumb.textContent=studio?'PRACTICE STUDIO':warmup?'WARM-UP':rhythm?'RHYTHM TRAINING':rewards?'STREAKS & REWARDS':progress?'PROGRESS & SCHEDULE':'DANCE HOME';
         if(progress)renderDanceProgress();
         if(rewards){
           document.getElementById('dance-rewards-panel').scrollIntoView({behavior:'smooth',block:'start'});
@@ -676,6 +697,31 @@
       document.getElementById('dance-brand-home').addEventListener('click',e=>{e.preventDefault();showDanceView('home')});
       nav.forEach(btn=>btn.addEventListener('click',()=>showDanceView(btn.dataset.danceView)));
       document.getElementById('open-dance-studio').addEventListener('click',()=>showDanceView('studio'));
+      // Rhythm practice metronome: tempo slider, tap tempo and audible beat.
+      const rhythmTempo=document.getElementById('dance-rhythm-tempo'),rhythmBpm=document.getElementById('dance-rhythm-bpm');
+      const rhythmStart=document.getElementById('dance-rhythm-start'),rhythmStop=document.getElementById('dance-rhythm-stop');
+      const rhythmTap=document.getElementById('dance-rhythm-tap'),rhythmCount=document.getElementById('dance-rhythm-count');
+      const rhythmStatus=document.getElementById('dance-rhythm-status'),rhythmBeat=document.getElementById('dance-rhythm-beat');
+      let rhythmTimer=null,rhythmAudio=null,rhythmTick=0,rhythmTapTimes=[];
+      function updateRhythmTempo(){rhythmBpm.textContent=rhythmTempo.value;if(rhythmTimer)startRhythmBeat()}
+      rhythmTempo.addEventListener('input',updateRhythmTempo);
+      function playRhythmClick(accent){
+        try{rhythmAudio=rhythmAudio||new (window.AudioContext||window.webkitAudioContext)();if(rhythmAudio.state==='suspended')rhythmAudio.resume();
+          const osc=rhythmAudio.createOscillator(),gain=rhythmAudio.createGain();osc.type='sine';osc.frequency.value=accent?1100:760;
+          gain.gain.setValueAtTime(.0001,rhythmAudio.currentTime);gain.gain.exponentialRampToValueAtTime(accent?.16:.09,rhythmAudio.currentTime+.006);gain.gain.exponentialRampToValueAtTime(.0001,rhythmAudio.currentTime+.055);
+          osc.connect(gain);gain.connect(rhythmAudio.destination);osc.start();osc.stop(rhythmAudio.currentTime+.06);
+        }catch(e){rhythmStatus.textContent='Audio is unavailable in this browser.'}
+      }
+      function rhythmStep(){const subdivision=Number(document.getElementById('dance-rhythm-subdivision').value);const beatIndex=Math.floor(rhythmTick/subdivision)%4;const isMainBeat=rhythmTick%subdivision===0;
+        if(isMainBeat){rhythmCount.textContent=String(beatIndex+1);playRhythmClick(beatIndex===0);rhythmBeat.classList.toggle('is-accent',beatIndex===0)}
+        else{rhythmCount.textContent='&';playRhythmClick(false);rhythmBeat.classList.remove('is-accent')}
+        rhythmTick++;
+      }
+      function stopRhythmBeat(){if(rhythmTimer)clearInterval(rhythmTimer);rhythmTimer=null;rhythmStart.disabled=false;rhythmStop.disabled=true;rhythmCount.textContent='Paused';rhythmStatus.textContent='Take a breath, then start again';rhythmBeat.classList.remove('is-accent')}
+      function startRhythmBeat(){if(rhythmTimer)clearInterval(rhythmTimer);rhythmTick=0;rhythmStart.disabled=true;rhythmStop.disabled=false;rhythmStatus.textContent='Listen for the accented first beat';rhythmStep();const subdivision=Number(document.getElementById('dance-rhythm-subdivision').value);rhythmTimer=setInterval(rhythmStep,60000/Number(rhythmTempo.value)/subdivision)}
+      rhythmStart.addEventListener('click',startRhythmBeat);rhythmStop.addEventListener('click',stopRhythmBeat);
+      rhythmTap.addEventListener('click',()=>{const now=performance.now();rhythmTapTimes=rhythmTapTimes.filter(t=>now-t<2500);rhythmTapTimes.push(now);if(rhythmTapTimes.length>5)rhythmTapTimes.shift();if(rhythmTapTimes.length>=2){const gaps=rhythmTapTimes.slice(1).map((t,i)=>t-rhythmTapTimes[i]);const average=gaps.reduce((a,b)=>a+b,0)/gaps.length;rhythmTempo.value=String(Math.max(40,Math.min(200,Math.round(60000/average))));updateRhythmTempo();rhythmStatus.textContent='Tempo measured from your taps'}else rhythmStatus.textContent='Tap again in time with the music'});
+      document.getElementById('dance-rhythm-subdivision').addEventListener('change',()=>{if(rhythmTimer)startRhythmBeat()});
       const danceVideoUrls={reference:null,take:null};
       function loadDanceVideo(inputId,videoId,nameId,statusId,key){
         const input=document.getElementById(inputId),video=document.getElementById(videoId);
