@@ -23,16 +23,16 @@
   const AI_ENDPOINT = 'https://seok-woo-ai.akksh-subbu.workers.dev/chat';
   const greetings = {
     vocal: [
-      'Hey! I’m Seok Woo (석우). Ready to work on your vocals?',
-      'Welcome back! What are we practising today?',
-      'Heyyy! Want to work on a song, technique, or a quick vocal exercise?',
-      'Your vocal studio is ready. What would you like help with today?'
+      'Kanmani, Hey! I’m Seok Woo (석우). Ready to work on your vocals?',
+      'Kanmani, Welcome back! What are we practising today?',
+      'Kanmani, Heyyy! Want to work on a song, technique, or a quick vocal exercise?',
+      'Kanmani, Your vocal studio is ready. What would you like help with today?'
     ],
     dance: [
-      'Hey! Seok Woo is here in your Dance Space. What are we working on today?',
-      'Dance Studio is open. Want to work on technique, musicality, or performance?',
-      'Ready for a dance session? Tell me what you’re practising and I’ll help you sharpen it.',
-      'I’m here for your movement practice. What should we break down first?'
+      'Kanmani, Hey! Seok Woo is here in your Dance Space. What are we working on today?',
+      'Kanmani, Dance Studio is open. Want to work on technique, musicality, or performance?',
+      'Kanmani, Ready for a dance session? Tell me what you’re practising and I’ll help you sharpen it.',
+      'Kanmani, I’m here for your movement practice. What should we break down first?'
     ]
   };
   let greeted = false;
