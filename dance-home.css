@@ -365,3 +365,71 @@ body.dance-mode > .companion-dock .companion-chat{pointer-events:auto!important}
 .dance-skill-item{display:flex;align-items:center;gap:10px;padding:12px;border-radius:12px;background:#fff0f3;color:#65384a;font-size:13px}
 .dance-skill-item input{accent-color:#b52d57;width:17px;height:17px}
 @media(max-width:640px){.dance-progress-stats{gap:8px}.dance-progress-stats article{padding:13px}.dance-progress-stats strong{font-size:24px}.dance-plan-form,.dance-skill-grid{grid-template-columns:1fr}.dance-plan-form .dance-plan-note{grid-column:auto}.dance-progress-panel{padding:16px}}
+
+
+/* Keep every Dance Studio destination visible, including Progress & Schedule. */
+body.dance-mode .dance-sidebar{
+  box-sizing:border-box;
+  height:100vh;
+  min-height:100vh;
+  overflow-y:auto;
+  overflow-x:hidden;
+}
+body.dance-mode .dance-sidebar nav{
+  display:flex;
+  flex-direction:column;
+  flex:0 0 auto;
+  gap:5px;
+  width:100%;
+  min-height:max-content;
+}
+body.dance-mode .dance-sidebar .nav-item{
+  display:flex;
+  flex:0 0 auto;
+  width:100%;
+  min-height:42px;
+  white-space:normal;
+}
+@media(max-width:760px){
+  body.dance-mode .dance-sidebar{
+    width:190px;
+    padding:17px 10px;
+  }
+  body.dance-mode .dance-sidebar .brand{
+    margin:0 0 28px;
+  }
+  body.dance-mode .dance-sidebar .brand>span:nth-child(2),
+  body.dance-mode .dance-sidebar .nav-label{
+    display:block;
+  }
+  body.dance-mode .dance-sidebar .nav-item,
+  body.dance-mode .dance-sidebar .nav-item:not(.active){
+    justify-content:flex-start;
+    gap:9px;
+    padding:12px 9px;
+    font-size:11px;
+  }
+  body.dance-mode .dance-sidebar .nav-item span{
+    flex:0 0 19px;
+    font-size:18px;
+  }
+  body.dance-mode .dance-sidebar .sidebar-bottom{
+    justify-content:flex-start;
+  }
+  body.dance-mode .dance-sidebar .sidebar-bottom>div:nth-child(2){
+    display:block;
+  }
+  body.dance-mode .dance-sidebar .local-dot{
+    display:block;
+  }
+  body.dance-mode .dance-sidebar-back{
+    font-size:10px;
+    text-align:left;
+    padding:11px 9px;
+  }
+  body.dance-mode .dance-main{
+    margin-left:190px;
+    width:calc(100% - 190px);
+    padding:0 14px 25px;
+  }
+}
