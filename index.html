@@ -465,6 +465,9 @@
       const danceStudio=document.getElementById('dance-studio');
       const danceWarmup=document.getElementById('dance-warmup');
       const danceProgress=document.getElementById('dance-progress');
+      const danceRewardsPanel=document.getElementById('dance-rewards-panel');
+      // Keep rewards immediately visible at the top of Progress & Schedule.
+      if(danceProgress&&danceRewardsPanel){const progressHeader=danceProgress.querySelector('.dance-home-header');if(progressHeader&&danceRewardsPanel.parentElement===danceProgress)progressHeader.insertAdjacentElement('afterend',danceRewardsPanel);}
       const crumb=document.getElementById('dance-crumb');
       const nav=[...document.querySelectorAll('[data-dance-view]')];
       function showDanceView(view){
