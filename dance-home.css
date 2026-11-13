@@ -433,3 +433,51 @@ body.dance-mode .dance-sidebar .nav-item{
     padding:0 14px 25px;
   }
 }
+
+
+/* Dance Studio streaks and keepsakes */
+.dance-reward-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:16px 0}
+.dance-reward-stats article{padding:15px;border:1px solid rgba(190,35,73,.15);border-radius:15px;background:linear-gradient(145deg,#fff0f4,#fffaf8)}
+.dance-reward-stats span{display:block;color:#956878;font-size:9px;font-weight:800;letter-spacing:.1em}
+.dance-reward-stats strong{display:block;margin:7px 0 3px;color:#9e244b;font-size:27px}
+.dance-reward-stats small,.dance-reward-subpanel>small,.dance-reward-head small,.dance-reward-unlock>div>small{display:block;color:#987987;font-size:10px}
+.dance-rewards-layout{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0}
+.dance-reward-subpanel{padding:17px;border:1px solid rgba(190,35,73,.13);border-radius:16px;background:#fffdfc;margin-top:12px}
+.dance-reward-subpanel>b,.dance-reward-head b,.dance-reward-unlock b{display:block;color:#57243a;font-size:14px;margin-bottom:4px}
+.dance-reward-head{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.dance-reward-month{display:flex;align-items:center;gap:7px}
+.dance-reward-month button{width:26px;height:26px;border:1px solid #ead3dc;border-radius:8px;background:#fff;color:#9e244b;font-size:18px;cursor:pointer}
+.dance-reward-month strong{min-width:75px;text-align:center;color:#65384a;font-size:10px}
+.dance-streak-weekdays,.dance-streak-calendar{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px;text-align:center}
+.dance-streak-weekdays{margin:17px 0 7px;color:#a18490;font-size:8px;font-weight:800}
+.dance-streak-calendar{grid-auto-rows:31px}
+.dance-streak-day{display:grid;place-items:center;border-radius:8px;color:#765b66;font-size:10px;position:relative}
+.dance-streak-day.empty{visibility:hidden}
+.dance-streak-day.done{background:#f8dce5;color:#922a4f;font-weight:900}
+.dance-streak-day.done:after{content:'✦';position:absolute;bottom:1px;font-size:7px}
+.dance-streak-day.today{outline:1px solid #bd7c96;outline-offset:-1px}
+.dance-streak-legend{display:flex;align-items:center;gap:6px;margin-top:10px;color:#987987;font-size:9px}
+.dance-streak-legend i{width:7px;height:7px;border-radius:50%;background:#d986a4}
+.dance-streak-milestones{margin-top:10px}
+.dance-streak-milestone{display:grid;grid-template-columns:20px 1fr auto;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid #f2e5e9}
+.dance-streak-milestone:last-child{border:0}
+.dance-streak-milestone>span{width:20px;height:20px;display:grid;place-items:center;border-radius:50%;background:#f7edf1;color:#a76c83}
+.dance-streak-milestone.earned>span{background:#f8dce5;color:#9e244b}
+.dance-streak-milestone b{display:block;color:#65384a;font-size:10px}
+.dance-streak-milestone small,.dance-streak-milestone em{font-size:9px;color:#987987;font-style:normal}
+.dance-streak-milestone.earned em{color:#9e244b;font-weight:800}
+.dance-reward-open-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:12px}
+.dance-reward-open-row p{margin:0;color:#987987;font-size:11px}
+.dance-reward-open-row button:disabled{opacity:.5;cursor:not-allowed}
+.dance-reward-reveal{margin-top:13px;padding:18px;border-radius:13px;text-align:center;background:linear-gradient(135deg,#fff0f4,#fff8ed);color:#65384a}
+.dance-reward-reveal[hidden]{display:none}
+.dance-reward-reveal span{display:block;color:#a04a6a;font-size:9px;font-weight:900;letter-spacing:.12em}
+.dance-reward-reveal b{display:block;margin:7px 0;font-size:18px}
+.dance-reward-reveal p{margin:0;color:#987987;font-size:11px}
+.dance-reward-collection{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:12px}
+.dance-collected-reward{display:flex;gap:9px;padding:11px;border:1px solid #f0dfe6;border-radius:12px;background:#fff8fa}
+.dance-collected-reward>span{flex:0 0 25px;height:25px;display:grid;place-items:center;border-radius:8px;background:#f8dce5;color:#9e244b}
+.dance-collected-reward b{display:block;color:#65384a;font-size:10px}
+.dance-collected-reward small{display:block;margin-top:3px;color:#987987;font-size:9px;line-height:1.4}
+.dance-reward-empty{grid-column:1/-1;margin:0;color:#987987;font-size:11px}
+@media(max-width:700px){.dance-reward-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.dance-rewards-layout{grid-template-columns:1fr}.dance-reward-open-row{align-items:flex-start;flex-direction:column}.dance-reward-collection{grid-template-columns:1fr}}
