@@ -21,7 +21,7 @@
   <link rel="stylesheet" href="splash.css?v=palette-rotation-restored-20261114">
   <link rel="stylesheet" href="theme-cherry.css">
   <link rel="stylesheet" href="theme-dynamic.css">
-  <link rel="stylesheet" href="dance-home.css?v=rhythm-training-20261114">
+  <link rel="stylesheet" href="dance-home.css?v=sixteenth-notes-20261114">
   <link rel="stylesheet" href="vocal-home.css">
   <link rel="stylesheet" href="companion.css">
   <script>
@@ -298,7 +298,7 @@
           <article><span>01</span><div><b>Find the 1</b><p>Listen to four steady beats. Clap gently on beat 1, then count 2, 3, 4 out loud.</p></div></article>
           <article><span>02</span><div><b>Step on the beat</b><p>March or step in place on each beat. Keep the movement small and even.</p></div></article>
           <article><span>03</span><div><b>Add the “&”</b><p>Switch to eighth notes. Say “1 & 2 & 3 & 4 &” and tap lightly on every count.</p></div></article>
-          <article><span>04</span><div><b>Move, then freeze</b><p>Dance freely for four counts, then pause for four counts while keeping the beat in your head.</p></div></article>
+          <article><span>04</span><div><b>Sixteenth-note ladder</b><p>At a slow tempo, count “1 e &amp; a, 2 e &amp; a, 3 e &amp; a, 4 e &amp; a”. Tap each syllable evenly, then try small footwork accents without rushing.</p></div></article><article><span>05</span><div><b>Move, then freeze</b><p>Dance freely for four counts, then pause for four counts while keeping the beat in your head.</p></div></article>
         </div><p class="dance-rhythm-note">Try 2–3 rounds, then take a short break. Accuracy and comfort matter more than speed.</p></section>
       </section>
       <section class="dance-progress" id="dance-progress" hidden aria-label="Dance progress and schedule">
@@ -712,8 +712,9 @@
           osc.connect(gain);gain.connect(rhythmAudio.destination);osc.start();osc.stop(rhythmAudio.currentTime+.06);
         }catch(e){rhythmStatus.textContent='Audio is unavailable in this browser.'}
       }
-      function rhythmStep(){const subdivision=Number(document.getElementById('dance-rhythm-subdivision').value);const beatIndex=Math.floor(rhythmTick/subdivision)%4;const isMainBeat=rhythmTick%subdivision===0;
-        if(isMainBeat){rhythmCount.textContent=String(beatIndex+1);playRhythmClick(beatIndex===0);rhythmBeat.classList.toggle('is-accent',beatIndex===0)}
+      function rhythmStep(){const subdivision=Number(document.getElementById('dance-rhythm-subdivision').value);const beatIndex=Math.floor(rhythmTick/subdivision)%4;const stepInBeat=rhythmTick%subdivision;const isMainBeat=stepInBeat===0;
+        if(subdivision===4){const syllables=['1','e','&','a','2','e','&','a','3','e','&','a','4','e','&','a'];const syllableIndex=rhythmTick%16;rhythmCount.textContent=syllables[syllableIndex];playRhythmClick(isMainBeat&&beatIndex===0);rhythmBeat.classList.toggle('is-accent',isMainBeat&&beatIndex===0)}
+        else if(isMainBeat){rhythmCount.textContent=String(beatIndex+1);playRhythmClick(beatIndex===0);rhythmBeat.classList.toggle('is-accent',beatIndex===0)}
         else{rhythmCount.textContent='&';playRhythmClick(false);rhythmBeat.classList.remove('is-accent')}
         rhythmTick++;
       }
