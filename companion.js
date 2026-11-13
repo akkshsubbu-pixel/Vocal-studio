@@ -113,6 +113,11 @@
   syncStudioContext();
 
   function addMessage(text, from='buddy', actions=[]) {
+    // Enforce the requested friendly form of address in every Seok Woo UI message,
+    // including local greetings and status messages (not just AI-generated replies).
+    if (from !== 'you' && typeof text === 'string' && !/^kanmani\b/i.test(text.trim())) {
+      text = 'Kanmani, ' + text;
+    }
     const row = document.createElement('div');
     row.className = 'companion-message ' + (from === 'you' ? 'from-you' : 'from-buddy');
     const bubble = document.createElement('p');
