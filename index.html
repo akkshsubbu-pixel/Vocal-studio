@@ -138,6 +138,7 @@
       <button class="nav-item active" type="button" data-dance-view="home"><span>⌂</span> Home</button>
       <button class="nav-item" type="button" data-dance-view="studio"><span>◉</span> Practice studio</button>
       <button class="nav-item" type="button" data-dance-view="warmup"><span>✧</span> Warm-up</button>
+      <button class="nav-item" type="button" data-dance-view="progress"><span>↗</span> Progress & schedule</button>
     </nav>
     <div class="sidebar-bottom"><div class="avatar">✧</div><div><b>Your movement</b><small>Saved on this device</small></div><span class="local-dot"></span></div>
     <button class="dance-sidebar-back" id="dance-back-choices" type="button">← Creative choices</button>
@@ -281,6 +282,34 @@
           </article>
         </article>
       </section>
+      <section class="dance-progress" id="dance-progress" hidden aria-label="Dance progress and schedule">
+        <header class="dance-home-header"><div><div class="entry-gate-kicker">PLAN · PRACTISE · REFLECT</div><h1>Your dance, <em>in progress.</em></h1><p>Plan your sessions, record what you worked on and see your consistency grow.</p></div><div class="dance-home-mark">↗</div></header>
+        <div class="dance-progress-stats">
+          <article><span>SESSIONS LOGGED</span><strong id="dance-stat-sessions">0</strong></article>
+          <article><span>THIS WEEK</span><strong id="dance-stat-week">0</strong></article>
+          <article><span>MINUTES PRACTISED</span><strong id="dance-stat-minutes">0</strong></article>
+        </div>
+        <section class="dance-progress-panel"><div class="dance-panel-kicker">01 / YOUR WEEKLY PLAN</div><h2>Build your schedule</h2><p>Add the sessions you want to work on. Your plan is saved on this device.</p>
+          <div class="dance-plan-form">
+            <label>DAY<select id="dance-plan-day"><option>Monday</option><option>Tuesday</option><option>Wednesday</option><option>Thursday</option><option>Friday</option><option>Saturday</option><option>Sunday</option></select></label>
+            <label>FOCUS<select id="dance-plan-focus"><option>Flexibility & mobility</option><option>Core & control</option><option>Movement foundations</option><option>House</option><option>Tutting</option><option>Waacking</option><option>Hip-hop</option><option>Popping</option><option>Musicality</option><option>Stage performance</option><option>Camera practice</option><option>Dance + vocal integration</option><option>Review & recovery</option></select></label>
+            <label>DURATION (MIN)<input id="dance-plan-duration" type="number" min="5" max="180" step="5" value="30"></label>
+            <button class="dance-action-button" id="dance-plan-add" type="button">Add to schedule +</button>
+          </div><div id="dance-plan-list" class="dance-plan-list"><p class="dance-plan-empty">Your weekly plan will appear here.</p></div>
+        </section>
+        <section class="dance-progress-panel"><div class="dance-panel-kicker">02 / PRACTICE LOG</div><h2>Log a completed session</h2><p>Record what you actually practised. You can add a short note about what improved or what to revisit.</p>
+          <div class="dance-plan-form">
+            <label>WHAT DID YOU PRACTISE?<select id="dance-log-focus"><option>Flexibility & mobility</option><option>Core & control</option><option>Movement foundations</option><option>House</option><option>Tutting</option><option>Waacking</option><option>Hip-hop</option><option>Popping</option><option>Musicality</option><option>Stage performance</option><option>Camera practice</option><option>Dance + vocal integration</option><option>Review & recovery</option></select></label>
+            <label>MINUTES<input id="dance-log-duration" type="number" min="5" max="240" step="5" value="30"></label>
+            <label>DATE<input id="dance-log-date" type="date"></label>
+            <label class="dance-plan-note">NOTE (OPTIONAL)<input id="dance-log-note" type="text" maxlength="180" placeholder="e.g. smoother weight shifts, revisit timing"></label>
+            <button class="dance-action-button" id="dance-log-add" type="button">Save practice ✓</button>
+          </div><p id="dance-log-status" class="dance-log-status" aria-live="polite"></p><div id="dance-log-list" class="dance-log-list"></div>
+        </section>
+        <section class="dance-progress-panel"><div class="dance-panel-kicker">03 / SKILL CHECK-IN</div><h2>What are you developing?</h2><p>Mark skills when you feel ready. These are personal learning milestones, not scores or deadlines.</p>
+          <div class="dance-skill-grid" id="dance-skill-grid"></div>
+        </section>
+      </section>
     </div>
   </main>
 
@@ -416,18 +445,46 @@
       const danceHome=document.getElementById('dance-home');
       const danceStudio=document.getElementById('dance-studio');
       const danceWarmup=document.getElementById('dance-warmup');
+      const danceProgress=document.getElementById('dance-progress');
       const crumb=document.getElementById('dance-crumb');
       const nav=[...document.querySelectorAll('[data-dance-view]')];
       function showDanceView(view){
         const studio=view==='studio';
         const warmup=view==='warmup';
-        danceHome.hidden=studio||warmup;
+        const progress=view==='progress';
+        danceHome.hidden=studio||warmup||progress;
         danceStudio.hidden=!studio;
         danceWarmup.hidden=!warmup;
+        danceProgress.hidden=!progress;
         nav.forEach(b=>b.classList.toggle('active',b.dataset.danceView===view));
-        crumb.textContent=studio?'PRACTICE STUDIO':warmup?'WARM-UP':'DANCE HOME';
+        crumb.textContent=studio?'PRACTICE STUDIO':warmup?'WARM-UP':progress?'PROGRESS & SCHEDULE':'DANCE HOME';
+        if(progress)renderDanceProgress();
         window.scrollTo({top:0,behavior:'smooth'});
       }
+      const danceStoreKey='vs-dance-progress-v1';
+      const danceDefault={plan:[],logs:[],skills:[]};
+      function readDanceStore(){try{return {...danceDefault,...JSON.parse(localStorage.getItem(danceStoreKey)||'{}')}}catch{return {...danceDefault}}}
+      let danceData=readDanceStore();
+      function saveDanceStore(){localStorage.setItem(danceStoreKey,JSON.stringify(danceData))}
+      const danceSkills=['Comfortable mobility routine','Core stability & balance','Dime stops','Clean isolations','House groove & gliding','Tutting lines & angles','Waacking arm pathways','Hip-hop bounce & groove','Popping hits & control','Musicality & accents','Stage presence','Camera performance'];
+      function renderDanceProgress(){
+        const today=new Date(),weekStart=new Date(today);weekStart.setHours(0,0,0,0);weekStart.setDate(today.getDate()-((today.getDay()+6)%7));
+        const weekLogs=danceData.logs.filter(x=>new Date(x.date+'T12:00:00')>=weekStart);
+        document.getElementById('dance-stat-sessions').textContent=danceData.logs.length;
+        document.getElementById('dance-stat-week').textContent=weekLogs.length;
+        document.getElementById('dance-stat-minutes').textContent=danceData.logs.reduce((n,x)=>n+Number(x.minutes||0),0);
+        const plan=document.getElementById('dance-plan-list');
+        plan.innerHTML=danceData.plan.length?danceData.plan.map((x,i)=>'<div class="dance-plan-row"><div><b>'+x.day+' · '+x.focus+'</b><small>'+x.minutes+' min planned</small></div><button type="button" data-remove-plan="'+i+'" aria-label="Remove '+x.focus+' from '+x.day+'">×</button></div>').join(''):'<p class="dance-plan-empty">Your weekly plan will appear here.</p>';
+        plan.querySelectorAll('[data-remove-plan]').forEach(b=>b.addEventListener('click',()=>{danceData.plan.splice(Number(b.dataset.removePlan),1);saveDanceStore();renderDanceProgress()}));
+        const logs=document.getElementById('dance-log-list');
+        logs.innerHTML=danceData.logs.length?danceData.logs.slice().reverse().slice(0,12).map(x=>'<div class="dance-log-row"><div><b>'+x.focus+'</b><small>'+new Date(x.date+'T12:00:00').toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'})+' · '+x.minutes+' min'+(x.note?' · '+x.note.replace(/[&<>"]/g,''):'')+'</small></div><span>✓</span></div>').join(''):'<p class="dance-plan-empty">Your completed sessions will show up here.</p>';
+        const grid=document.getElementById('dance-skill-grid');
+        grid.innerHTML=danceSkills.map((skill,i)=>'<label class="dance-skill-item"><input type="checkbox" data-dance-skill="'+i+'" '+(danceData.skills.includes(i)?'checked':'')+'><span>'+skill+'</span></label>').join('');
+        grid.querySelectorAll('[data-dance-skill]').forEach(box=>box.addEventListener('change',()=>{const id=Number(box.dataset.danceSkill);danceData.skills=box.checked?[...new Set([...danceData.skills,id])]:danceData.skills.filter(x=>x!==id);saveDanceStore()}));
+      }
+      document.getElementById('dance-plan-add').addEventListener('click',()=>{const minutes=Math.max(5,Math.min(180,Number(document.getElementById('dance-plan-duration').value)||30));danceData.plan.push({day:document.getElementById('dance-plan-day').value,focus:document.getElementById('dance-plan-focus').value,minutes});saveDanceStore();renderDanceProgress()});
+      document.getElementById('dance-log-add').addEventListener('click',()=>{const minutes=Math.max(5,Math.min(240,Number(document.getElementById('dance-log-duration').value)||30));const date=document.getElementById('dance-log-date').value||new Date().toISOString().slice(0,10);danceData.logs.push({date,focus:document.getElementById('dance-log-focus').value,minutes,note:document.getElementById('dance-log-note').value.trim()});saveDanceStore();document.getElementById('dance-log-note').value='';document.getElementById('dance-log-status').textContent='Practice saved on this device.';renderDanceProgress()});
+      document.getElementById('dance-log-date').value=new Date().toISOString().slice(0,10);
       const warmupOptions={
         stretches:{kicker:'01 / STRETCHES',title:'Stretches',description:"A comfortable flexibility session for dance. We'll add the exercises from your selected reference videos here."},
         mobility:{kicker:'02 / MOBILITY',title:'Mobility',description:'A guided 18-step full-body mobility flow with 40 seconds of movement and 20 seconds to rest between exercises.'},
