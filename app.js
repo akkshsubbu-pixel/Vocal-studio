@@ -80,9 +80,31 @@
      const sr=buffer.sampleRate;
      const from=Math.max(0,Math.floor(start*sr)),to=Math.min(buffer.length,Math.floor(end*sr));
      if(to-from<4096)throw Error('Choose a longer song section for melody analysis.');
-     const basicFallback=()=>{
+     const basicFallback=async()=>{
+       // Keep fallback analysis responsive: work on the selected segment at a
+       // lower sample rate, use non-overlapping frames, and yield between batches.
        state.sargamAnalysisMethod='basic pitch estimate';
-       const points=analyzeBuffer(buffer,start,end);
+       const fallbackRate=5512.5,frame=1024,hop=1024;
+       const count=Math.max(0,Math.floor((to-from)*fallbackRate/sr));
+       const mono=new Float32Array(count);
+       for(let i=0;i<count;i++){
+         const pos=from+i*sr/fallbackRate,idx=Math.floor(pos),frac=pos-idx;
+         let sample=0;
+         for(let ch=0;ch<buffer.numberOfChannels;ch++){
+           const channel=buffer.getChannelData(ch);
+           sample+=((channel[idx]||0)*(1-frac)+(channel[idx+1]||0)*frac)/buffer.numberOfChannels;
+         }
+         mono[i]=sample;
+       }
+       const points=[];
+       for(let p=0;p+frame<count;p+=hop){
+         const win=mono.slice(p,p+frame);
+         let mean=0;for(let i=0;i<frame;i++)mean+=win[i];mean/=frame;
+         for(let i=0;i<frame;i++)win[i]=(win[i]-mean)*(.5-.5*Math.cos(2*Math.PI*i/(frame-1)));
+         const hz=yin(win,fallbackRate,65,1000);
+         points.push({t:p/fallbackRate+frame/(2*fallbackRate),m:hz?hzMidi(hz):null});
+         if(points.length%12===0)await new Promise(resolve=>setTimeout(resolve,0));
+       }
        if(!points.length)throw Error('There was not enough clear audio to estimate a pitch contour. Try a longer section.');
        return points;
      };
