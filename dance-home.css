@@ -481,3 +481,32 @@ body.dance-mode .dance-sidebar .nav-item{
 .dance-collected-reward small{display:block;margin-top:3px;color:#987987;font-size:9px;line-height:1.4}
 .dance-reward-empty{grid-column:1/-1;margin:0;color:#987987;font-size:11px}
 @media(max-width:700px){.dance-reward-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.dance-rewards-layout{grid-template-columns:1fr}.dance-reward-open-row{align-items:flex-start;flex-direction:column}.dance-reward-collection{grid-template-columns:1fr}}
+
+/* Rhythm training */
+.dance-rhythm{display:grid;gap:16px}
+.dance-rhythm-panel{padding:22px;border:1px solid #f0dfe6;border-radius:18px;background:#fff;box-shadow:0 8px 28px rgba(105,55,75,.045)}
+.dance-rhythm-panel h2{margin:6px 0 7px;color:#65384a;font-size:21px}
+.dance-rhythm-panel>p{margin:0;color:#987987;font-size:12px;line-height:1.6}
+.dance-rhythm-tempo{display:flex;align-items:baseline;justify-content:center;gap:8px;margin:18px 0 5px;color:#9e244b}
+.dance-rhythm-tempo strong{font-size:54px;line-height:1;font-weight:850;font-variant-numeric:tabular-nums}
+.dance-rhythm-tempo span{font-size:11px;font-weight:900;letter-spacing:.16em}
+.dance-rhythm-slider{display:block;width:100%;accent-color:#bd6687;cursor:pointer}
+.dance-rhythm-range{display:flex;justify-content:space-between;color:#aa8b99;font-size:9px;font-weight:800;letter-spacing:.08em}
+.dance-rhythm-controls{display:flex;justify-content:center;flex-wrap:wrap;gap:9px;margin:17px 0}
+.dance-rhythm-controls button{min-width:105px}
+.dance-rhythm-secondary{padding:10px 15px;border:1px solid #ead5df;border-radius:999px;background:#fff8fa;color:#85465f;font-size:11px;font-weight:800;cursor:pointer}
+.dance-rhythm-secondary:disabled{opacity:.45;cursor:not-allowed}
+.dance-rhythm-beat{display:grid;place-items:center;gap:4px;min-height:108px;margin:10px 0 16px;border-radius:15px;background:#fff5f8;color:#9e244b;transition:background .12s,transform .12s}
+.dance-rhythm-beat>span{font-size:35px;font-weight:900;font-variant-numeric:tabular-nums}
+.dance-rhythm-beat small{color:#987987;font-size:10px}
+.dance-rhythm-beat.is-accent{background:#f9dce7;transform:scale(1.008)}
+.dance-rhythm-subdivision{display:grid;gap:7px;color:#8c6374;font-size:9px;font-weight:900;letter-spacing:.1em}
+.dance-rhythm-subdivision select{width:100%;padding:11px;border:1px solid #ead5df;border-radius:10px;background:#fff;color:#65384a;font-size:12px}
+.dance-rhythm-exercises{display:grid;gap:0;margin-top:13px}
+.dance-rhythm-exercises article{display:grid;grid-template-columns:34px 1fr;gap:11px;padding:13px 0;border-bottom:1px solid #f2e5e9}
+.dance-rhythm-exercises article:last-child{border:0}
+.dance-rhythm-exercises article>span{display:grid;place-items:center;width:30px;height:30px;border-radius:10px;background:#f9e8ee;color:#a04a6a;font-size:10px;font-weight:900}
+.dance-rhythm-exercises b{display:block;color:#65384a;font-size:12px}
+.dance-rhythm-exercises p{margin:4px 0 0;color:#987987;font-size:11px;line-height:1.55}
+.dance-rhythm-note{margin-top:13px!important;padding:11px 13px;border-radius:10px;background:#fff8ed;color:#98734e!important}
+@media(max-width:600px){.dance-rhythm-panel{padding:16px}.dance-rhythm-controls{justify-content:stretch}.dance-rhythm-controls button{flex:1}}
