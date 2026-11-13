@@ -18,24 +18,46 @@
   <link rel="stylesheet" href="monitor-big.css">
   <link rel="stylesheet" href="monitor-dark.css">
   <link rel="stylesheet" href="rewards.css">
-  <link rel="stylesheet" href="splash.css?v=cherry-red-20261112-fix1">
+  <link rel="stylesheet" href="splash.css?v=palette-rotation-restored-20261114">
   <link rel="stylesheet" href="theme-cherry.css">
   <link rel="stylesheet" href="theme-dynamic.css">
   <link rel="stylesheet" href="dance-home.css?v=cute-stretch-cue-fix-20261112-2">
   <link rel="stylesheet" href="vocal-home.css">
   <link rel="stylesheet" href="companion.css">
   <script>
+    (() => {
+      const images = [
+        {src:'assets/codex-clipboard-4867f544-5382-49d8-b7aa-2c66a13402e2.png',palette:'cherry'},
+        {src:'assets/codex-clipboard-8e059a81-afec-442c-a6ec-efaf803a1f29.png',palette:'ruby'},
+        {src:'assets/codex-clipboard-91cefc0e-5e20-4a43-9c0b-bd6c7dc7937b.png',palette:'gold'},
+        {src:'assets/codex-clipboard-7fd6c7ad-e4f7-45a2-abb3-2d9da92cec83.png',palette:'lime'},
+        {src:'assets/codex-clipboard-c7483282-739a-4528-b9ad-52abd57ad8ca.png',palette:'emerald'},
+        {src:'assets/codex-clipboard-beea72a6-d93d-424c-9744-a075a17f98bc.png',palette:'teal'},
+        {src:'assets/codex-clipboard-3be50533-f4e2-415d-ad22-401b86a74a27.png',palette:'blue'}
+      ];
+      const key = 'vocal-studio-splash-next-index';
+      let index = 0;
+      try {
+        const saved = Number(localStorage.getItem(key));
+        if (Number.isInteger(saved) && saved >= 0) index = saved % images.length;
+      } catch (_) {}
+      const selected = images[index];
+      document.documentElement.dataset.appPalette = selected.palette;
+      const chromeColors = {cherry:'#170810',ruby:'#180b07',gold:'#181104',lime:'#121402',emerald:'#06140d',teal:'#061419',blue:'#07111d'};
+      document.querySelector('meta[name="theme-color"]').content = chromeColors[selected.palette] || chromeColors.cherry;
+      window.vocalStudioSplashImage = selected.src;
+      document.documentElement.style.setProperty('--splash-art-backdrop', `url("${selected.src}")`);
+      try { localStorage.setItem(key, String((index + 1) % images.length)); } catch (_) {}
+    })();
+  </script>
+  <script>
     window.addEventListener('DOMContentLoaded', () => {
       const splash = document.getElementById('launch-splash');
-      const appChrome = {cherry:'#170810',ruby:'#180b07',gold:'#181104',lime:'#121402',emerald:'#06140d',teal:'#061419',blue:'#07111d'};
-      try {
-        if (sessionStorage.getItem('vocal-studio-entered') === '1') {
-          splash.hidden = true;
-          document.body.classList.remove('entry-pending','entry-selecting');
-          document.querySelector('meta[name="theme-color"]').content = appChrome[document.documentElement.dataset.appPalette] || appChrome.cherry;
-          return;
-        }
-      } catch (_) {}
+      if (sessionStorage.getItem('vocal-studio-entered') === '1') {
+        splash.hidden = true;
+        document.body.classList.remove('entry-pending','entry-selecting');
+        return;
+      }
       let timerStarted = false;
       const startSplashTimer = () => {
         if (timerStarted) return;
@@ -46,7 +68,6 @@
             splash.hidden = true;
             document.body.classList.remove('entry-pending');
             document.body.classList.add('entry-selecting');
-            document.querySelector('meta[name="theme-color"]').content = appChrome[document.documentElement.dataset.appPalette] || appChrome.cherry;
           }, 900);
         }, 10000);
       };
