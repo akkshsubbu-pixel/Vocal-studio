@@ -139,6 +139,7 @@
       <button class="nav-item" type="button" data-dance-view="studio"><span>◉</span> Practice studio</button>
       <button class="nav-item" type="button" data-dance-view="warmup"><span>✧</span> Warm-up</button>
       <button class="nav-item" type="button" data-dance-view="progress"><span>↗</span> Progress & schedule</button>
+      <button class="nav-item" type="button" data-dance-view="rewards"><span>✦</span> Streaks & rewards</button>
     </nav>
     <div class="sidebar-bottom"><div class="avatar">✧</div><div><b>Your movement</b><small>Saved on this device</small></div><span class="local-dot"></span></div>
     <button class="dance-sidebar-back" id="dance-back-choices" type="button">← Creative choices</button>
@@ -309,7 +310,7 @@
         <section class="dance-progress-panel"><div class="dance-panel-kicker">03 / SKILL CHECK-IN</div><h2>What are you developing?</h2><p>Mark skills when you feel ready. These are personal learning milestones, not scores or deadlines.</p>
           <div class="dance-skill-grid" id="dance-skill-grid"></div>
         </section>
-        <section class="dance-progress-panel dance-rewards-panel" aria-label="Dance streaks and rewards">
+        <section class="dance-progress-panel dance-rewards-panel" id="dance-rewards-panel" aria-label="Dance streaks and rewards">
           <div class="dance-panel-kicker">04 / CONSISTENCY & CELEBRATION</div><h2>Your dance streak & rewards</h2>
           <p>Log a dance session to count the day. One practice day is enough to keep your streak moving — rest days are part of learning too.</p>
           <div class="dance-reward-stats">
@@ -469,15 +470,20 @@
       function showDanceView(view){
         const studio=view==='studio';
         const warmup=view==='warmup';
-        const progress=view==='progress';
+        const rewards=view==='rewards';
+        const progress=view==='progress'||rewards;
         danceHome.hidden=studio||warmup||progress;
         danceStudio.hidden=!studio;
         danceWarmup.hidden=!warmup;
         danceProgress.hidden=!progress;
         nav.forEach(b=>b.classList.toggle('active',b.dataset.danceView===view));
-        crumb.textContent=studio?'PRACTICE STUDIO':warmup?'WARM-UP':progress?'PROGRESS & SCHEDULE':'DANCE HOME';
+        crumb.textContent=studio?'PRACTICE STUDIO':warmup?'WARM-UP':rewards?'STREAKS & REWARDS':progress?'PROGRESS & SCHEDULE':'DANCE HOME';
         if(progress)renderDanceProgress();
-        window.scrollTo({top:0,behavior:'smooth'});
+        if(rewards){
+          document.getElementById('dance-rewards-panel').scrollIntoView({behavior:'smooth',block:'start'});
+        }else{
+          window.scrollTo({top:0,behavior:'smooth'});
+        }
       }
       const danceStoreKey='vs-dance-progress-v1';
       const danceDefault={plan:[],logs:[],skills:[]};
