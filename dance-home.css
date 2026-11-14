@@ -723,3 +723,60 @@ body.rap-mode>.sidebar .dance-sidebar-back{display:none!important}
     font-size:18px!important;
   }
 }
+
+
+/* Rap Studio has its own mode class, so explicitly show its shared app shell. */
+body.rap-mode .entry-gate,
+body.rap-mode>.sidebar:not(.dance-sidebar),
+body.rap-mode>main:not(.dance-main){display:none!important}
+body.rap-mode .dance-sidebar{
+  display:flex!important;
+  position:fixed;
+  inset:0 auto 0 0;
+  width:244px;
+  min-height:100vh;
+  height:100vh;
+  box-sizing:border-box;
+  flex-direction:column;
+  overflow-y:auto;
+  overflow-x:hidden;
+  z-index:30;
+}
+body.rap-mode .dance-main{
+  display:block!important;
+  margin-left:244px;
+  width:calc(100% - 244px);
+  max-width:none;
+  min-height:100vh;
+}
+body.rap-mode .dance-sidebar nav{
+  display:flex!important;
+  flex-direction:column;
+  flex:0 0 auto;
+  gap:8px;
+  width:100%;
+  visibility:visible;
+}
+body.rap-mode .dance-sidebar nav .nav-item:not(.rap-nav-home){display:none!important}
+body.rap-mode .dance-sidebar .rap-nav-home{
+  display:flex!important;
+  align-items:center;
+  gap:12px;
+  width:100%;
+  min-height:46px;
+  box-sizing:border-box;
+  padding:12px 16px;
+  font-size:12px;
+  white-space:nowrap;
+  visibility:visible!important;
+  opacity:1!important;
+}
+@media(max-width:760px){
+  body.rap-mode .dance-sidebar{width:190px;padding:17px 10px}
+  body.rap-mode .dance-sidebar .brand{margin:0 0 28px}
+  body.rap-mode .dance-sidebar .brand>span:nth-child(2),
+  body.rap-mode .dance-sidebar .nav-label{display:block}
+  body.rap-mode .dance-sidebar .rap-nav-home{justify-content:flex-start;padding:12px 9px;font-size:11px}
+  body.rap-mode .dance-sidebar .rap-nav-home span{flex:0 0 19px;font-size:18px}
+  body.rap-mode .dance-main{margin-left:190px;width:calc(100% - 190px);padding:0 14px 25px}
+}
