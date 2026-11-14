@@ -574,3 +574,46 @@ body.rap-mode .dance-main-content{width:100%;max-width:1080px;margin:0 auto;padd
  body.rap-mode .dance-main-content{padding-top:26px}
 }
 @media(max-width:480px){.rap-home-header{align-items:flex-start;gap:12px}.rap-home-mark{width:58px;height:58px;flex-basis:58px;border-radius:18px;font-size:32px}.rap-module-grid{grid-template-columns:1fr}.rap-welcome-panel{padding:22px}}
+
+
+/* Rap workspace layout correction: the shared sidebar element uses .sidebar. */
+body.rap-mode{
+  display:block!important;
+  min-width:0;
+  overflow-x:hidden;
+}
+body.rap-mode>.sidebar{
+  display:flex!important;
+  position:fixed!important;
+  inset:0 auto 0 0!important;
+  width:244px!important;
+  min-width:244px!important;
+  height:100vh!important;
+  box-sizing:border-box!important;
+  z-index:20!important;
+}
+body.rap-mode>.dance-main{
+  display:block!important;
+  position:relative;
+  margin:0 0 0 244px!important;
+  width:calc(100% - 244px)!important;
+  max-width:none!important;
+  min-width:0!important;
+  box-sizing:border-box!important;
+}
+body.rap-mode>.sidebar nav .rap-nav-home{display:flex!important}
+body.rap-mode>.sidebar nav .nav-item:not(.rap-nav-home){display:none!important}
+body.rap-mode>.sidebar .sidebar-bottom,
+body.rap-mode>.sidebar .dance-sidebar-back{display:none!important}
+@media(max-width:760px){
+  body.rap-mode>.sidebar{
+    width:68px!important;
+    min-width:68px!important;
+    padding:17px 7px!important;
+  }
+  body.rap-mode>.dance-main{
+    margin-left:68px!important;
+    width:calc(100% - 68px)!important;
+    padding:0 20px 28px!important;
+  }
+}
