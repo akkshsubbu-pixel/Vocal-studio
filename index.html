@@ -22,6 +22,7 @@
   <link rel="stylesheet" href="theme-cherry.css">
   <link rel="stylesheet" href="theme-dynamic.css">
   <link rel="stylesheet" href="dance-home.css?v=clean-dance-20261114">
+  <link rel="stylesheet" href="live-line.css?v=live-line-camera-20261114">
   <link rel="stylesheet" href="vocal-home.css">
   <link rel="stylesheet" href="companion.css">
   <script>
@@ -141,6 +142,7 @@
       <button class="nav-item" type="button" data-dance-view="warmup"><span>✧</span> Warm-up</button>
       <button class="nav-item" type="button" data-dance-view="movement"><span>✦</span> Movement Lab</button>
       <button class="nav-item" type="button" data-dance-view="rhythm"><span>♫</span> Rhythm training</button>
+      <button class="nav-item" type="button" data-dance-view="live-line"><span>⌖</span> Live Line Training</button>
       <button class="nav-item" type="button" data-dance-view="progress"><span>↗</span> Progress & schedule</button>
       <button class="nav-item" type="button" data-dance-view="rewards"><span>✦</span> Streaks & rewards</button>
     </nav>
@@ -317,7 +319,40 @@
           <article><span>02</span><div><b>Step on the beat</b><p>March or step in place on each beat. Keep the movement small and even.</p></div></article>
           <article><span>03</span><div><b>Add the “&”</b><p>Switch to eighth notes. Say “1 & 2 & 3 & 4 &” and tap lightly on every count.</p></div></article>
           <article><span>04</span><div><b>Sixteenth-note ladder</b><p>At a slow tempo, count “1 e &amp; a, 2 e &amp; a, 3 e &amp; a, 4 e &amp; a”. Tap each syllable evenly, then try small footwork accents without rushing.</p></div></article><article><span>05</span><div><b>Move, then freeze</b><p>Dance freely for four counts, then pause for four counts while keeping the beat in your head.</p></div></article>
-        </div><p class="dance-rhythm-note">Try 2–3 rounds, then take a short break. Accuracy and comfort matter more than speed.</p></section>
+        </div><p class="dance-rhythm-note">T      <section class="dance-live-line" id="dance-live-line" hidden aria-label="Live Line Training">
+        <header class="dance-home-header">
+          <div><div class="entry-gate-kicker">ALIGN · EXTEND · REFINE</div><h1>Live Line <em>Training.</em></h1><p>Use a live camera guide to practise clean arm lines, leg lines, posture and stage formations.</p></div>
+          <div class="dance-home-mark" aria-hidden="true">⌖</div>
+        </header>
+        <div class="live-line-intro"><b>Your visual alignment studio</b><p>Start your camera, choose a guide and practise moving through the lines. The guide is an on-screen reference, not an automatic posture score.</p></div>
+        <div class="live-line-layout">
+          <article class="live-line-camera-card">
+            <div class="live-line-card-head"><div><span>01 / LIVE VIEW</span><h2>Train with the guide</h2></div><span class="live-line-live-tag" id="live-line-status">CAMERA OFF</span></div>
+            <div class="live-line-stage" id="live-line-stage">
+              <video id="live-line-video" autoplay muted playsinline></video>
+              <div class="live-line-guides guide-center" id="live-line-guides" aria-hidden="true"><i class="line-vertical"></i><i class="line-horizontal"></i><i class="line-diagonal"></i><i class="line-diagonal-reverse"></i><i class="line-center-ring"></i></div>
+              <div class="live-line-placeholder" id="live-line-placeholder"><span>⌖</span><b>Your live guide appears here</b><small>Allow camera access to begin. Video stays in this browser and is not uploaded.</small></div>
+            </div>
+            <div class="live-line-controls">
+              <button class="dance-action-button" id="live-line-start" type="button">Start camera</button>
+              <button class="dance-action-button secondary" id="live-line-stop" type="button" disabled>Stop camera</button>
+              <label>GUIDE MODE<select id="live-line-mode"><option value="center">Center line</option><option value="grid">Alignment grid</option><option value="arms">Arm line</option><option value="legs">Leg line</option><option value="diagonal">Diagonal extensions</option><option value="formation">Formation spacing</option></select></label>
+              <button class="dance-action-button secondary" id="live-line-mirror" type="button" aria-pressed="true">Mirror: on</button>
+            </div>
+            <p class="live-line-feedback" id="live-line-feedback" aria-live="polite">Camera is off. Set your device at a comfortable distance before starting.</p>
+          </article>
+          <article class="live-line-drills-card">
+            <div class="live-line-card-head"><div><span>02 / TECHNIQUE DRILLS</span><h2>Line practice</h2></div></div>
+            <div class="live-line-drill"><b>01 · Posture stack</b><p>Stand comfortably tall. Keep shoulders relaxed and let the guide help you notice your center line.</p></div>
+            <div class="live-line-drill"><b>02 · Arm pathways</b><p>Extend one arm at a time, then both. Practise clear angles without forcing your joints.</p></div>
+            <div class="live-line-drill"><b>03 · Leg extensions</b><p>Practise a small controlled tendu or pointed-foot extension while keeping your balance supported.</p></div>
+            <div class="live-line-drill"><b>04 · Diagonal reach</b><p>Reach through opposite arm and leg directions, then return to a neutral stance with control.</p></div>
+            <div class="live-line-drill"><b>05 · Formation marks</b><p>Use the grid to practise spacing, facing and repeatable stage positions.</p></div>
+            <div class="live-line-safety">Keep movements comfortable and controlled. The guide helps with visual practice; it cannot diagnose alignment or replace a qualified dance teacher.</div>
+          </article>
+        </div>
+      </section>
+ry 2–3 rounds, then take a short break. Accuracy and comfort matter more than speed.</p></section>
       </section>
       <section class="dance-progress" id="dance-progress" hidden aria-label="Dance progress and schedule">
         <header class="dance-home-header"><div><div class="entry-gate-kicker">PLAN · PRACTISE · REFLECT</div><h1>Your dance, <em>in progress.</em></h1><p>Plan your sessions, record what you worked on and see your consistency grow.</p></div><div class="dance-home-mark">↗</div></header>
@@ -513,16 +548,18 @@
         const warmup=view==='warmup';
         const movement=view==='movement';
         const rhythm=view==='rhythm';
+        const liveLine=view==='live-line';
         const rewards=view==='rewards';
         const progress=view==='progress'||rewards;
-        danceHome.hidden=studio||warmup||movement||rhythm||progress;
+        danceHome.hidden=studio||warmup||movement||rhythm||liveLine||progress;
         danceStudio.hidden=!studio;
         danceWarmup.hidden=!warmup;
         danceMovement.hidden=!movement;
         danceRhythm.hidden=!rhythm;
+        document.getElementById('dance-live-line').hidden=!liveLine;
         danceProgress.hidden=!progress;
         nav.forEach(b=>b.classList.toggle('active',b.dataset.danceView===view));
-        crumb.textContent=studio?'PRACTICE STUDIO':warmup?'WARM-UP':movement?'MOVEMENT LAB':rhythm?'RHYTHM TRAINING':rewards?'STREAKS & REWARDS':progress?'PROGRESS & SCHEDULE':'DANCE HOME';
+        crumb.textContent=studio?'PRACTICE STUDIO':warmup?'WARM-UP':movement?'MOVEMENT LAB':rhythm?'RHYTHM TRAINING':liveLine?'LIVE LINE TRAINING':rewards?'STREAKS & REWARDS':progress?'PROGRESS & SCHEDULE':'DANCE HOME';
         if(progress)renderDanceProgress();
         if(rewards){
           document.getElementById('dance-rewards-panel').scrollIntoView({behavior:'smooth',block:'start'});
@@ -852,6 +889,7 @@
       updateDanceReviewReady();
     })();
   </script>
+  <script src="live-line.js?v=live-line-camera-20261114"></script>
   <script src="rewards.js?v=streak-rewards-20261110"></script>
   <script src="pitch-detector.js?v=quiet-monitor-sensitivity-20261111"></script>
   <script src="https://cdn.jsdelivr.net/npm/essentia.js@0.1.3/dist/essentia-wasm.web.min.js"></script>
