@@ -21,7 +21,7 @@
   <link rel="stylesheet" href="splash.css?v=palette-rotation-restored-20261114">
   <link rel="stylesheet" href="theme-cherry.css">
   <link rel="stylesheet" href="theme-dynamic.css">
-  <link rel="stylesheet" href="dance-home.css?v=rap-home-nav-20261114">
+  <link rel="stylesheet" href="dance-home.css?v=rap-cherry-layout-20261114">
   <link rel="stylesheet" href="vocal-home.css">
   <link rel="stylesheet" href="companion.css">
   <script>
@@ -137,7 +137,7 @@
     
 
   </section>
-  <aside class="sidebar dance-sidebar" aria-label="Dance Studio navigation">
+  <aside class="sidebar dance-sidebar" aria-label="Rap Studio navigation">
     <a class="brand dance-brand" href="#" id="dance-brand-home"><span class="brand-mark">✧</span><span>dance<span class="brand-light"> studio</span><small>MOVE · LEARN · CREATE</small></span></a>
     <div class="nav-label">YOUR MOVEMENT SPACE</div>
     <nav aria-label="Dance navigation">
@@ -742,10 +742,12 @@
         gate.hidden=true;
         document.body.classList.remove('entry-pending','entry-selecting');
         document.body.classList.add('rap-mode');
+        document.getElementById('dance-crumb').textContent='RAP HOME';
         rapHome.hidden=false;
       }
       function leaveRap(){
         document.body.classList.remove('rap-mode');
+        document.getElementById('dance-crumb').textContent='DANCE HOME';
         document.body.classList.add('entry-selecting');
         gate.hidden=false;
         rapHome.hidden=true;
