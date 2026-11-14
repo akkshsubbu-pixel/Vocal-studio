@@ -39,21 +39,14 @@
 .rap-tool-grid>.rap-tool-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
 
 
-/* Independent Rap Home rail: deliberately outside the shared Dance sidebar
-   so legacy Dance/mobile navigation rules cannot hide the Rap entry. */
-#rap-home-rail{display:none}
-body.rap-mode #rap-home-rail{
-  display:flex!important;position:fixed!important;left:17px!important;top:132px!important;
-  z-index:10000!important;width:210px!important;min-height:46px!important;
-  box-sizing:border-box!important;align-items:center!important;gap:12px!important;
-  padding:12px 16px!important;border:1px solid rgba(255,120,169,.32)!important;
-  border-radius:12px!important;background:rgba(181,30,78,.18)!important;
-  color:var(--cherry-text)!important;font:600 12px var(--sans)!important;
-  text-align:left!important;visibility:visible!important;opacity:1!important;
-  cursor:pointer!important;box-shadow:0 8px 24px rgba(0,0,0,.18)!important;
-}
-body.rap-mode #rap-home-rail:hover{background:rgba(181,30,78,.3)!important}
-body.rap-mode #rap-nav-home{display:none!important}
-@media(max-width:760px){
- body.rap-mode #rap-home-rail{left:9px!important;top:112px!important;width:170px!important}
+
+/* Rap Studio Home is the first item in the existing left sidebar. */
+body.rap-mode #creative-sidebar #rap-nav-home{
+ display:flex!important;visibility:visible!important;opacity:1!important;
+ position:relative!important;z-index:100!important;width:100%!important;
+ min-height:46px!important;align-items:center!important;gap:12px!important;
+ padding:12px 16px!important;color:var(--cherry-text)!important;
+ background:rgba(181,30,78,.18)!important;
+ border:1px solid rgba(255,120,169,.32)!important;border-radius:12px!important;
+ cursor:pointer!important;
 }
