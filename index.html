@@ -21,7 +21,7 @@
   <link rel="stylesheet" href="splash.css?v=palette-rotation-restored-20261114">
   <link rel="stylesheet" href="theme-cherry.css">
   <link rel="stylesheet" href="theme-dynamic.css">
-  <link rel="stylesheet" href="dance-home.css?v=rap-independent-workspace-20261114">
+  <link rel="stylesheet" href="dance-home.css?v=rap-home-visibility-fix-20261114">
   <link rel="stylesheet" href="vocal-home.css">
   <link rel="stylesheet" href="companion.css">
   <script>
@@ -783,7 +783,11 @@
         creativeSidebar.setAttribute('aria-label','Rap Studio navigation');
         creativeNavLabel.textContent='YOUR RAP SPACE';
         creativeBrand.innerHTML='rap studio<small>FLOW · WRITE · PERFORM</small>';
+        // Explicitly reveal the Rap landing page and suppress every Dance view.
         rapHome.hidden=false;
+        rapHome.style.display='block';
+        document.querySelectorAll('.dance-main-content>.dance-home,.dance-main-content>.dance-studio,.dance-main-content>.dance-warmup,.dance-main-content>.dance-movement,.dance-main-content>.dance-rhythm,.dance-main-content>.dance-progress').forEach(view=>{view.hidden=true;view.style.display='none'});
+        document.getElementById('rap-nav-home').classList.add('active');
         window.scrollTo({top:0,behavior:'instant'});
       }
       function leaveRap(){
