@@ -780,3 +780,17 @@ body.rap-mode .dance-sidebar .rap-nav-home{
   body.rap-mode .dance-sidebar .rap-nav-home span{flex:0 0 19px;font-size:18px}
   body.rap-mode .dance-main{margin-left:190px;width:calc(100% - 190px);padding:0 14px 25px}
 }
+
+
+/* Final Rap Studio visibility guard: keep its workspace independent of Dance view state. */
+body.rap-mode #entry-gate{display:none!important}
+body.rap-mode #creative-sidebar{display:flex!important;visibility:visible!important;opacity:1!important;position:fixed!important;inset:0 auto 0 0!important;width:244px!important;min-width:244px!important;height:100vh!important;z-index:50!important}
+body.rap-mode #creative-sidebar nav{display:flex!important;visibility:visible!important;opacity:1!important;flex-direction:column!important}
+body.rap-mode #creative-sidebar #rap-nav-home{display:flex!important;visibility:visible!important;opacity:1!important}
+body.rap-mode .dance-main{display:block!important;visibility:visible!important;opacity:1!important;margin-left:244px!important;width:calc(100% - 244px)!important;min-width:0!important}
+body.rap-mode .dance-main-content{display:block!important;visibility:visible!important;opacity:1!important}
+body.rap-mode #rap-home{display:block!important;visibility:visible!important;opacity:1!important}
+@media(max-width:760px){
+ body.rap-mode #creative-sidebar{width:190px!important;min-width:190px!important;padding:17px 10px!important}
+ body.rap-mode .dance-main{margin-left:190px!important;width:calc(100% - 190px)!important;padding:0 14px 25px!important}
+}
