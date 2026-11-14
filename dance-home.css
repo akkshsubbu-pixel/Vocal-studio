@@ -528,7 +528,17 @@ body.dance-mode .dance-sidebar .nav-item{
 
 /* Rap Studio entry space */
 body.rap-mode{display:block;background:#fff8f6}
-body.rap-mode .dance-sidebar{display:none!important}
+body.rap-mode .dance-sidebar{display:flex!important;width:238px;min-width:238px}
+body.rap-mode .dance-sidebar .nav-label{font-size:0}
+body.rap-mode .dance-sidebar .nav-label:after{content:"YOUR RAP SPACE";font-size:10px;letter-spacing:1.5px}
+body.rap-mode .dance-sidebar nav .nav-item{display:none}
+body.rap-mode .dance-sidebar nav .rap-nav-home{display:flex!important}
+body.rap-mode .dance-sidebar .sidebar-bottom,
+body.rap-mode .dance-sidebar .dance-sidebar-back{display:none!important}
+body.rap-mode .dance-sidebar .brand{pointer-events:none}
+body.rap-mode .dance-sidebar .brand span:last-child{font-size:0}
+body.rap-mode .dance-sidebar .brand span:last-child:after{content:"rap studio";font-size:18px}
+body.rap-mode .dance-sidebar .brand small{display:none}
 body.rap-mode .dance-main{display:block!important;margin:0;width:100%;max-width:1200px;padding:0 clamp(20px,6vw,84px) 48px}
 body.rap-mode .dance-main-content{max-width:1100px;margin:0 auto}
 .rap-home{padding:42px 0 50px}
