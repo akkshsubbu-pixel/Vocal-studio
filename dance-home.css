@@ -524,3 +524,16 @@ body.dance-mode .dance-sidebar .nav-item{
 .dance-movement-note{margin:16px 0;padding:13px 16px;border-radius:12px;background:#fff5f8;color:#8c6374;font-size:12px;line-height:1.6}
 @media(max-width:900px){.dance-movement-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:600px){.dance-movement-grid{grid-template-columns:1fr}.dance-movement-card{min-height:0;padding:17px}.dance-movement-intro{padding:18px}}
+
+
+/* Hidden Dance destinations must stay hidden even when their layout uses CSS grid. */
+.dance-main .dance-rhythm[hidden],
+.dance-main .dance-movement[hidden],
+.dance-main .dance-live-line[hidden],
+.dance-main .dance-progress[hidden],
+.dance-main .dance-warmup[hidden]{display:none!important}
+.dance-main .dance-rhythm:not([hidden]),
+.dance-main .dance-movement:not([hidden]),
+.dance-main .dance-live-line:not([hidden]),
+.dance-main .dance-progress:not([hidden]),
+.dance-main .dance-warmup:not([hidden]){display:block}
