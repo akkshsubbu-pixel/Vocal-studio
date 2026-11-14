@@ -524,3 +524,29 @@ body.dance-mode .dance-sidebar .nav-item{
 .dance-movement-note{margin:16px 0;padding:13px 16px;border-radius:12px;background:#fff5f8;color:#8c6374;font-size:12px;line-height:1.6}
 @media(max-width:900px){.dance-movement-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:600px){.dance-movement-grid{grid-template-columns:1fr}.dance-movement-card{min-height:0;padding:17px}.dance-movement-intro{padding:18px}}
+
+
+/* Rap Studio entry space */
+body.rap-mode{display:block;background:#fff8f6}
+body.rap-mode .dance-sidebar{display:none!important}
+body.rap-mode .dance-main{display:block!important;margin:0;width:100%;max-width:1200px;padding:0 clamp(20px,6vw,84px) 48px}
+body.rap-mode .dance-main-content{max-width:1100px;margin:0 auto}
+.rap-home{padding:42px 0 50px}
+.rap-home-header{display:flex;justify-content:space-between;align-items:center;gap:24px;margin-bottom:28px}
+.rap-home-header h1{font:600 clamp(38px,5vw,58px)/1.05 'Fredoka',sans-serif;color:#3c1725;margin:8px 0}
+.rap-home-header h1 em{color:#c83f59}
+.rap-home-header p{color:#806b70;font-size:15px;line-height:1.7;max-width:570px}
+.rap-home-mark{width:100px;height:100px;border-radius:30px;background:linear-gradient(145deg,#f8d6dc,#f3a8b7);display:grid;place-items:center;color:#9c2945;font-size:48px;flex:none}
+.rap-welcome-panel{background:linear-gradient(120deg,#48172a,#8e2946);color:#fff;border-radius:22px;padding:26px 30px;margin:26px 0}
+.rap-welcome-panel .dance-panel-kicker{color:#f7c6d1}
+.rap-welcome-panel h2{font:600 25px 'Fredoka',sans-serif;margin:8px 0}
+.rap-welcome-panel p{color:#f7e2e7;line-height:1.7;margin:0;max-width:720px}
+.rap-module-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}
+.rap-module-card{background:#fff;border:1px solid #f0dfe2;border-radius:16px;padding:22px;min-height:160px}
+.rap-module-card>span{color:#c34b65;font-size:11px;font-weight:800;letter-spacing:1px}
+.rap-module-card h3{font:600 19px 'Fredoka',sans-serif;color:#4b1e2c;margin:13px 0 7px}
+.rap-module-card p{color:#806e72;font-size:13px;line-height:1.65;margin:0}
+.rap-coming-note{color:#8b7279;font-size:12px;line-height:1.6;margin:20px 0}
+.rap-back-button{border:1px solid #e8cbd2;background:#fff;color:#82334a;border-radius:10px;padding:12px 16px;font-weight:700}
+@media(max-width:760px){.rap-home-header{align-items:flex-start}.rap-home-mark{width:68px;height:68px;border-radius:20px;font-size:34px}.rap-module-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:480px){.rap-home{padding-top:28px}.rap-home-header{gap:12px}.rap-module-grid{grid-template-columns:1fr}.rap-welcome-panel{padding:22px}}
