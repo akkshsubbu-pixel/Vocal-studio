@@ -21,7 +21,7 @@
   <link rel="stylesheet" href="splash.css?v=palette-rotation-restored-20261114">
   <link rel="stylesheet" href="theme-cherry.css">
   <link rel="stylesheet" href="theme-dynamic.css">
-  <link rel="stylesheet" href="dance-home.css?v=rap-home-visibility-fix-20261114">
+  <link rel="stylesheet" href="dance-home.css?v=rap-sidebar-home-force-20261114">
   <link rel="stylesheet" href="vocal-home.css">
   <link rel="stylesheet" href="companion.css">
   <script>
@@ -787,7 +787,12 @@
         rapHome.hidden=false;
         rapHome.style.display='block';
         document.querySelectorAll('.dance-main-content>.dance-home,.dance-main-content>.dance-studio,.dance-main-content>.dance-warmup,.dance-main-content>.dance-movement,.dance-main-content>.dance-rhythm,.dance-main-content>.dance-progress').forEach(view=>{view.hidden=true;view.style.display='none'});
-        document.getElementById('rap-nav-home').classList.add('active');
+        const rapHomeNav=document.getElementById('rap-nav-home');
+        rapHomeNav.hidden=false;
+        rapHomeNav.style.cssText='display:flex!important;visibility:visible!important;opacity:1!important;position:relative!important;z-index:20!important;width:100%!important;min-height:46px!important;align-items:center!important;gap:12px!important;padding:12px 16px!important;color:var(--cherry-text)!important;background:rgba(181,30,78,.18)!important;border:1px solid rgba(255,120,169,.32)!important;border-radius:12px!important;cursor:pointer!important;';
+        rapHomeNav.classList.add('active');
+        const rapNav=creativeSidebar.querySelector('nav');
+        rapNav.style.cssText='display:flex!important;visibility:visible!important;opacity:1!important;flex-direction:column!important;gap:8px!important;';
         window.scrollTo({top:0,behavior:'instant'});
       }
       function leaveRap(){
