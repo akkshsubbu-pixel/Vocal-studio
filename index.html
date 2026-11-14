@@ -21,7 +21,7 @@
   <link rel="stylesheet" href="splash.css?v=palette-rotation-restored-20261114">
   <link rel="stylesheet" href="theme-cherry.css">
   <link rel="stylesheet" href="theme-dynamic.css">
-  <link rel="stylesheet" href="dance-home.css?v=rap-sidebar-layout-fix-20261114">
+  <link rel="stylesheet" href="dance-home.css?v=rap-independent-workspace-20261114">
   <link rel="stylesheet" href="vocal-home.css">
   <link rel="stylesheet" href="companion.css">
   <script>
@@ -137,9 +137,9 @@
     
 
   </section>
-  <aside class="sidebar dance-sidebar" aria-label="Rap Studio navigation">
-    <a class="brand dance-brand" href="#" id="dance-brand-home"><span class="brand-mark">✧</span><span>dance<span class="brand-light"> studio</span><small>MOVE · LEARN · CREATE</small></span></a>
-    <div class="nav-label">YOUR MOVEMENT SPACE</div>
+  <aside class="sidebar dance-sidebar" id="creative-sidebar" aria-label="Dance Studio navigation">
+    <a class="brand dance-brand" href="#" id="dance-brand-home"><span class="brand-mark">✧</span><span id="creative-brand-name">dance<span class="brand-light"> studio</span><small>MOVE · LEARN · CREATE</small></span></a>
+    <div class="nav-label" id="creative-nav-label">YOUR MOVEMENT SPACE</div>
     <nav aria-label="Dance navigation">
       <button class="nav-item active rap-nav-home" id="rap-nav-home" type="button"><span>⌂</span> Home</button>
       <button class="nav-item active" type="button" data-dance-view="home"><span>⌂</span> Home</button>
@@ -738,19 +738,30 @@
       });
       document.getElementById('enter-dance').addEventListener('click',enterDance);
       const rapHome=document.getElementById('rap-home');
+      const creativeBrand=document.getElementById('creative-brand-name');
+      const creativeSidebar=document.getElementById('creative-sidebar');
+      const creativeNavLabel=document.getElementById('creative-nav-label');
       function enterRap(){
         gate.hidden=true;
-        document.body.classList.remove('entry-pending','entry-selecting');
+        document.body.classList.remove('entry-pending','entry-selecting','dance-mode');
         document.body.classList.add('rap-mode');
+        showDanceView('home');
         document.getElementById('dance-crumb').textContent='RAP HOME';
+        creativeSidebar.setAttribute('aria-label','Rap Studio navigation');
+        creativeNavLabel.textContent='YOUR RAP SPACE';
+        creativeBrand.innerHTML='rap studio<small>FLOW · WRITE · PERFORM</small>';
         rapHome.hidden=false;
+        window.scrollTo({top:0,behavior:'instant'});
       }
       function leaveRap(){
         document.body.classList.remove('rap-mode');
         document.getElementById('dance-crumb').textContent='DANCE HOME';
+        creativeSidebar.setAttribute('aria-label','Dance Studio navigation');
+        creativeNavLabel.textContent='YOUR MOVEMENT SPACE';
+        creativeBrand.innerHTML='dance<span class="brand-light"> studio</span><small>MOVE · LEARN · CREATE</small>';
+        rapHome.hidden=true;
         document.body.classList.add('entry-selecting');
         gate.hidden=false;
-        rapHome.hidden=true;
       }
       document.getElementById('enter-rap').addEventListener('click',enterRap);
       document.getElementById('rap-nav-home').addEventListener('click',()=>{rapHome.hidden=false;document.getElementById('rap-nav-home').classList.add('active')});
