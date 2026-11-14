@@ -33,3 +33,7 @@
 .rap-dictionary-list div{padding:10px;border-radius:10px;background:#170b12;color:var(--cherry-muted);font:10px/1.5 var(--sans)}
 .rap-dictionary-list b{display:block;color:#ffdce8;font-size:11px;margin-bottom:3px}
 @media(max-width:760px){.rap-tool-grid{grid-template-columns:1fr}.rap-tool.wide{grid-column:auto}.rap-tool{padding:16px}.rap-tools-heading{align-items:flex-start;flex-direction:column}.rap-dictionary-list{grid-template-columns:1fr}}
+
+#rap-performance-checks label{display:flex;align-items:center;gap:9px;margin:0;padding:8px 0;color:var(--cherry-muted);font:11px/1.4 var(--sans);letter-spacing:0}
+#rap-performance-checks input[type=checkbox]{width:auto;flex:0 0 auto;accent-color:var(--cherry-pink)}
+.rap-tool-grid>.rap-tool-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
