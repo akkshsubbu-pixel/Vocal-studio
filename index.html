@@ -21,7 +21,7 @@
   <link rel="stylesheet" href="splash.css?v=palette-rotation-restored-20261114">
   <link rel="stylesheet" href="theme-cherry.css">
   <link rel="stylesheet" href="theme-dynamic.css">
-  <link rel="stylesheet" href="dance-home.css?v=movement-lab-20261114">
+  <link rel="stylesheet" href="dance-home.css?v=rap-studio-20261114">
   <link rel="stylesheet" href="vocal-home.css">
   <link rel="stylesheet" href="companion.css">
   <script>
@@ -125,6 +125,12 @@
           <span class="entry-choice-subtitle">Movement & performance</span>
           <span class="entry-choice-arrow" aria-hidden="true">→</span>
         </button>
+        <button class="entry-choice entry-choice-rap" id="enter-rap" type="button">
+          <span class="entry-choice-icon" aria-hidden="true">♬</span>
+          <span class="entry-choice-title">Rap</span>
+          <span class="entry-choice-subtitle">Flow, rhythm & wordplay</span>
+          <span class="entry-choice-arrow" aria-hidden="true">→</span>
+        </button>
       </div>
       <div class="entry-gate-foot">LISTEN · MOVE · CREATE</div>
     </div>
@@ -149,6 +155,23 @@
   <main class="dance-main">
     <header class="topbar"><div class="breadcrumb">YOUR SPACE <span>/</span> <b id="dance-crumb">DANCE HOME</b></div><div class="today" id="dance-today"></div></header>
     <div class="dance-main-content">
+      <section class="rap-home" id="rap-home" hidden aria-label="Rap Studio">
+        <header class="rap-home-header">
+          <div><div class="entry-gate-kicker">YOUR WORDS · YOUR RHYTHM</div><h1>Find your <em>flow.</em></h1><p>Build clear delivery, rhythmic control, wordplay and your own rap style.</p></div>
+          <div class="rap-home-mark" aria-hidden="true">♬</div>
+        </header>
+        <div class="rap-welcome-panel"><div class="dance-panel-kicker">RAP STUDIO · HOME</div><h2>Turn words into performance.</h2><p>Start with the beat, shape your flow, then bring your lyrics to life with confidence and clarity.</p></div>
+        <div class="rap-module-grid">
+          <article class="rap-module-card"><span>01</span><h3>Flow & rhythm</h3><p>Practise staying on beat, changing cadence and placing syllables across the bar.</p></article>
+          <article class="rap-module-card"><span>02</span><h3>Diction & delivery</h3><p>Work on articulation, breath pacing, projection and clear consonants.</p></article>
+          <article class="rap-module-card"><span>03</span><h3>Lyrics & wordplay</h3><p>Explore rhyme schemes, multisyllabic rhymes, imagery and writing prompts.</p></article>
+          <article class="rap-module-card"><span>04</span><h3>Freestyle practice</h3><p>Use low-pressure prompts to build improvisation and connect ideas.</p></article>
+          <article class="rap-module-card"><span>05</span><h3>Rap performance</h3><p>Practise expression, stage presence, mic technique and audience connection.</p></article>
+          <article class="rap-module-card"><span>06</span><h3>Record & review</h3><p>Record a short take and review timing, clarity, energy and consistency.</p></article>
+        </div>
+        <p class="rap-coming-note">These are your Rap Studio foundations. We can build the interactive practice tools one by one.</p>
+        <button class="rap-back-button" id="rap-back-choices" type="button">← Back to creative choices</button>
+      </section>
       <section class="dance-home" id="dance-home" aria-label="Dance Studio home">
       <header class="dance-home-header">
         <div>
@@ -713,6 +736,21 @@
         document.body.classList.remove('entry-pending','entry-selecting');
       });
       document.getElementById('enter-dance').addEventListener('click',enterDance);
+      const rapHome=document.getElementById('rap-home');
+      function enterRap(){
+        gate.hidden=true;
+        document.body.classList.remove('entry-pending','entry-selecting');
+        document.body.classList.add('rap-mode');
+        rapHome.hidden=false;
+      }
+      function leaveRap(){
+        document.body.classList.remove('rap-mode');
+        document.body.classList.add('entry-selecting');
+        gate.hidden=false;
+        rapHome.hidden=true;
+      }
+      document.getElementById('enter-rap').addEventListener('click',enterRap);
+      document.getElementById('rap-back-choices').addEventListener('click',leaveRap);
       document.getElementById('dance-back-choices').addEventListener('click',leaveDance);
       document.getElementById('dance-brand-home').addEventListener('click',e=>{e.preventDefault();showDanceView('home')});
       nav.forEach(btn=>btn.addEventListener('click',()=>showDanceView(btn.dataset.danceView)));
