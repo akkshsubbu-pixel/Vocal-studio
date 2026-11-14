@@ -617,3 +617,22 @@ body.rap-mode>.sidebar .dance-sidebar-back{display:none!important}
     padding:0 20px 28px!important;
   }
 }
+
+
+/* Keep the Rap workspace independent from the Dance workspace. */
+body.rap-mode .dance-main-content>.dance-home,
+body.rap-mode .dance-main-content>.dance-studio,
+body.rap-mode .dance-main-content>.dance-warmup,
+body.rap-mode .dance-main-content>.dance-movement,
+body.rap-mode .dance-main-content>.dance-rhythm,
+body.rap-mode .dance-main-content>.dance-progress{display:none!important}
+body.rap-mode .dance-main-content>.rap-home{display:block!important}
+body.rap-mode>.sidebar .brand{pointer-events:none}
+body.rap-mode>.sidebar .brand>span:last-child{font:700 17px var(--sans)!important;letter-spacing:-.5px;color:var(--cherry-text)}
+body.rap-mode>.sidebar .brand>span:last-child small{display:block;margin-top:5px;font:800 8px var(--sans);letter-spacing:1.1px;color:var(--cherry-muted)}
+body.rap-mode>.sidebar .nav-label{font-size:0}
+body.rap-mode>.sidebar .nav-label:after{content:"YOUR RAP SPACE";font:800 9px var(--sans);letter-spacing:1.4px;color:var(--cherry-muted)}
+body.rap-mode>.sidebar nav .nav-item:not(.rap-nav-home){display:none!important}
+body.rap-mode>.sidebar nav .rap-nav-home{display:flex!important}
+body.rap-mode>.sidebar .sidebar-bottom,
+body.rap-mode>.sidebar .dance-sidebar-back{display:none!important}
