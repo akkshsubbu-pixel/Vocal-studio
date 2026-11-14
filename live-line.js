@@ -13,7 +13,10 @@
   function sizeCanvas(){const r=stage.getBoundingClientRect();const d=Math.min(window.devicePixelRatio||1,2);canvas.width=Math.round(r.width*d);canvas.height=Math.round(r.height*d);ctx.setTransform(d,0,0,d,0,0);}
   function drawPose(landmarks){
     const w=stage.clientWidth,h=stage.clientHeight;ctx.clearRect(0,0,w,h);
-    const point=p=>({x:(mirrorOn?1-p.x:p.x)*w,y:p.y*h,visible:(p.visibility??1)>.35});
+    const vw=video.videoWidth||w,vh=video.videoHeight||h;
+    const scale=Math.max(w/vw,h/vh),renderW=vw*scale,renderH=vh*scale;
+    const cropX=(w-renderW)/2,cropY=(h-renderH)/2;
+    const point=p=>({x:(mirrorOn?1-p.x:p.x)*renderW+cropX,y:p.y*renderH+cropY,visible:(p.visibility??1)>.35});
     ctx.lineWidth=3;ctx.lineCap='round';ctx.strokeStyle='#ff78a9';ctx.shadowColor='#ff78a9';ctx.shadowBlur=8;
     connections.forEach(([a,b])=>{const p=point(landmarks[a]),q=point(landmarks[b]);if(!p.visible||!q.visible)return;ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.stroke();});
     ctx.shadowBlur=0;
@@ -59,7 +62,7 @@
     if(!stream||video.readyState<2){raf=requestAnimationFrame(trackFrame);return;}
     if(video.currentTime!==lastVideoTime){
       lastVideoTime=video.currentTime;
-      try{const result=landmarker.detectForVideo(video,performance.now());if(result.landmarks&&result.landmarks[0])drawPose(result.landmarks[0]);else{ctx.clearRect(0,0,canvas.width,canvas.height);setVerdict('Finding your body','Keep your full body visible and make sure the room is well lit.');}}catch(e){}
+      try{const result=landmarker.detectForVideo(video,performance.now());if(result.landmarks&&result.landmarks[0])drawPose(result.landmarks[0]);else{ctx.clearRect(0,0,canvas.width,canvas.height);setVerdict('Finding your body','Keep your full body visible and make sure the room is well lit.');}}catch(e){setVerdict('Tracking paused','The camera is on, but pose detection hit an error. Stop and restart the camera.','adjust');feedback.textContent='Pose detection error: '+(e?.message||'unknown error');}
     }
     raf=requestAnimationFrame(trackFrame);
   }
