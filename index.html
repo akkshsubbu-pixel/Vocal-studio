@@ -919,5 +919,61 @@
   <script src="https://cdn.jsdelivr.net/npm/essentia.js@0.1.3/dist/essentia.js-core.js"></script>
   <script src="app.js?v=melodia-wasm-min-only-20261113-5"></script>
   <script src="companion.js?v=placement-feedback-20261116-1"></script>
+  <script>
+    // Keep the main entry chooser independent from the larger Dance initialization.
+    (() => {
+      const gate = document.getElementById('entry-gate');
+      const vocal = document.getElementById('enter-vocal');
+      const dance = document.getElementById('enter-dance');
+      const back = document.getElementById('dance-back-choices');
+      const enterVocal = event => {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        try {
+          sessionStorage.setItem('vocal-studio-entered', '1');
+          sessionStorage.setItem('vocal-studio-last-view', 'home');
+        } catch (_) {}
+        document.body.classList.remove('entry-pending', 'entry-selecting', 'dance-mode');
+        gate.hidden = true;
+      };
+      const enterDance = event => {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        gate.hidden = true;
+        document.body.classList.remove('entry-pending', 'entry-selecting');
+        document.body.classList.add('dance-mode');
+        const views = {
+          'dance-home': false,
+          'dance-studio': true,
+          'dance-warmup': true,
+          'dance-movement': true,
+          'dance-rhythm': true,
+          'dance-live-line': true,
+          'dance-progress': true
+        };
+        Object.entries(views).forEach(([id, hidden]) => {
+          const el = document.getElementById(id);
+          if (el) el.hidden = hidden;
+        });
+        document.querySelectorAll('[data-dance-view]').forEach(btn => {
+          btn.classList.toggle('active', btn.dataset.danceView === 'home');
+        });
+        const crumb = document.getElementById('dance-crumb');
+        if (crumb) crumb.textContent = 'DANCE HOME';
+        const today = document.getElementById('dance-today');
+        if (today) today.textContent = new Date().toLocaleDateString(undefined, {weekday:'short', month:'short', day:'numeric'});
+      };
+      const returnToChoices = event => {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        document.body.classList.remove('dance-mode');
+        document.body.classList.add('entry-selecting');
+        gate.hidden = false;
+      };
+      vocal?.addEventListener('click', enterVocal, true);
+      dance?.addEventListener('click', enterDance, true);
+      back?.addEventListener('click', returnToChoices, true);
+    })();
+  </script>
 </body>
 </html>
