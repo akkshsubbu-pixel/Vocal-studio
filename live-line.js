@@ -27,23 +27,43 @@
     feedback.textContent='Body detected · '+shown+' of 33 tracking points visible. Move naturally and watch the pink lines follow.';
     assess(landmarks);
   }
+  let lastPlacementTier='';
   function assess(l){
-    const visible=[11,12,23,24].every(i=>(l[i].visibility??1)>.18);
-    if(!visible){setVerdict('Finding your body','Keep your shoulders and hips visible, face the camera and improve the lighting.');return;}
+    const core=[11,12,23,24].every(i=>(l[i].visibility??1)>.18);
+    const visibleCount=l.filter(p=>(p.visibility??1)>.12).length;
+    if(!core){
+      setVerdict('Finding your body','Keep your shoulders and hips visible, face the camera and improve the lighting.');
+      reportPlacement('BAD','Move into the camera frame so your shoulders and hips can be seen.');
+      return;
+    }
     const shoulderMid=(l[11].x+l[12].x)/2,hipMid=(l[23].x+l[24].x)/2;
     const centerOffset=Math.abs(shoulderMid-hipMid);
     const shoulderTilt=Math.abs(l[11].y-l[12].y);
     const hipTilt=Math.abs(l[23].y-l[24].y);
+    const torsoAligned=centerOffset<.045&&shoulderTilt<.035&&hipTilt<.04;
+    const closeToAligned=centerOffset<.075&&shoulderTilt<.06&&hipTilt<.07;
+    const mostlyAligned=centerOffset<.12&&shoulderTilt<.10&&hipTilt<.11;
+    const tier=visibleCount<20||centerOffset>.20?'BAD':torsoAligned&&visibleCount>=29?'BEST':closeToAligned&&visibleCount>=25?'BETTER':mostlyAligned&&visibleCount>=21?'GOOD':'BAD';
+    const tips={
+      BAD:'Adjust your position: bring your body into the frame and gently line up your shoulders over your hips.',
+      GOOD:'Good placement. Your main body points are visible; make a small centering adjustment.',
+      BETTER:'Better placement. Your torso is nearly centered and your body is clearly visible.',
+      BEST:'Best placement. Your body is clearly in frame and your shoulder and hip centers are closely aligned.'
+    };
+    reportPlacement(tier,tips[tier]);
     if(mode.value==='center'){
-      const ok=centerOffset<.10&&shoulderTilt<.09&&hipTilt<.10;
-      setVerdict(ok?'On target':'Needs a small adjustment',ok?'Your shoulder and hip centers are tracking close in this front-facing view.':'Try a comfortable front-facing stance and let your shoulder and hip centers settle. ',ok?'good':'adjust');
+      setVerdict(tier==='BEST'?'Best placement':tier==='BETTER'?'Better placement':tier==='GOOD'?'Good placement':'Adjust your placement',tips[tier],tier==='BAD'?'adjust':'good');
     }else if(mode.value==='arms'){
-      const elbows=[13,14],wrists=[15,16];
-      const raised=elbows.every(i=>Math.abs(l[i].y-l[11+(i===13?0:1)].y)<.25)&&wrists.every(i=>(l[i].visibility??1)>.35);
-      setVerdict(raised?'Arms tracked':'Keep both arms in view',raised?'Your arm landmarks are visible; compare the live pathways with your chosen shape.':'Bring your hands and elbows into the camera frame. This mode tracks visibility, not a single ideal arm shape.',raised?'good':'adjust');
+      const armsVisible=[13,14,15,16].every(i=>(l[i].visibility??1)>.18);
+      setVerdict(armsVisible?'Arms in view':'Bring arms into frame',armsVisible?tips[tier]:'Bring both elbows and wrists into the camera frame.',armsVisible?'good':'adjust');
     }else{
-      setVerdict('Body tracking live','Follow the moving joint lines. For this movement, compare the path with your chosen dance reference; the app cannot label every style-specific shape as right or wrong.','neutral');
+      setVerdict(tier==='BEST'?'Best placement':tier==='BETTER'?'Better placement':tier==='GOOD'?'Good placement':'Adjust your placement',tips[tier],tier==='BAD'?'adjust':'good');
     }
+  }
+  function reportPlacement(tier,tip){
+    if(tier===lastPlacementTier)return;
+    lastPlacementTier=tier;
+    if(typeof window.seokWooLivePlacementUpdate==='function')window.seokWooLivePlacementUpdate({tier,tip});
   }
   async function loadTracker(){
     if(landmarker)return true;if(loading)return false;loading=true;
@@ -83,6 +103,7 @@
     raf=requestAnimationFrame(trackFrame);
   }
   function stopCamera(message='Camera stopped. Live tracking ends and nothing is recorded or uploaded.'){
+    lastPlacementTier='';
     if(raf)cancelAnimationFrame(raf);raf=0;
     if(stream)stream.getTracks().forEach(t=>t.stop());stream=null;video.srcObject=null;stage.classList.remove('is-active');
     start.disabled=false;stop.disabled=true;status.textContent='CAMERA OFF';status.classList.remove('is-live');
