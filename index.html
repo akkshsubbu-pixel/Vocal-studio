@@ -973,6 +973,45 @@
       vocal?.addEventListener('click', enterVocal, true);
       dance?.addEventListener('click', enterDance, true);
       back?.addEventListener('click', returnToChoices, true);
+
+      // Reliable Dance section navigation, even if another practice widget fails to initialise.
+      const danceViews = {
+        home: ['dance-home', 'DANCE HOME'],
+        studio: ['dance-studio', 'PRACTICE STUDIO'],
+        warmup: ['dance-warmup', 'WARM-UP'],
+        movement: ['dance-movement', 'MOVEMENT LAB'],
+        rhythm: ['dance-rhythm', 'RHYTHM TRAINING'],
+        'live-line': ['dance-live-line', 'LIVE LINE TRAINING'],
+        progress: ['dance-progress', 'PROGRESS & SCHEDULE'],
+        rewards: ['dance-progress', 'STREAKS & REWARDS']
+      };
+      const selectDanceView = view => {
+        const selected = danceViews[view];
+        if (!selected) return;
+        Object.entries(danceViews).forEach(([key, [id]]) => {
+          const section = document.getElementById(id);
+          if (section) section.hidden = key !== view && !(view === 'rewards' && key === 'progress');
+        });
+        // A section shared by Progress and Rewards should be shown for either choice.
+        if (view === 'progress' || view === 'rewards') {
+          const section = document.getElementById('dance-progress');
+          if (section) section.hidden = false;
+        }
+        document.querySelectorAll('[data-dance-view]').forEach(btn => {
+          btn.classList.toggle('active', btn.dataset.danceView === view);
+        });
+        const crumb = document.getElementById('dance-crumb');
+        if (crumb) crumb.textContent = selected[1];
+        if (view === 'rewards') {
+          document.getElementById('dance-rewards-panel')?.scrollIntoView({behavior:'smooth', block:'start'});
+        } else {
+          window.scrollTo({top:0, behavior:'smooth'});
+        }
+      };
+      document.querySelectorAll('[data-dance-view]').forEach(btn => {
+        btn.addEventListener('click', () => selectDanceView(btn.dataset.danceView), true);
+      });
+      document.getElementById('open-dance-studio')?.addEventListener('click', () => selectDanceView('studio'), true);
     })();
   </script>
 </body>
