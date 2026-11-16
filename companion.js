@@ -139,6 +139,25 @@
     messages.scrollTop = messages.scrollHeight;
   }
 
+  let lastLivePlacement='';
+  let lastPlacementSpeechAt=0;
+  window.seokWooLivePlacementUpdate = ({tier,tip} = {}) => {
+    if (!['BAD','GOOD','BETTER','BEST'].includes(tier) || tier===lastLivePlacement) return;
+    lastLivePlacement=tier;
+    const descriptions={BAD:'Bad placement',GOOD:'Good placement',BETTER:'Better placement',BEST:'Best placement'};
+    const message='Live camera placement: '+descriptions[tier]+'. '+(tip||'');
+    if (isOpen) addMessage(message,'buddy');
+    else {
+      greetingBubble.textContent='Seok Woo · '+descriptions[tier]+'. '+(tip||'');
+      greetingBubble.hidden=false;
+    }
+    const now=Date.now();
+    if (now-lastPlacementSpeechAt>2200 && 'speechSynthesis' in window) {
+      lastPlacementSpeechAt=now;
+      try { window.speechSynthesis.cancel(); const utterance=new SpeechSynthesisUtterance(descriptions[tier]+'. '+(tip||'')); utterance.rate=1.02; window.speechSynthesis.speak(utterance); } catch (_) {}
+    }
+  };
+
   function openDestination(id) {
     const nav = [...document.querySelectorAll('.nav-item[data-view]')].find(item => item.dataset.view === id);
     if (nav) nav.click();
