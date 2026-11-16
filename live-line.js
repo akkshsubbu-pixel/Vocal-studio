@@ -2,6 +2,8 @@
   const video=document.getElementById('live-line-video'),stage=document.getElementById('live-line-stage');
   if(!video||!stage)return;
   const start=document.getElementById('live-line-start'),stop=document.getElementById('live-line-stop');
+  const voiceButton=document.getElementById('live-line-voice');
+  let voiceEnabled=false;
   const mode=document.getElementById('live-line-mode'),mirror=document.getElementById('live-line-mirror');
   const guides=document.getElementById('live-line-guides'),status=document.getElementById('live-line-status');
   const feedback=document.getElementById('live-line-feedback'),canvas=document.getElementById('live-line-pose');
@@ -63,7 +65,30 @@
   function reportPlacement(tier,tip){
     if(tier===lastPlacementTier)return;
     lastPlacementTier=tier;
-    if(typeof window.seokWooLivePlacementUpdate==='function')window.seokWooLivePlacementUpdate({tier,tip});
+    if(typeof window.seokWooLivePlacementUpdate==='function'){
+      try{window.seokWooLivePlacementUpdate({tier,tip});}catch(error){feedback.textContent='Placement found; Seok Woo connection error: '+(error?.message||'unknown error');}
+    }else{
+      window.dispatchEvent(new CustomEvent('seokwoo:live-placement',{detail:{tier,tip}}));
+      feedback.textContent='Placement: '+tier+'. '+tip+' Open Seok Woo if you want more coaching.';
+    }
+  }
+  window.seokWooLivePlacementSpeak=(message)=>{
+    if(!voiceEnabled||!('speechSynthesis' in window)||typeof SpeechSynthesisUtterance==='undefined')return false;
+    try{window.speechSynthesis.cancel();const utterance=new SpeechSynthesisUtterance(message);utterance.rate=1.02;window.speechSynthesis.speak(utterance);return true;}catch(_){return false;}
+  };
+  if(voiceButton){
+    voiceButton.addEventListener('click',()=>{
+      voiceEnabled=!voiceEnabled;
+      voiceButton.setAttribute('aria-pressed',String(voiceEnabled));
+      voiceButton.textContent=voiceEnabled?'Seok Woo voice: on':'Enable Seok Woo voice';
+      if(voiceEnabled){
+        const ok=window.seokWooLivePlacementSpeak('Seok Woo voice feedback is on.');
+        feedback.textContent=ok?'Seok Woo voice feedback is on. I will announce placement changes.':'Voice playback is unavailable in this browser.';
+      }else{
+        if('speechSynthesis' in window)window.speechSynthesis.cancel();
+        feedback.textContent='Seok Woo voice feedback is off. Placement grades will still appear on screen.';
+      }
+    });
   }
   async function loadTracker(){
     if(landmarker)return true;if(loading)return false;loading=true;
