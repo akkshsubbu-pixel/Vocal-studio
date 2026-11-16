@@ -35,3 +35,14 @@
 .entry-choice-rap:hover,.entry-choice-rap:focus-visible{transform:none;border-color:var(--h-edge,#754057);background:linear-gradient(145deg,#ffffff12,#ffffff05)}
 .entry-choice-coming{display:inline-flex;margin-top:15px;padding:6px 10px;border:1px solid var(--h-edge,#754057);border-radius:999px;color:var(--h-primary,#f18aa7);font:800 9px Nunito,Arial,sans-serif;letter-spacing:1.3px}
 @media(max-width:600px){.entry-gate-options{grid-template-columns:1fr}}
+
+/* Rap Studio coming-soon landing view */
+.rap-coming-view{position:fixed;inset:0;z-index:10050;display:grid;place-items:center;padding:28px;background:radial-gradient(ellipse at 50% 35%,#61243d 0%,#211725 55%,#120f18 100%);color:#fff}
+.rap-coming-view[hidden]{display:none!important}
+.rap-coming-card{width:min(560px,100%);padding:clamp(30px,6vw,58px);text-align:center;border:1px solid #e98aa755;border-radius:28px;background:linear-gradient(145deg,#ffffff12,#ffffff06);box-shadow:0 28px 90px #0007}
+.rap-coming-symbol{font-size:48px;color:#f39ab5;margin-bottom:18px}
+.rap-coming-card h1{margin:12px 0 18px;font-size:clamp(38px,7vw,64px);letter-spacing:-2px}
+.rap-coming-status{display:inline-flex;padding:10px 18px;border:1px solid #f39ab5;border-radius:999px;color:#ffb0c6;font-size:12px;font-weight:900;letter-spacing:2px}
+.rap-coming-card p{max-width:390px;margin:22px auto 30px;color:#e6d8e0;line-height:1.7}
+.rap-back-button{border:1px solid #ffffff55;border-radius:999px;padding:12px 20px;background:#ffffff12;color:#fff;font:700 13px inherit;cursor:pointer}
+.rap-back-button:hover{background:#ffffff22}
