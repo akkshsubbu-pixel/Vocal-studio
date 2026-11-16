@@ -198,8 +198,12 @@
         <div class="dance-studio-grid">
           <article class="dance-setup-card dance-video-workspace">
             <div class="card-head"><div><div class="eyebrow">01 / YOUR REFERENCE</div><h2>Choose what to learn</h2></div><span class="step-pill">REFERENCE</span></div>
-            <label class="dance-upload-zone" for="dance-reference-file"><span class="dance-upload-icon">↑</span><b id="dance-reference-name">Upload a choreography video</b><small>MP4, MOV, WEBM · choose a saved video</small><input id="dance-reference-file" type="file" accept="video/*"></label>
+            <div class="dance-reference-methods">
+              <label class="dance-upload-zone" for="dance-reference-file"><span class="dance-upload-icon">↑</span><b id="dance-reference-name">Upload a choreography video</b><small>MP4, MOV, WEBM · choose a saved video</small><input id="dance-reference-file" type="file" accept="video/*"></label>
+              <div class="dance-youtube-entry"><label for="dance-reference-youtube">OR PASTE A YOUTUBE LINK</label><div class="dance-youtube-row"><input id="dance-reference-youtube" type="url" inputmode="url" placeholder="https://youtu.be/..." autocomplete="url"><button class="dance-action-button" id="dance-load-youtube" type="button">Load link</button></div><small>Use a public or unlisted video that allows embedding.</small></div>
+            </div>
             <video id="dance-reference-preview" class="dance-preview" controls playsinline preload="metadata" hidden></video>
+            <iframe id="dance-reference-youtube-player" class="dance-youtube-player" title="YouTube choreography reference" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen hidden></iframe>
             <p class="dance-file-status" id="dance-reference-status">No reference video loaded.</p>
             <div class="dance-section-fields"><label>START (sec)<input id="dance-section-start" type="number" min="0" step="0.5" value="0"></label><label>END (sec)<input id="dance-section-end" type="number" min="0" step="0.5" placeholder="optional"></label></div>
             <button class="dance-action-button secondary dance-full-button" id="dance-set-section" type="button">Set section on both videos</button>
@@ -788,15 +792,24 @@
       rhythmTap.addEventListener('click',()=>{const now=performance.now();rhythmTapTimes=rhythmTapTimes.filter(t=>now-t<2500);rhythmTapTimes.push(now);if(rhythmTapTimes.length>5)rhythmTapTimes.shift();if(rhythmTapTimes.length>=2){const gaps=rhythmTapTimes.slice(1).map((t,i)=>t-rhythmTapTimes[i]);const average=gaps.reduce((a,b)=>a+b,0)/gaps.length;rhythmTempo.value=String(Math.max(40,Math.min(200,Math.round(60000/average))));updateRhythmTempo();rhythmStatus.textContent='Tempo measured from your taps'}else rhythmStatus.textContent='Tap again in time with the music'});
       document.getElementById('dance-rhythm-subdivision').addEventListener('change',()=>{if(rhythmTimer)startRhythmBeat()});
       const danceVideoUrls={reference:null,take:null};
+      const danceYoutubePlayer=document.getElementById('dance-reference-youtube-player');
+      const danceYoutubeInput=document.getElementById('dance-reference-youtube');
+      let danceReferenceMode='upload',danceYoutubeId='';
+      function updateDanceCompareReady(){document.getElementById('dance-compare-play').disabled=!(danceVideoUrls.take&&(danceVideoUrls.reference||danceReferenceMode==='youtube'));}
+      function extractYoutubeId(raw){try{const u=new URL(raw);if(u.hostname==='youtu.be')return u.pathname.slice(1).split('/')[0];if(['youtube.com','www.youtube.com','m.youtube.com','youtube-nocookie.com','www.youtube-nocookie.com'].includes(u.hostname)){if(u.pathname==='/watch')return u.searchParams.get('v');const m=u.pathname.match(/^\/(?:embed|shorts|live)\/([\w-]{11})/);return m?m[1]:null;}}catch(_){}return null;}
+      function loadYoutubeReference(){const id=extractYoutubeId(danceYoutubeInput.value.trim());if(!id||! /^[\w-]{11}$/.test(id)){document.getElementById('dance-reference-status').textContent='Please paste a valid YouTube video link.';return;}if(danceVideoUrls.reference){URL.revokeObjectURL(danceVideoUrls.reference);danceVideoUrls.reference=null;}danceReferenceMode='youtube';danceYoutubeId=id;danceRef.hidden=true;danceRef.removeAttribute('src');danceYoutubePlayer.hidden=false;danceYoutubePlayer.src='https://www.youtube-nocookie.com/embed/'+id+'?enablejsapi=1&playsinline=1&rel=0';document.getElementById('dance-reference-name').textContent='YouTube reference loaded';document.getElementById('dance-reference-status').textContent='YouTube video loaded · use its player controls to watch';updateDanceCompareReady();updateDanceReviewReady();}
+      document.getElementById('dance-load-youtube').addEventListener('click',loadYoutubeReference);
+      danceYoutubeInput.addEventListener('keydown',e=>{if(e.key==='Enter')loadYoutubeReference();});
       function loadDanceVideo(inputId,videoId,nameId,statusId,key){
         const input=document.getElementById(inputId),video=document.getElementById(videoId);
         input.addEventListener('change',()=>{
           const file=input.files&&input.files[0];if(!file)return;
           if(danceVideoUrls[key])URL.revokeObjectURL(danceVideoUrls[key]);
           danceVideoUrls[key]=URL.createObjectURL(file);video.src=danceVideoUrls[key];video.hidden=false;
+          if(key==='reference'){danceReferenceMode='upload';danceYoutubePlayer.hidden=true;danceYoutubePlayer.src='';danceYoutubeInput.value='';}
           document.getElementById(nameId).textContent=file.name;
           document.getElementById(statusId).textContent='Loaded · '+(file.size/1024/1024).toFixed(1)+' MB';
-          document.getElementById('dance-compare-play').disabled=!(danceVideoUrls.reference&&danceVideoUrls.take);
+          updateDanceCompareReady();if(key==='reference')updateDanceReviewReady();
         });
       }
       loadDanceVideo('dance-reference-file','dance-reference-preview','dance-reference-name','dance-reference-status','reference');
@@ -814,25 +827,29 @@
           if(Number.isFinite(end)&&end>start)v.dataset.sectionEnd=String(end);else delete v.dataset.sectionEnd;
           seekDanceVideo(v,start);
         });
+        if(danceReferenceMode==='youtube'&&danceYoutubeId){const params=new URLSearchParams({enablejsapi:'1',playsinline:'1',rel:'0',start:String(Math.floor(start))});if(Number.isFinite(end)&&end>start)params.set('end',String(Math.floor(end)));danceYoutubePlayer.src='https://www.youtube-nocookie.com/embed/'+danceYoutubeId+'?'+params.toString();}
       });
       [danceRef,danceTake].forEach(v=>v.addEventListener('timeupdate',()=>{
         const end=Number(v.dataset.sectionEnd);
         if(Number.isFinite(end)&&end>0&&v.currentTime>=end)v.pause();
       }));
       document.getElementById('dance-compare-play').addEventListener('click',async()=>{
-        if(!danceRef.src||!danceTake.src)return;
+        if(!danceTake.src)return;
         const start=Math.max(0,Number(document.getElementById('dance-section-start').value)||0);
         try{
-          await Promise.all([danceRef,danceTake].map(v=>v.readyState>=1?Promise.resolve():new Promise(resolve=>v.addEventListener('loadedmetadata',resolve,{once:true}))));
-          [danceRef,danceTake].forEach(v=>{v.pause();seekDanceVideo(v,start);});
-          await Promise.all([danceRef.play(),danceTake.play()]);
-        }catch(_){document.getElementById('dance-take-status').textContent='Press play on each preview if your browser blocks simultaneous playback.';}
+          if(danceReferenceMode==='youtube'&&danceYoutubeId){const end=Number(document.getElementById('dance-section-end').value);const params=new URLSearchParams({enablejsapi:'1',playsinline:'1',rel:'0',autoplay:'1',start:String(Math.floor(start))});if(Number.isFinite(end)&&end>start)params.set('end',String(Math.floor(end)));danceYoutubePlayer.src='https://www.youtube-nocookie.com/embed/'+danceYoutubeId+'?'+params.toString();await new Promise(resolve=>setTimeout(resolve,500));}
+          else{if(!danceRef.src)return;await (danceRef.readyState>=1?Promise.resolve():new Promise(resolve=>danceRef.addEventListener('loadedmetadata',resolve,{once:true})));danceRef.pause();seekDanceVideo(danceRef,start);}
+          await (danceTake.readyState>=1?Promise.resolve():new Promise(resolve=>danceTake.addEventListener('loadedmetadata',resolve,{once:true})));
+          danceTake.pause();seekDanceVideo(danceTake,start);await danceTake.play();
+          if(danceReferenceMode==='upload')await danceRef.play();
+        }catch(_){document.getElementById('dance-take-status').textContent='Press play on the reference and practice players if your browser blocks simultaneous playback.';}
       });
       const danceReviewButton=document.getElementById('dance-generate-feedback');
       const danceConsent=document.getElementById('dance-ai-consent');
-      const danceReviewStatus=document.getElementById('dance-ai-status');
+      const danceReviewStatus=document.getElementById('dance-ai-status');\n      const danceYoutubeReviewNote=document.createElement('p');danceYoutubeReviewNote.className='dance-ai-status';danceYoutubeReviewNote.textContent='AI frame review is available when the reference is uploaded as a video file. YouTube playback is protected from direct frame capture.';danceYoutubeReviewNote.hidden=true;danceReviewStatus.insertAdjacentElement('afterend',danceYoutubeReviewNote);
       function updateDanceReviewReady(){
-        danceReviewButton.disabled=!(danceRef.src&&danceTake.src&&danceConsent.checked);
+        danceReviewButton.disabled=!(danceReferenceMode==='upload'&&danceRef.src&&danceTake.src&&danceConsent.checked);
+        danceYoutubeReviewNote.hidden=danceReferenceMode!=='youtube';
       }
       danceConsent.addEventListener('change',updateDanceReviewReady);
       function waitForVideoSeek(video,time){
