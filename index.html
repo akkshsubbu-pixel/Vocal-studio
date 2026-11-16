@@ -126,7 +126,7 @@
           <span class="entry-choice-subtitle">Movement & performance</span>
           <span class="entry-choice-arrow" aria-hidden="true">→</span>
         </button>
-        <button class="entry-choice entry-choice-rap" type="button" disabled aria-disabled="true" title="Rap Studio is coming soon">
+        <button class="entry-choice entry-choice-rap" id="enter-rap" type="button" title="Open Rap Studio preview">
           <span class="entry-choice-icon" aria-hidden="true">♬</span>
           <span class="entry-choice-title">Rap</span>
           <span class="entry-choice-subtitle">Your flow studio</span>
@@ -138,6 +138,16 @@
     </div>
     
 
+  </section>
+  <section class="rap-coming-view" id="rap-coming-view" hidden aria-labelledby="rap-coming-title">
+    <div class="rap-coming-card">
+      <div class="rap-coming-symbol" aria-hidden="true">♬</div>
+      <div class="entry-gate-kicker">YOUR CREATIVE SPACE</div>
+      <h1 id="rap-coming-title">Rap Studio</h1>
+      <div class="rap-coming-status">COMING SOON</div>
+      <p>We’re preparing a space for flow, rhythm, lyric writing and delivery.</p>
+      <button class="rap-back-button" id="rap-back-choices" type="button">← Back to choices</button>
+    </div>
   </section>
   <aside class="sidebar dance-sidebar" id="creative-sidebar" aria-label="Dance Studio navigation">
     <a class="brand dance-brand" href="#" id="dance-brand-home"><span class="brand-mark">✧</span><span id="creative-brand-name">dance<span class="brand-light"> studio</span><small>MOVE · LEARN · CREATE</small></span></a>
@@ -937,6 +947,20 @@
       const vocal = document.getElementById('enter-vocal');
       const dance = document.getElementById('enter-dance');
       const back = document.getElementById('dance-back-choices');
+      const rap = document.getElementById('enter-rap');
+      const rapView = document.getElementById('rap-coming-view');
+      const rapBack = document.getElementById('rap-back-choices');
+      rap.addEventListener('click', event => {
+        event.preventDefault();
+        gate.hidden = true;
+        rapView.hidden = false;
+        document.body.classList.remove('entry-pending', 'entry-selecting', 'dance-mode');
+      });
+      rapBack.addEventListener('click', event => {
+        event.preventDefault();
+        rapView.hidden = true;
+        gate.hidden = false;
+      });
       const enterVocal = event => {
         event.preventDefault();
         event.stopImmediatePropagation();
