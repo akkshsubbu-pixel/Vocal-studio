@@ -161,16 +161,40 @@
     ctx.clearRect(0,0,canvas.width,canvas.height);setVerdict('Tracking off','Start the camera to track your movement.');feedback.textContent=message;
   }
   start.addEventListener('click',async()=>{
-    if(!navigator.mediaDevices?.getUserMedia){feedback.textContent='Camera access needs a modern browser over HTTPS.';return;}
+    if(!window.isSecureContext||!navigator.mediaDevices?.getUserMedia){
+      feedback.textContent='Camera access requires HTTPS (open the official GitHub Pages app) and a supported browser.';
+      return;
+    }
     start.disabled=true;feedback.textContent='Requesting camera permission…';
     try{
-      const ok=await loadTracker();if(!ok){start.disabled=false;return;}
-      stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user',width:{ideal:1280},height:{ideal:720},frameRate:{ideal:60,max:60}},audio:false});
-      video.srcObject=stream;video.controls=false;await video.play();trackingActive=true;sizeCanvas();stage.classList.add('is-active');stop.disabled=false;
+      try{
+        stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'user'},width:{ideal:1280},height:{ideal:720}},audio:false});
+      }catch(firstError){
+        if(firstError?.name==='OverconstrainedError'||firstError?.name==='NotFoundError'){
+          stream=await navigator.mediaDevices.getUserMedia({video:true,audio:false});
+        }else throw firstError;
+      }
+      video.srcObject=stream;video.muted=true;video.playsInline=true;video.controls=false;
+      await video.play();
+      feedback.textContent='Camera connected. Loading body tracking…';
+      const ok=await loadTracker();
+      if(!ok){stopCamera('Camera connected, but the pose-tracking model did not load. Check your internet connection and try again.');return;}
+      trackingActive=true;sizeCanvas();stage.classList.add('is-active');stop.disabled=false;
       status.textContent='BODY TRACKING LIVE';status.classList.add('is-live');
       feedback.textContent='Live body tracking is on. Keep your full body in frame; movement lines follow your joints.';
       setVerdict('Finding your body','Step back until your full body is visible.');lastVideoTime=-1;lastDetectAt=0;raf=requestAnimationFrame(trackFrame);
-    }catch(e){stopCamera(e?.name==='NotAllowedError'?'Camera permission was not granted. Allow it in your browser site settings.':'Could not start the camera. Check that it is available and try again.');}
+    }catch(e){
+      const messages={
+        NotAllowedError:'Camera permission is blocked. In Chrome, select the site icon beside the address bar → Site settings → Camera → Allow, then reload.',
+        PermissionDeniedError:'Camera permission is blocked. Allow camera access for this site in your browser settings, then reload.',
+        NotFoundError:'No camera was found. Connect or enable a camera, then try again.',
+        NotReadableError:'The camera is busy or unavailable. Close other apps or tabs using it, then try again.',
+        OverconstrainedError:'The selected camera cannot meet the requested settings. Check your camera and try again.',
+        SecurityError:'The browser blocked camera access. Open the app using its HTTPS GitHub Pages address.',
+        AbortError:'The camera could not start. Close other apps using it and try again.'
+      };
+      stopCamera(messages[e?.name]||('Could not start the camera ('+(e?.name||'unknown error')+'). Check browser permission and whether another app is using it.'));
+    }
   });
   const uploadInput=document.getElementById('live-line-upload');
   if(uploadInput){
