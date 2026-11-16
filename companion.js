@@ -152,9 +152,10 @@
       greetingBubble.hidden=false;
     }
     const now=Date.now();
-    if (now-lastPlacementSpeechAt>2200 && 'speechSynthesis' in window) {
+    if (now-lastPlacementSpeechAt>2200) {
       lastPlacementSpeechAt=now;
-      try { window.speechSynthesis.cancel(); const utterance=new SpeechSynthesisUtterance(descriptions[tier]+'. '+(tip||'')); utterance.rate=1.02; window.speechSynthesis.speak(utterance); } catch (_) {}
+      const spoken=descriptions[tier]+'. '+(tip||'');
+      if(typeof window.seokWooLivePlacementSpeak==='function')window.seokWooLivePlacementSpeak(spoken);
     }
   };
 
