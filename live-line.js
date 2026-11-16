@@ -11,7 +11,7 @@
   // More responsive tracking: accept weaker landmark confidence while filtering near-invisible points.
   const DETECTION_CONFIDENCE=.15, PRESENCE_CONFIDENCE=.15, TRACKING_CONFIDENCE=.15, LANDMARK_VISIBILITY=.05;
   const verdict=document.getElementById('live-line-verdict'),detail=document.getElementById('live-line-detail');
-  let stream=null,landmarker=null,raf=0,lastVideoTime=-1,loading=false,mirrorOn=true,lastDetectAt=0;
+  let stream=null,landmarker=null,raf=0,lastVideoTime=-1,loading=false,mirrorOn=true,lastDetectAt=0,trackingActive=false,uploadedVideoUrl=null;
   const connections=[[0,1],[1,2],[2,3],[3,7],[0,4],[4,5],[5,6],[6,8],[9,10],[11,12],[11,13],[13,15],[15,17],[15,19],[15,21],[17,19],[12,14],[14,16],[16,18],[16,20],[16,22],[18,20],[11,23],[12,24],[23,24],[23,25],[25,27],[27,29],[29,31],[27,31],[24,26],[26,28],[28,30],[30,32],[28,32]];
   function setVerdict(title,description,state='neutral'){verdict.textContent=title;detail.textContent=description;verdict.dataset.state=state;}
   function sizeCanvas(){const r=stage.getBoundingClientRect();const d=Math.min(window.devicePixelRatio||1,2);canvas.width=Math.round(r.width*d);canvas.height=Math.round(r.height*d);ctx.setTransform(d,0,0,d,0,0);}
@@ -107,7 +107,7 @@
     }finally{loading=false;}
   }
   function trackFrame(){
-    if(!stream||video.readyState<2){raf=requestAnimationFrame(trackFrame);return;}
+    if(!trackingActive){return;}if(video.readyState<2||video.paused){raf=requestAnimationFrame(trackFrame);return;}
     const now=performance.now();
     if(now-lastDetectAt>=16){
       lastDetectAt=now;
@@ -128,9 +128,9 @@
     raf=requestAnimationFrame(trackFrame);
   }
   function stopCamera(message='Camera stopped. Live tracking ends and nothing is recorded or uploaded.'){
-    lastPlacementTier='';
+    lastPlacementTier='';trackingActive=false;video.pause();
     if(raf)cancelAnimationFrame(raf);raf=0;
-    if(stream)stream.getTracks().forEach(t=>t.stop());stream=null;video.srcObject=null;stage.classList.remove('is-active');
+    if(stream)stream.getTracks().forEach(t=>t.stop());stream=null;video.srcObject=null;if(uploadedVideoUrl){URL.revokeObjectURL(uploadedVideoUrl);uploadedVideoUrl=null;}video.removeAttribute('src');video.controls=false;video.load();stage.classList.remove('is-active');
     start.disabled=false;stop.disabled=true;status.textContent='CAMERA OFF';status.classList.remove('is-live');
     ctx.clearRect(0,0,canvas.width,canvas.height);setVerdict('Tracking off','Start the camera to track your movement.');feedback.textContent=message;
   }
@@ -140,11 +140,35 @@
     try{
       const ok=await loadTracker();if(!ok){start.disabled=false;return;}
       stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user',width:{ideal:1280},height:{ideal:720},frameRate:{ideal:60,max:60}},audio:false});
-      video.srcObject=stream;await video.play();sizeCanvas();stage.classList.add('is-active');stop.disabled=false;
+      video.srcObject=stream;video.controls=false;await video.play();trackingActive=true;sizeCanvas();stage.classList.add('is-active');stop.disabled=false;
       status.textContent='BODY TRACKING LIVE';status.classList.add('is-live');
       feedback.textContent='Live body tracking is on. Keep your full body in frame; movement lines follow your joints.';
       setVerdict('Finding your body','Step back until your full body is visible.');lastVideoTime=-1;lastDetectAt=0;raf=requestAnimationFrame(trackFrame);
     }catch(e){stopCamera(e?.name==='NotAllowedError'?'Camera permission was not granted. Allow it in your browser site settings.':'Could not start the camera. Check that it is available and try again.');}
+  });
+  const uploadInput=document.getElementById('live-line-upload');
+  if(uploadInput){
+    uploadInput.addEventListener('change',async()=>{
+      const file=uploadInput.files&&uploadInput.files[0];if(!file)return;
+      stopCamera('Loading your video for live line tracking…');
+      const ok=await loadTracker();if(!ok)return;
+      uploadedVideoUrl=URL.createObjectURL(file);video.src=uploadedVideoUrl;video.srcObject=null;video.controls=true;
+      try{
+        await video.play();trackingActive=true;stage.classList.add('is-active');sizeCanvas();
+        status.textContent='VIDEO TRACKING LIVE';status.classList.add('is-live');stop.disabled=false;start.disabled=false;
+        feedback.textContent='Uploaded video is playing. Pose lines track the visible movement in this browser.';
+        setVerdict('Finding your body','Play the video and keep the dancer visible in the frame.');
+        lastDetectAt=0;raf=requestAnimationFrame(trackFrame);
+      }catch(error){
+        feedback.textContent='Could not play this video. Try an MP4, MOV or WEBM file.';
+        video.controls=true;stage.classList.add('is-active');status.textContent='VIDEO READY';status.classList.remove('is-live');
+      }
+    });
+  }
+  video.addEventListener('play',()=>{
+    if(uploadedVideoUrl&&landmarker&&!trackingActive){
+      trackingActive=true;lastDetectAt=0;raf=requestAnimationFrame(trackFrame);
+    }
   });
   stop.addEventListener('click',()=>stopCamera());
   mode.addEventListener('change',()=>{guides.className='live-line-guides guide-'+mode.value;setVerdict('Mode changed','Move naturally and follow the live joint lines.');});
