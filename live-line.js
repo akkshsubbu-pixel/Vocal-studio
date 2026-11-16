@@ -7,7 +7,7 @@
   const feedback=document.getElementById('live-line-feedback'),canvas=document.getElementById('live-line-pose');
   const ctx=canvas.getContext('2d');
   // More responsive tracking: accept weaker landmark confidence while filtering near-invisible points.
-  const DETECTION_CONFIDENCE=.25, PRESENCE_CONFIDENCE=.25, TRACKING_CONFIDENCE=.25, LANDMARK_VISIBILITY=.10;
+  const DETECTION_CONFIDENCE=.15, PRESENCE_CONFIDENCE=.15, TRACKING_CONFIDENCE=.15, LANDMARK_VISIBILITY=.05;
   const verdict=document.getElementById('live-line-verdict'),detail=document.getElementById('live-line-detail');
   let stream=null,landmarker=null,raf=0,lastVideoTime=-1,loading=false,mirrorOn=true,lastDetectAt=0;
   const connections=[[0,1],[1,2],[2,3],[3,7],[0,4],[4,5],[5,6],[6,8],[9,10],[11,12],[11,13],[13,15],[15,17],[15,19],[15,21],[17,19],[12,14],[14,16],[16,18],[16,20],[16,22],[18,20],[11,23],[12,24],[23,24],[23,25],[25,27],[27,29],[29,31],[27,31],[24,26],[26,28],[28,30],[30,32],[28,32]];
@@ -64,7 +64,7 @@
   function trackFrame(){
     if(!stream||video.readyState<2){raf=requestAnimationFrame(trackFrame);return;}
     const now=performance.now();
-    if(now-lastDetectAt>=33){
+    if(now-lastDetectAt>=16){
       lastDetectAt=now;
       try{
         const result=landmarker.detectForVideo(video,now);
@@ -93,7 +93,7 @@
     start.disabled=true;feedback.textContent='Requesting camera permission…';
     try{
       const ok=await loadTracker();if(!ok){start.disabled=false;return;}
-      stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user',width:{ideal:1280},height:{ideal:720}},audio:false});
+      stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user',width:{ideal:1280},height:{ideal:720},frameRate:{ideal:60,max:60}},audio:false});
       video.srcObject=stream;await video.play();sizeCanvas();stage.classList.add('is-active');stop.disabled=false;
       status.textContent='BODY TRACKING LIVE';status.classList.add('is-live');
       feedback.textContent='Live body tracking is on. Keep your full body in frame; movement lines follow your joints.';
