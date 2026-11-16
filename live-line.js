@@ -11,7 +11,7 @@
   // More responsive tracking: accept weaker landmark confidence while filtering near-invisible points.
   const DETECTION_CONFIDENCE=.15, PRESENCE_CONFIDENCE=.15, TRACKING_CONFIDENCE=.15, LANDMARK_VISIBILITY=.05;
   const verdict=document.getElementById('live-line-verdict'),detail=document.getElementById('live-line-detail');
-  let stream=null,landmarker=null,raf=0,lastVideoTime=-1,loading=false,mirrorOn=true,lastDetectAt=0,trackingActive=false,uploadedVideoUrl=null;
+  let stream=null,landmarker=null,raf=0,lastVideoTime=-1,loading=false,mirrorOn=true,lastDetectAt=0,trackingActive=false,uploadedVideoUrl=null,referenceVideoUrl=null,referenceLandmarks=null,compareTimestamp=0;\n  const referenceVideo=document.getElementById('live-line-reference-video');\n  const referenceInput=document.getElementById('live-line-reference-upload');\n  const matchOutput=document.getElementById('live-line-match'),compareDetail=document.getElementById('live-line-compare-detail');
   const connections=[[0,1],[1,2],[2,3],[3,7],[0,4],[4,5],[5,6],[6,8],[9,10],[11,12],[11,13],[13,15],[15,17],[15,19],[15,21],[17,19],[12,14],[14,16],[16,18],[16,20],[16,22],[18,20],[11,23],[12,24],[23,24],[23,25],[25,27],[27,29],[29,31],[27,31],[24,26],[26,28],[28,30],[30,32],[28,32]];
   function setVerdict(title,description,state='neutral'){verdict.textContent=title;detail.textContent=description;verdict.dataset.state=state;}
   function sizeCanvas(){const r=stage.getBoundingClientRect();const d=Math.min(window.devicePixelRatio||1,2);canvas.width=Math.round(r.width*d);canvas.height=Math.round(r.height*d);ctx.setTransform(d,0,0,d,0,0);}
@@ -27,7 +27,33 @@
     landmarks.forEach((lm,i)=>{const p=point(lm);if(!p.visible)return;ctx.beginPath();ctx.arc(p.x,p.y,i>=15&&i<=22?5:4,0,Math.PI*2);ctx.fillStyle=(i>=15&&i<=22)?'#ffe4ed':'#fff';ctx.fill();ctx.lineWidth=1.5;ctx.strokeStyle='#b51e4e';ctx.stroke();});
     const shown=landmarks.filter(p=>(p.visibility??1)>LANDMARK_VISIBILITY).length;
     feedback.textContent='Body detected · '+shown+' of 33 tracking points visible. Move naturally and watch the pink lines follow.';
-    assess(landmarks);
+    assess(landmarks);\n    updateReferenceMatch(landmarks);
+  }
+  function updateReferenceMatch(current){
+    if(!referenceVideoUrl||!referenceVideo||referenceVideo.readyState<2||referenceVideo.paused){
+      if(matchOutput)matchOutput.textContent='—';
+      if(compareDetail)compareDetail.textContent=referenceVideoUrl?'Press play on the reference video, then start your camera.':'Upload a reference video to compare your body-line positions.';
+      return;
+    }
+    try{
+      const result=landmarker.detectForVideo(referenceVideo,Math.max(performance.now(),compareTimestamp+1));
+      compareTimestamp=Math.max(performance.now(),compareTimestamp+1);
+      const ref=result.landmarks&&result.landmarks[0];
+      if(!ref){if(matchOutput)matchOutput.textContent='—';if(compareDetail)compareDetail.textContent='Waiting for a clear dancer pose in the reference video.';return;}
+      const joints=[11,12,13,14,15,16,23,24,25,26,27,28,29,30,31,32];
+      let total=0,count=0;
+      joints.forEach(i=>{
+        const a=current[i],b=ref[i];
+        if((a.visibility??1)<.15||(b.visibility??1)<.15)return;
+        const dx=a.x-b.x,dy=a.y-b.y;
+        total+=Math.sqrt(dx*dx+dy*dy);count++;
+      });
+      if(count<8){if(matchOutput)matchOutput.textContent='—';if(compareDetail)compareDetail.textContent='Show both dancers clearly for a reliable comparison.';return;}
+      const average=total/count;
+      const score=Math.max(0,Math.min(100,Math.round(100*(1-average/.42))));
+      if(matchOutput)matchOutput.textContent=score+'%';
+      if(compareDetail)compareDetail.textContent=score>=90?'Very close pose match. Keep following the reference timing.':score>=75?'Good match. Check the joint lines that look most different.':score>=55?'Some positions match. Compare your arm, hip and leg angles with the reference.':'Your current pose differs from this reference frame. Pause and compare the body lines one section at a time.';
+    }catch(_){if(compareDetail)compareDetail.textContent='Comparison is catching up. Keep both videos playing.';}
   }
   let lastPlacementTier='';
   function assess(l){
@@ -163,6 +189,17 @@
         feedback.textContent='Could not play this video. Try an MP4, MOV or WEBM file.';
         video.controls=true;stage.classList.add('is-active');status.textContent='VIDEO READY';status.classList.remove('is-live');
       }
+    });
+  }
+  if(referenceInput){
+    referenceInput.addEventListener('change',()=>{
+      const file=referenceInput.files&&referenceInput.files[0];if(!file)return;
+      if(referenceVideoUrl)URL.revokeObjectURL(referenceVideoUrl);
+      referenceVideoUrl=URL.createObjectURL(file);referenceVideo.src=referenceVideoUrl;referenceVideo.controls=true;referenceVideo.hidden=false;referenceVideo.loop=true;
+      referenceVideo.load();
+      matchOutput.textContent='Ready';
+      compareDetail.textContent='Reference loaded. Start your camera or play your uploaded dance video to compare poses.';
+      referenceVideo.play().catch(()=>{compareDetail.textContent='Reference loaded. Press play on the reference video, then start your camera.';});
     });
   }
   video.addEventListener('play',()=>{
