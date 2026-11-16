@@ -336,12 +336,14 @@
             <div class="live-line-card-head"><div><span>01 / LIVE VIEW</span><h2>Train with the guide</h2></div><span class="live-line-live-tag" id="live-line-status">CAMERA OFF</span></div>
             <div class="live-line-stage" id="live-line-stage">
               <video id="live-line-video" autoplay muted playsinline></video>
+              <video id="live-line-reference-video" muted playsinline hidden></video>
               <canvas id="live-line-pose" class="live-line-pose" aria-hidden="true"></canvas>
               <div class="live-line-guides guide-center" id="live-line-guides" aria-hidden="true"><i class="line-vertical"></i><i class="line-horizontal"></i><i class="line-diagonal"></i><i class="line-diagonal-reverse"></i><i class="line-center-ring"></i></div>
               <div class="live-line-placeholder" id="live-line-placeholder"><span>⌖</span><b>Your live guide appears here</b><small>Allow camera access to begin. Video stays in this browser and is not uploaded.</small></div>
             </div>
             <div class="live-line-controls">
               <label class="live-line-upload" for="live-line-upload">UPLOAD A DANCE VIDEO<input id="live-line-upload" type="file" accept="video/mp4,video/webm,video/quicktime,video/*"></label>
+              <label class="live-line-upload" for="live-line-reference-upload">UPLOAD REFERENCE<input id="live-line-reference-upload" type="file" accept="video/mp4,video/webm,video/quicktime,video/*"></label>
               <button class="dance-action-button" id="live-line-start" type="button">Start camera</button>
               <button class="dance-action-button secondary" id="live-line-stop" type="button" disabled>Stop camera</button>
               <label>GUIDE MODE<select id="live-line-mode"><option value="center">Center line</option><option value="grid">Alignment grid</option><option value="arms">Arm line</option><option value="legs">Leg line</option><option value="diagonal">Diagonal extensions</option><option value="formation">Formation spacing</option></select></label>
@@ -352,6 +354,7 @@
               <button class="dance-action-button" id="live-line-voice" type="button" aria-pressed="false">Enable Seok Woo voice</button>
             </div>
             <div class="live-line-verdict" aria-live="polite"><strong id="live-line-verdict" data-state="neutral">Tracking off</strong><p id="live-line-detail">Start the camera to track your movement.</p></div>
+            <div class="live-line-compare" id="live-line-compare" aria-live="polite"><div><span>REFERENCE MATCH</span><strong id="live-line-match">—</strong></div><p id="live-line-compare-detail">Upload a reference video, then start your camera to compare body-line positions.</p></div>
             <p class="live-line-feedback" id="live-line-feedback" aria-live="polite">Camera is off. Set your device at a comfortable distance before starting.</p>
           </article>
           <article class="live-line-drills-card">
