@@ -27,3 +27,11 @@
 .entry-back-button{margin-top:8px;border:1px solid var(--h-edge,#754057);border-radius:999px;padding:12px 20px;background:#ffffff0b;color:var(--h-text,#fff2f5);font:700 12px Nunito,Arial,sans-serif;cursor:pointer}
 .entry-back-button:hover{border-color:var(--h-primary,#f18aa7);background:#ffffff15}
 @media(max-width:600px){.entry-gate{padding:22px}.entry-gate-options{grid-template-columns:1fr;gap:12px}.entry-choice{min-height:150px;padding:22px}.entry-choice-icon{width:45px;height:45px;margin-bottom:12px}.entry-choice-title{font-size:25px}.entry-gate-inner>p{margin-bottom:23px}.entry-gate-foot{margin-top:24px}}
+
+
+/* Rap is shown beside Vocal and Dance in the creative chooser, but stays unavailable until launch. */
+.entry-gate-options{grid-template-columns:repeat(3,minmax(0,1fr))}
+.entry-choice-rap{opacity:.78;cursor:not-allowed;border-style:dashed}
+.entry-choice-rap:hover,.entry-choice-rap:focus-visible{transform:none;border-color:var(--h-edge,#754057);background:linear-gradient(145deg,#ffffff12,#ffffff05)}
+.entry-choice-coming{display:inline-flex;margin-top:15px;padding:6px 10px;border:1px solid var(--h-edge,#754057);border-radius:999px;color:var(--h-primary,#f18aa7);font:800 9px Nunito,Arial,sans-serif;letter-spacing:1.3px}
+@media(max-width:600px){.entry-gate-options{grid-template-columns:1fr}}
