@@ -43,7 +43,7 @@
     const torsoAligned=centerOffset<.045&&shoulderTilt<.035&&hipTilt<.04;
     const closeToAligned=centerOffset<.075&&shoulderTilt<.06&&hipTilt<.07;
     const mostlyAligned=centerOffset<.12&&shoulderTilt<.10&&hipTilt<.11;
-    const tier=visibleCount<20||centerOffset>.20?'BAD':torsoAligned&&visibleCount>=29?'BEST':closeToAligned&&visibleCount>=25?'BETTER':mostlyAligned&&visibleCount>=21?'GOOD':'BAD';
+    const tier=visibleCount<20||centerOffset>.20?'BAD':torsoAligned&&visibleCount>=29?'BEST':closeToAligned&&visibleCount>=25?'BETTER':mostlyAligned&&visibleCount>=21?'GOOD':'GOOD';
     const tips={
       BAD:'Adjust your position: bring your body into the frame and gently line up your shoulders over your hips.',
       GOOD:'Good placement. Your main body points are visible; make a small centering adjustment.',
