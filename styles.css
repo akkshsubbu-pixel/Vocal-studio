@@ -46,3 +46,6 @@
 .rap-coming-card p{max-width:390px;margin:22px auto 30px;color:#e6d8e0;line-height:1.7}
 .rap-back-button{border:1px solid #ffffff55;border-radius:999px;padding:12px 20px;background:#ffffff12;color:#fff;font:700 13px inherit;cursor:pointer}
 .rap-back-button:hover{background:#ffffff22}
+
+.monitor-tools .monitor-device-label{min-width:190px}.monitor-tools #monitor-device{min-width:190px;max-width:260px}.monitor-debug{overflow-wrap:anywhere;line-height:1.5}
+@media(max-width:760px){.monitor-tools .monitor-device-label,.monitor-tools #monitor-device{width:100%;min-width:0;max-width:none}}
